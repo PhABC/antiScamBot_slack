@@ -36,9 +36,8 @@ class AntiScam(Plugin):
 
         #Posting warning
         Z = self.scAdmin.api_call('chat.postMessage', channel= data['channel'], 
-                                   text = msg, icon_emoji=":exclamation:")
-                                
-        return True
+                                   text = msg, icon_emoji=":exclamation:")            
+        return
 
     def process_message(self, data):
         'Will process all posts on watched channels.'
@@ -68,7 +67,6 @@ class AntiScam(Plugin):
 
             self.delete(data, msg)
             return
-
 
         #Deleting if containg ETH or BTC address
         self.isETH_BTC(data)
@@ -101,7 +99,6 @@ class AntiScam(Plugin):
 
             #Deleting message
             self.delete(data, msg[0], warning = True)
-
             return
 
         #BTC address detection
