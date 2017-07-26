@@ -1,15 +1,8 @@
+#Imports
+import re
+
 from rtmbot.core import Plugin
 from slackclient import SlackClient
-
-import re
-try:
-    from urlparse import urlparse
-except:
-    from urllib.parse import urlparse
-
-import requests
-import glob, os
-from PIL import Image
 
 class AntiScam(Plugin):
 
