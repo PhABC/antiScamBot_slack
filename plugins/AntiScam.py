@@ -1,8 +1,6 @@
-from __future__ import print_function
 from rtmbot.core import Plugin
 from slackclient import SlackClient
 
-import time
 import re
 try:
     from urlparse import urlparse
@@ -15,25 +13,13 @@ from PIL import Image
 
 class AntiScam(Plugin):
 
-    flagged_users = {}
-
-    #Adming token 
-    adminToken = 'xoxp-141131384855-141120363014-217638948963-4a213fe36db486a8b1a6e3120755b28c'
+    #Adming token ( OAuth Access Token )
+    adminToken = 'OAuth Access Token'
     scAdmin    = SlackClient(adminToken)
     
     #Whitelist
-    user_whitelist = [] # truncated left as example
-    id_whitelist   = [] # truncated left as example
-    chan_whitelist = [] # truncated left as example
-    
-    #Blacklist
-    user_blacklist = ['jarrad', 'jared', 'carl', 'hope', 'bennetts'] # truncated left as example
-
-    
-    time_lapse   = 3600
-    last_time    = time.time()
-    msg_count    = 0
-    msg_interval = 20
+    whitelist_ID   = [] # List of user IDs to be whitelisted
+    whitelist_chan = [] # List of channels to be whitelisted
 
     #Regular Expressions for ETH and BTC addresses
     eth_prog = re.compile(r'((0x)?[0-9a-fA-F]{40})')
@@ -62,16 +48,18 @@ class AntiScam(Plugin):
         return True
 
     def process_message(self, data):
+        'Will process all posts on watched channels.'
+
+        #Printing message to console
         print(data)
 
-
         #Returning if whitelisted user
-        if data['user'] in self.id_whitelist:
+        if data['user'] in self.whitelist_ID:
             print('Whitelisted user')
             return     
 
         #Returning if whitelisted channel
-        if data['channel'] in self.chan_whitelist:
+        if data['channel'] in self.whitelist_chan:
             print('Whitelisted channel')
             return
 
@@ -110,8 +98,6 @@ class AntiScam(Plugin):
             return 
 
         #ETH address detection
-        print(eth_result)
-        print(eth_result.group(1))
         if eth_result and eth_result.group(1):
             print('ETH address detected.')
 
