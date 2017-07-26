@@ -86,7 +86,7 @@ class AntiScam(Plugin):
         btc_result = self.btc_prog.search(data['text'])
 
         #Allow if etherscan address
-        if 'https://etherscan.io/' in data['text']:
+        if 'etherscan.io/' in data['text']:
             print('Etherscan address')
             return 
 
