@@ -159,3 +159,267 @@
 2017-07-26 10:39:35,145 got process_pong
 2017-07-26 10:39:39,161 got process_pong
 2017-07-26 10:39:43,178 got process_pong
+2017-07-26 10:39:47,197 got process_pong
+2017-07-26 10:39:51,113 got process_pong
+2017-07-26 10:39:55,129 got process_pong
+2017-07-26 10:39:59,146 got process_pong
+2017-07-26 10:40:03,161 got process_pong
+2017-07-26 10:40:07,177 got process_pong
+2017-07-26 10:40:11,194 got process_pong
+2017-07-26 10:40:15,111 got process_pong
+2017-07-26 10:40:19,127 got process_pong
+2017-07-26 10:40:23,188 got process_pong
+2017-07-26 10:40:27,103 got process_pong
+2017-07-26 10:40:31,120 got process_pong
+2017-07-26 10:40:35,137 got process_pong
+2017-07-26 10:40:39,150 got process_pong
+2017-07-26 10:40:43,165 got process_pong
+2017-07-26 10:40:47,180 got process_pong
+2017-07-26 10:40:51,198 got process_pong
+2017-07-26 10:40:55,113 got process_pong
+2017-07-26 10:40:59,133 got process_pong
+2017-07-26 10:41:03,151 got process_pong
+2017-07-26 10:41:07,167 got process_pong
+2017-07-26 10:41:11,181 got process_pong
+2017-07-26 10:41:15,200 got process_pong
+2017-07-26 10:41:17,510 got process_presence_change
+2017-07-26 10:41:17,812 got process_reconnect_url
+2017-07-26 10:41:19,118 got process_pong
+2017-07-26 10:41:23,134 got process_pong
+2017-07-26 10:41:27,151 got process_pong
+2017-07-26 10:41:31,167 got process_pong
+2017-07-26 10:41:35,183 got process_pong
+2017-07-26 10:41:39,200 got process_pong
+2017-07-26 10:41:43,116 got process_pong
+2017-07-26 10:41:47,132 got process_pong
+2017-07-26 10:41:51,148 got process_pong
+2017-07-26 10:41:55,164 got process_pong
+2017-07-26 10:41:59,181 got process_pong
+2017-07-26 10:42:03,198 got process_pong
+2017-07-26 10:42:07,113 got process_pong
+2017-07-26 10:42:11,130 got process_pong
+2017-07-26 10:42:15,146 got process_pong
+2017-07-26 10:42:19,161 got process_pong
+2017-07-26 10:42:23,178 got process_pong
+2017-07-26 10:42:27,194 got process_pong
+2017-07-26 10:42:31,111 got process_pong
+2017-07-26 10:42:35,129 got process_pong
+2017-07-26 10:42:39,145 got process_pong
+2017-07-26 10:42:43,160 got process_pong
+2017-07-26 10:42:47,178 got process_pong
+2017-07-26 10:42:51,194 got process_pong
+2017-07-26 10:42:55,110 got process_pong
+2017-07-26 10:42:59,128 got process_pong
+2017-07-26 10:43:03,143 got process_pong
+2017-07-26 10:43:07,158 got process_pong
+2017-07-26 10:43:11,175 got process_pong
+2017-07-26 10:43:15,191 got process_pong
+2017-07-26 10:43:19,106 got process_pong
+2017-07-26 10:43:23,122 got process_pong
+2017-07-26 10:43:23,725 got process_presence_change
+2017-07-26 10:43:27,141 got process_pong
+2017-07-26 10:43:31,159 got process_pong
+2017-07-26 10:43:35,176 got process_pong
+2017-07-26 10:43:39,192 got process_pong
+2017-07-26 10:43:43,109 got process_pong
+2017-07-26 10:43:47,125 got process_pong
+2017-07-26 10:43:51,142 got process_pong
+2017-07-26 10:43:55,158 got process_pong
+2017-07-26 10:43:59,175 got process_pong
+2017-07-26 10:44:03,192 got process_pong
+2017-07-26 10:44:07,109 got process_pong
+2017-07-26 10:44:11,125 got process_pong
+2017-07-26 10:44:15,142 got process_pong
+2017-07-26 10:44:17,752 got process_reconnect_url
+2017-07-26 10:44:19,158 got process_pong
+2017-07-26 10:44:23,172 got process_pong
+2017-07-26 10:44:27,189 got process_pong
+2017-07-26 10:44:33,316 got process_pong
+2017-07-26 10:44:35,124 got process_pong
+2017-07-26 10:44:39,141 got process_pong
+2017-07-26 10:44:43,157 got process_pong
+2017-07-26 10:44:47,174 got process_pong
+2017-07-26 10:44:51,192 got process_pong
+2017-07-26 10:44:55,107 got process_pong
+2017-07-26 10:44:59,123 got process_pong
+2017-07-26 10:45:03,140 got process_pong
+2017-07-26 10:45:07,157 got process_pong
+2017-07-26 10:45:11,174 got process_pong
+2017-07-26 10:45:15,192 got process_pong
+2017-07-26 10:45:19,109 got process_pong
+2017-07-26 10:45:23,126 got process_pong
+2017-07-26 10:45:27,143 got process_pong
+2017-07-26 10:45:31,159 got process_pong
+2017-07-26 10:45:35,176 got process_pong
+2017-07-26 10:45:39,192 got process_pong
+2017-07-26 10:45:43,108 got process_pong
+2017-07-26 10:45:47,127 got process_pong
+2017-07-26 10:45:51,143 got process_pong
+2017-07-26 10:45:55,159 got process_pong
+2017-07-26 10:45:59,174 got process_pong
+2017-07-26 10:46:03,191 got process_pong
+2017-07-26 10:46:07,105 got process_pong
+2017-07-26 10:46:11,123 got process_pong
+2017-07-26 10:46:15,140 got process_pong
+2017-07-26 10:46:19,155 got process_pong
+2017-07-26 10:46:23,170 got process_pong
+2017-07-26 10:46:27,187 got process_pong
+2017-07-26 10:46:31,103 got process_pong
+2017-07-26 10:46:35,118 got process_pong
+2017-07-26 10:46:39,135 got process_pong
+2017-07-26 10:46:43,151 got process_pong
+2017-07-26 10:46:47,167 got process_pong
+2017-07-26 10:46:51,183 got process_pong
+2017-07-26 10:46:55,200 got process_pong
+2017-07-26 10:46:59,115 got process_pong
+2017-07-26 10:47:03,130 got process_pong
+2017-07-26 10:47:07,147 got process_pong
+2017-07-26 10:47:11,166 got process_pong
+2017-07-26 10:47:15,183 got process_pong
+2017-07-26 10:47:17,694 got process_reconnect_url
+2017-07-26 10:47:19,100 got process_pong
+2017-07-26 10:47:23,117 got process_pong
+2017-07-26 10:47:27,134 got process_pong
+2017-07-26 10:47:31,150 got process_pong
+2017-07-26 10:50:27,661 Initialized in: /home/phabc/Main/Programmation/blockChains/slackBot/antiScamBot_slack
+2017-07-26 10:50:27,679 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:50:27,988 https://slack.com:443 "POST /api/rtm.start HTTP/1.1" 200 55
+2017-07-26 10:50:27,990 Loading plugins
+2017-07-26 10:50:27,991 Importing plugins.AntiScam.AntiScam
+2017-07-26 10:50:28,000 Plugin registered: <plugins.AntiScam.AntiScam object at 0x7f2c05915400>
+2017-07-26 10:50:28,000 Registering jobs for AntiScam
+2017-07-26 10:50:28,001 No jobs registered for AntiScam
+2017-07-26 10:51:15,920 Initialized in: /home/phabc/Main/Programmation/blockChains/slackBot/antiScamBot_slack
+2017-07-26 10:51:15,938 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:51:16,267 https://slack.com:443 "POST /api/rtm.start HTTP/1.1" 200 16580
+2017-07-26 10:51:16,449 Loading plugins
+2017-07-26 10:51:16,450 Importing plugins.AntiScam.AntiScam
+2017-07-26 10:51:16,457 Plugin registered: <plugins.AntiScam.AntiScam object at 0x7ff62848d0f0>
+2017-07-26 10:51:16,457 Registering jobs for AntiScam
+2017-07-26 10:51:16,457 No jobs registered for AntiScam
+2017-07-26 10:51:16,457 got process_hello
+2017-07-26 10:51:16,558 got process_reconnect_url
+2017-07-26 10:51:16,659 got process_pong
+2017-07-26 10:51:17,864 got process_reconnect_url
+2017-07-26 10:51:18,165 got process_presence_change
+2017-07-26 10:51:20,172 got process_pong
+2017-07-26 10:51:24,187 got process_pong
+2017-07-26 10:51:25,091 got process_user_typing
+2017-07-26 10:51:25,393 got process_message
+2017-07-26 10:51:25,396 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:51:25,554 https://slack.com:443 "POST /api/users.info HTTP/1.1" 200 518
+2017-07-26 10:51:25,561 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:51:25,681 https://slack.com:443 "POST /api/users.info HTTP/1.1" 200 518
+2017-07-26 10:51:25,686 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:51:25,961 https://slack.com:443 "POST /api/chat.delete HTTP/1.1" 200 77
+2017-07-26 10:51:25,968 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:51:26,162 https://slack.com:443 "POST /api/chat.postMessage HTTP/1.1" 200 321
+2017-07-26 10:51:26,265 got process_message
+2017-07-26 10:51:26,266 Problem in Plugin Class: AntiScam: process_message 
+{'type': 'message', 'deleted_ts': '1501080685.031036', 'subtype': 'message_deleted', 'hidden': True, 'channel': 'G6DBHSJ5Q', 'previous_message': {'type': 'message', 'user': 'U453JAP0E', 'text': '0x0000000000000000000000000000000000000002', 'ts': '1501080685.031036'}, 'event_ts': '1501080685.031434', 'ts': '1501080685.031434'}
+Traceback (most recent call last):
+  File "/home/phabc/anaconda3/lib/python3.6/site-packages/rtmbot/core.py", line 205, in do
+    func(data)
+  File "/home/phabc/Main/Programmation/blockChains/slackBot/antiScamBot_slack/plugins/AntiScam.py", line 59, in process_message
+    if data['user'] in self.whitelist_ID:
+KeyError: 'user'
+2017-07-26 10:51:26,367 got process_message
+2017-07-26 10:51:26,367 Problem in Plugin Class: AntiScam: process_message 
+{'text': ':exclamation::warning::exclamation: @phabc posted an ETH address and the message was deleted. *Do NOT trust any  address posted on slack*.:exclamation::warning::exclamation:', 'username': 'antiscam_bot', 'icons': {'emoji': ':exclamation:', 'image_64': 'https://a.slack-edge.com/f5d6f/img/emoji_2016_06_08/apple/2757.png'}, 'bot_id': 'B6DNMFFHA', 'type': 'message', 'subtype': 'bot_message', 'team': 'T453VBAR5', 'channel': 'G6DBHSJ5Q', 'event_ts': '1501080685.031540', 'ts': '1501080685.031540'}
+Traceback (most recent call last):
+  File "/home/phabc/anaconda3/lib/python3.6/site-packages/rtmbot/core.py", line 205, in do
+    func(data)
+  File "/home/phabc/Main/Programmation/blockChains/slackBot/antiScamBot_slack/plugins/AntiScam.py", line 59, in process_message
+    if data['user'] in self.whitelist_ID:
+KeyError: 'user'
+2017-07-26 10:51:28,174 got process_pong
+2017-07-26 10:51:31,185 got process_presence_change
+2017-07-26 10:51:32,190 got process_pong
+2017-07-26 10:51:32,993 got process_user_typing
+2017-07-26 10:51:33,294 got process_message
+2017-07-26 10:51:33,297 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:51:33,421 https://slack.com:443 "POST /api/users.info HTTP/1.1" 200 518
+2017-07-26 10:51:33,426 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:51:33,556 https://slack.com:443 "POST /api/users.info HTTP/1.1" 200 518
+2017-07-26 10:51:34,363 got process_message
+2017-07-26 10:51:34,363 Problem in Plugin Class: AntiScam: process_message 
+{'type': 'message', 'message': {'type': 'message', 'user': 'U453JAP0E', 'text': '<https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00>', 'attachments': [{'title': ' Ethereum Account 0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00 Info ', 'title_link': 'https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00', 'text': 'The Ethereum BlockChain Explorer, API and Analytics Platform', 'fallback': ' Ethereum Account 0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00 Info ', 'from_url': 'https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00', 'service_icon': 'https://etherscan.io/images/favicon2.ico', 'service_name': 'etherscan.io', 'id': 1}], 'ts': '1501080693.036370'}, 'subtype': 'message_changed', 'hidden': True, 'channel': 'G6DBHSJ5Q', 'previous_message': {'type': 'message', 'user': 'U453JAP0E', 'text': '<https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00>', 'ts': '1501080693.036370'}, 'event_ts': '1501080693.037061', 'ts': '1501080693.037061'}
+Traceback (most recent call last):
+  File "/home/phabc/anaconda3/lib/python3.6/site-packages/rtmbot/core.py", line 205, in do
+    func(data)
+  File "/home/phabc/Main/Programmation/blockChains/slackBot/antiScamBot_slack/plugins/AntiScam.py", line 59, in process_message
+    if data['user'] in self.whitelist_ID:
+KeyError: 'user'
+2017-07-26 10:51:36,170 got process_pong
+2017-07-26 10:51:39,184 got process_message
+2017-07-26 10:51:39,184 Problem in Plugin Class: AntiScam: process_message 
+{'type': 'message', 'message': {'type': 'message', 'user': 'U453JAP0E', 'text': '<https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00>', 'edited': {'user': 'U453JAP0E', 'ts': '1501080699.000000'}, 'ts': '1501080693.036370'}, 'subtype': 'message_changed', 'hidden': True, 'channel': 'G6DBHSJ5Q', 'previous_message': {'type': 'message', 'user': 'U453JAP0E', 'text': '<https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00>', 'attachments': [{'title': ' Ethereum Account 0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00 Info ', 'title_link': 'https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00', 'text': 'The Ethereum BlockChain Explorer, API and Analytics Platform', 'fallback': ' Ethereum Account 0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00 Info ', 'from_url': 'https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00', 'service_icon': 'https://etherscan.io/images/favicon2.ico', 'service_name': 'etherscan.io', 'id': 1}], 'ts': '1501080693.036370'}, 'event_ts': '1501080698.040308', 'ts': '1501080698.040308'}
+Traceback (most recent call last):
+  File "/home/phabc/anaconda3/lib/python3.6/site-packages/rtmbot/core.py", line 205, in do
+    func(data)
+  File "/home/phabc/Main/Programmation/blockChains/slackBot/antiScamBot_slack/plugins/AntiScam.py", line 59, in process_message
+    if data['user'] in self.whitelist_ID:
+KeyError: 'user'
+2017-07-26 10:51:40,188 got process_pong
+2017-07-26 10:51:44,105 got process_pong
+2017-07-26 10:51:48,121 got process_pong
+2017-07-26 10:53:45,944 Initialized in: /home/phabc/Main/Programmation/blockChains/slackBot/antiScamBot_slack
+2017-07-26 10:53:45,957 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:53:46,186 https://slack.com:443 "POST /api/rtm.start HTTP/1.1" 200 16582
+2017-07-26 10:53:46,376 Loading plugins
+2017-07-26 10:53:46,376 Importing plugins.AntiScam.AntiScam
+2017-07-26 10:53:46,388 Plugin registered: <plugins.AntiScam.AntiScam object at 0x7fce29990358>
+2017-07-26 10:53:46,388 Registering jobs for AntiScam
+2017-07-26 10:53:46,388 No jobs registered for AntiScam
+2017-07-26 10:53:46,388 got process_hello
+2017-07-26 10:53:46,489 got process_reconnect_url
+2017-07-26 10:53:46,590 got process_pong
+2017-07-26 10:53:48,296 got process_presence_change
+2017-07-26 10:53:50,103 got process_pong
+2017-07-26 10:53:51,507 got process_user_typing
+2017-07-26 10:53:51,608 got process_message
+2017-07-26 10:53:51,612 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:53:51,733 https://slack.com:443 "POST /api/users.info HTTP/1.1" 200 518
+2017-07-26 10:53:51,740 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:53:51,885 https://slack.com:443 "POST /api/users.info HTTP/1.1" 200 518
+2017-07-26 10:53:51,891 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:53:52,087 https://slack.com:443 "POST /api/chat.delete HTTP/1.1" 200 77
+2017-07-26 10:53:52,093 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:53:52,275 https://slack.com:443 "POST /api/chat.postMessage HTTP/1.1" 200 321
+2017-07-26 10:53:52,379 got process_message
+2017-07-26 10:53:52,380 Problem in Plugin Class: AntiScam: process_message 
+{'type': 'message', 'deleted_ts': '1501080831.130097', 'subtype': 'message_deleted', 'hidden': True, 'channel': 'G6DBHSJ5Q', 'previous_message': {'type': 'message', 'user': 'U453JAP0E', 'text': '0x0000000000000000000000000000000000000002', 'ts': '1501080831.130097'}, 'event_ts': '1501080831.130436', 'ts': '1501080831.130436'}
+Traceback (most recent call last):
+  File "/home/phabc/anaconda3/lib/python3.6/site-packages/rtmbot/core.py", line 205, in do
+    func(data)
+  File "/home/phabc/Main/Programmation/blockChains/slackBot/antiScamBot_slack/plugins/AntiScam.py", line 59, in process_message
+    if data['user'] in self.whitelist_ID:
+KeyError: 'user'
+2017-07-26 10:53:52,482 got process_message
+2017-07-26 10:53:52,483 Problem in Plugin Class: AntiScam: process_message 
+{'text': ':exclamation::warning::exclamation: @phabc posted an ETH address and the message was deleted. *Do NOT trust any  address posted on slack*.:exclamation::warning::exclamation:', 'username': 'antiscam_bot', 'icons': {'emoji': ':exclamation:', 'image_64': 'https://a.slack-edge.com/f5d6f/img/emoji_2016_06_08/apple/2757.png'}, 'bot_id': 'B6DNMFFHA', 'type': 'message', 'subtype': 'bot_message', 'team': 'T453VBAR5', 'channel': 'G6DBHSJ5Q', 'event_ts': '1501080832.130562', 'ts': '1501080832.130562'}
+Traceback (most recent call last):
+  File "/home/phabc/anaconda3/lib/python3.6/site-packages/rtmbot/core.py", line 205, in do
+    func(data)
+  File "/home/phabc/Main/Programmation/blockChains/slackBot/antiScamBot_slack/plugins/AntiScam.py", line 59, in process_message
+    if data['user'] in self.whitelist_ID:
+KeyError: 'user'
+2017-07-26 10:53:54,190 got process_pong
+2017-07-26 10:53:58,105 got process_pong
+2017-07-26 10:54:02,124 got process_pong
+2017-07-26 10:54:05,739 got process_user_typing
+2017-07-26 10:54:06,141 got process_message
+2017-07-26 10:54:06,145 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:54:06,354 https://slack.com:443 "POST /api/users.info HTTP/1.1" 200 518
+2017-07-26 10:54:06,360 Starting new HTTPS connection (1): slack.com
+2017-07-26 10:54:06,511 https://slack.com:443 "POST /api/users.info HTTP/1.1" 200 518
+2017-07-26 10:54:06,614 got process_pong
+2017-07-26 10:54:06,715 got process_message
+2017-07-26 10:54:06,715 Problem in Plugin Class: AntiScam: process_message 
+{'type': 'message', 'message': {'type': 'message', 'user': 'U453JAP0E', 'text': '<https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00>', 'attachments': [{'title': ' Ethereum Account 0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00 Info ', 'title_link': 'https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00', 'text': 'The Ethereum BlockChain Explorer, API and Analytics Platform', 'fallback': ' Ethereum Account 0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00 Info ', 'from_url': 'https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00', 'service_icon': 'https://etherscan.io/images/favicon2.ico', 'service_name': 'etherscan.io', 'id': 1}], 'ts': '1501080845.140193'}, 'subtype': 'message_changed', 'hidden': True, 'channel': 'G6DBHSJ5Q', 'previous_message': {'type': 'message', 'user': 'U453JAP0E', 'text': '<https://etherscan.io/address/0xd12eE9e73FF6bD3a7C87fEe1aE9D27F32d6f9f00>', 'ts': '1501080845.140193'}, 'event_ts': '1501080845.140243', 'ts': '1501080845.140243'}
+Traceback (most recent call last):
+  File "/home/phabc/anaconda3/lib/python3.6/site-packages/rtmbot/core.py", line 205, in do
+    func(data)
+  File "/home/phabc/Main/Programmation/blockChains/slackBot/antiScamBot_slack/plugins/AntiScam.py", line 59, in process_message
+    if data['user'] in self.whitelist_ID:
+KeyError: 'user'
