@@ -11,6 +11,9 @@ if __name__ == '__main__':
     try:
         while True: # super hacky, added this to reboot if connection fails
 
+            #If source ~/.bashrc is currently required
+            needToSource = False
+
             if not 'SLACK_ADMIN_TOKEN' in os.environ:        
                
                #Adding slack Admin Token if not existent
@@ -73,6 +76,7 @@ if __name__ == '__main__':
                #Quit trigger
                needToSource = True 
             
+            #Quitting if source ~/.bashrc is required
             if needToSource :
               quit()
 
