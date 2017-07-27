@@ -157,10 +157,10 @@ class Moderation(Plugin):
     
     LIST OF $flag COMMANDS:
 
-        '$flag USERNAME'   : Will flag USERNAME for scamming
-        '$unflag USERNAME' : Will remove the flag on a user
-        '$flag list'       : Will show the current list of flagged users
-        '$flag helo'       : Will list flag commands
+        '$flag add USERNAME'      : Will flag USERNAME for scamming
+        '$unflag remove USERNAME' : Will remove the flag on a user
+        '$flag list'              : Will show the current list of flagged users
+        '$flag helo'              : Will list flag commands
 
     '''
 
