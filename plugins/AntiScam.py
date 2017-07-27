@@ -27,7 +27,7 @@ class AntiScam(Plugin):
     UserList = scBot.api_call("users.list")
 
     #Mapping between names and user IDs
-    NameID_mapping = { i['name']:i['id'] for i in UserList['members']}
+    UserNameID_mapping = { i['name']:i['id'] for i in UserList['members']}
 
 
     def delete(self, data, msg, warning = False):
@@ -192,7 +192,7 @@ class Moderation(Plugin):
     UserList = scBot.api_call("users.list")
 
     #Mapping between names and user IDs
-    NameID_mapping = { i['name']:i['id'] for i in UserList['members']}
+    UserNameID_mapping = { i['name']:i['id'] for i in UserList['members']}
 
 
     def postMessage(self, data, msg, chan = ''):
@@ -210,13 +210,14 @@ class Moderation(Plugin):
 
         userinfo = self.scBot.api_call('users.info', user=data['user'])
         username = userinfo['user']['name']
+        userID   = self.UserNameID_mapping[username]
 
         #Moderation commands
         if '$mods ' in data['text'] and self.isAdmin(userinfo):
             self.ModeratorControl(data)
 
         #Flag scam commands
-        if '$flag ' in data['text'] and (self.isAdmin(userinfo) or username in self.Moderators):
+        if '$flag ' in data['text'] and (self.isAdmin(userinfo) or userID in self.Moderators):
             self.FlagControl(data)
 
 
@@ -241,11 +242,11 @@ class Moderation(Plugin):
 
             #Name of specified moderator
             modName = splitText[splitText.index('remove')+1]
-            modID   = self.NameID_mapping[modName]
+            modID   = self.UserNameID_mapping[modName]
 
             #Removing moderator
-            if modName in self.Moderators:        
-                del self.Moderators[self.Moderators.index(modName)]
+            if modID in self.Moderators:        
+                del self.Moderators[self.Moderators.index(modID)]
                 #Log message
                 self.postMessage(data, 'Removed *<@{}>* as a moderator'.format(modID))
 
@@ -262,11 +263,11 @@ class Moderation(Plugin):
 
             #Name of specified moderator
             modName = splitText[splitText.index('add')+1]
-            modID   = self.NameID_mapping[modName]
+            modID   = self.UserNameID_mapping[modName]
 
             #Adding new moderator
-            if not modName in self.Moderators:
-                self.Moderators.append(modName)
+            if not modID in self.Moderators:
+                self.Moderators.append(modID)
 
                 #Log message
                 self.postMessage(data, 'Added *<@{}>* as a moderator'.format(modID))
@@ -297,7 +298,7 @@ class Moderation(Plugin):
         elif '$mods list' in text:
 
             #Printing list of moderators
-            self.postMessage(data, 'Moderators list : ' + '*' + '*, *'.join(self.Moderators) + '*')
+            self.postMessage(data, 'Moderators list : ' + '*<@' + '>*, *<@'.join(self.Moderators) + '>*')
 
         elif '$mods help' in text :
 
@@ -317,8 +318,8 @@ class Moderation(Plugin):
         '''
 
         #Name of the user
-        userinfo = self.slack_client.api_call('users.info', user=data['user'])
-        modName  = userinfo['user']['name']
+        modinfo = self.slack_client.api_call('users.info', user=data['user'])
+        modName  = modinfo['user']['name']
 
         #Text contained in data
         text = data['text']
@@ -334,7 +335,7 @@ class Moderation(Plugin):
 
             #Printing list of moderators
             self.postMessage(data, ['Flagged users list (name : unique flags):\n' + 
-                                    '     *' + '*\n     *'.join(FlaggedList) + '*'][0])
+                                    '     *<@' + '*>\n     <@*'.join(FlaggedList) + '>*'][0])
 
         elif '$flag help' in text :
 
@@ -344,35 +345,35 @@ class Moderation(Plugin):
 
             #Name of flagged user
             flaggedName = splitText[splitText.index('add')+1]
-            flaggedID   = self.NameID_mapping[flaggedName]
+            flaggedID   = self.UserNameID_mapping[flaggedName]
 
             #Information of flagged user
             flaggedInfo = self.scBot.api_call('users.info', user=flaggedID)
 
             #Removing moderator
-            if not flaggedName in self.Flagged:
+            if not flaggedID in self.Flagged:
 
                 if flaggedInfo['user']['is_admin']:
 
                     self.postMessage(data, 'Admins cannot be flagged :)')
                     return
 
-                self.Flagged[flaggedName] = [modName]
+                self.Flagged[flaggedID] = [modName]
                 self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
             #If already reported by current mod/admin
-            elif not modName in self.Flagged[flaggedName]:
-                self.Flagged[flaggedName].append(modName)
+            elif not modName in self.Flagged[flaggedID]:
+                self.Flagged[flaggedID].append(modName)
                 self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
-                #Concensus check for reporting
-                if (len(self.Flagged[flaggedName]) >= self.flagConcensus and 
-                    '$reported' not in self.Flagged[flaggedName]):
+                #Report if concensus is reached (or automatic if Admin)
+                if ( (len(self.Flagged[flaggedID]) >= self.flagConcensus or  self.isAdmin(modinfo))  and 
+                    '$reported' not in self.Flagged[flaggedID] ):
 
                     #Reporting scammer
-                    msg  = ['<!channel>,\n\n<@{}> has been reported by multiple Moderators'.format(flaggedID)  +
-                            ' and Admins as being a scammer. Please ignore every message from him and their' +
-                            ' intentions are nefarious. The user will be banned as soon as possible.']
+                    msg  = ['<!channel>,\n\n*<@{}>* has been reported by multiple Moderators'.format(flaggedID)  +
+                            ' and Admins as being a scammer. *Please ignore every message from this user and their' +
+                            ' intentions are nefarious.* The user will be banned as soon as possible.']
 
                     #Channel where to report scammer
                     chan = '#test'
@@ -381,32 +382,198 @@ class Moderation(Plugin):
                     self.postMessage(data, msg[0], chan)
 
                     #Reported
-                    self.Flagged[flaggedName].append('$reported')
+                    self.Flagged[flaggedID].append('$reported')
 
             else:
+
                 self.postMessage(data, 'You already flagged *<@{}>* '.format(flaggedID))
 
         elif '$flag remove ' in text:
 
             #Name of specified moderator
             flaggedName = splitText[splitText.index('remove')+1]
+            flaggedID   = self.UserNameID_mapping[flaggedName]
 
             #Removing moderator
-            if not flaggedName in self.Flagged:
+            if not flaggedID in self.Flagged:
 
                 self.postMessage(data, '*<@{}>* is not flagged.'.format(flaggedID))
 
             else:
 
-                del self.Flagged[flaggedName]
+                del self.Flagged[flaggedID]
                 self.postMessage(data, '*<@{}>* has been unflagged.'.format(flaggedID))
-
-
-
 
         #Writing self.Flagged list to Flagged.txt
         with open('Flagged.txt', 'wb') as f:
             pk.dump(self.Flagged, f)
+
+
+    def isAdmin(self, userinfo):
+        'Verify if user if admin'
+
+        if userinfo['user']['is_admin']:
+            return True
+        else:
+            return False
+
+
+class Channels(Plugin):
+    '''
+    Will allow admins to "censore" (or mute or freeze) certain channels, where only
+    admins will be able to post. Will also allow automatic history 
+    deletion.
+    '''
+
+    #Admin token ( OAuth Access Token )
+    adminToken = os.environ['SLACK_ADMIN_TOKEN']
+    scAdmin    = SlackClient(adminToken)
+
+    #Bot token and client
+    botToken = os.environ['SLACK_BOT_TOKEN']
+    scBot    = SlackClient(botToken)
+
+    #List of users with information
+    UserList = scBot.api_call("users.list")
+
+    #Mapping between names and user IDs
+    UserNameID_mapping = { i['name']:i['id'] for i in UserList['members']}
+
+    #List of all the channels with information
+    ChanList = scBot.api_call("channels.list")
+
+    #Mapping between channel name and channel IDs
+    ChanNameID_mapping = { i['name']:i['id'] for i in ChanList['channels']}
+    IDChanName_mapping = { i['id']:i['name'] for i in ChanList['channels']}
+
+    #Loading censored channels list
+    if os.path.isfile('MutedChannels.txt'):
+        with open('MutedChannels.txt', 'r') as f:
+            MutedChannels = f.read().split(',')[:-1]
+    else:
+        MutedChannels = []
+
+
+    def postMessage(self, data, msg, chan = ''):
+        'Will post a message in the current channel'
+
+        if not chan:
+            chan = data['channel']
+        
+        self.scBot.api_call('chat.postMessage', channel= chan, 
+                              text = msg, icon_emoji=":0x:", 
+                              username = 'Harpocrates')  
+
+    def delete(self, data):
+        '''
+        Will delete a msg and post a warning message in the respective channel
+        '''
+
+        #Deleting message
+        self.scAdmin.api_call("chat.delete", channel = data['channel'],
+                               ts=data['ts'], as_user = True)
+        return
+
+
+    def process_message(self, data):
+        'Will process all posts on watched channels.'
+
+        #Getting user and channel information
+        userinfo = self.scBot.api_call('users.info', user=data['user'])
+        username = userinfo['user']['name']
+        userID   = self.UserNameID_mapping[username]
+    
+        if data['channel'] in self.IDChanName_mapping:      
+            chanName = self.IDChanName_mapping[data['channel']]
+        else:
+            chanName = 'PRIVATE'
+
+        #Ignore admins
+        if self.isAdmin(userinfo):
+
+            #Check if admins is using $mute commands
+            if 'mute' in data['text']:
+                self.MuteControl(data)
+
+            return
+
+        #Delete everything else
+        if data['channel'] in self.MutedChannels:
+            self.delete(data)
+
+    def MuteControl(self, data):
+        'Will control which channel is muted or not'
+
+        #Text contained in data
+        text = data['text']
+
+        #Splitting text
+        splitText = text.split()
+
+        if '$unmute ' in text:
+
+            #Name of specified moderator
+            chanName = splitText[splitText.index('$unmute')+1]
+            chanID   = self.ChanNameID_mapping[chanName]
+
+            #Removing channel from MutedChannels list
+            if chanID in self.MutedChannels:        
+                del self.MutedChannels[self.MutedChannels.index(chanID)]
+
+                #Message
+                msg = 'This channel has been un-silenced. Everyone is welcomed to post!'
+
+                #Channel message
+                self.postMessage(data, msg, chan = chanID)
+
+                #Log message
+                self.postMessage(data, '*<#{}>* has been unmuted.'.format(chanID))
+
+            else:
+                self.postMessage(data, 'Channel *<#{}>* is not muted.'.format(chanID))
+
+        elif '$mute list' in text:
+
+            #Printing list of moderators
+            self.postMessage(data, 'Silenced channels list: ' + '*<#' + '>*, *<#'.join(self.MutedChannels) + '>*')
+
+        elif '$mute help' in text :
+
+            self.postMessage(data, 'List of mods commands : `$mute CHANNEL` ~|~ `$unmute CHANNEL` ~|~ `$mute list`')
+
+        elif '$mute ' in text:
+
+            #Name of specified channel
+            chanName = splitText[splitText.index('$mute')+1]
+            chanID   = self.ChanNameID_mapping[chanName]
+
+            #Muting new channel
+            if not chanID in self.MutedChannels:
+
+                #Adding to MutedChannels list    
+                self.MutedChannels.append(chanID)
+
+                #Message
+                msg = 'This channel has been silenced. Only Admins and bots have my permission to post here.'
+
+                #Emoji wrapper
+                msg = ':no_pedestrians: ' + msg + ' :no_pedestrians:'
+
+                #Channel message
+                self.postMessage(data, msg, chan = chanID)
+
+                #Log message
+                self.postMessage(data, '*<#{}>* has been muted.'.format(chanID))
+
+            else:
+
+                self.postMessage(data, 'Channel *<#{}>* is already muted.'.format(chanID))
+
+
+        #Writing self.Moderator list to Moderators.txt
+        with open('MutedChannels.txt', 'w') as f:
+            for item in self.MutedChannels:
+                f.write("%s," % item)
 
 
     def isAdmin(self, userinfo):
