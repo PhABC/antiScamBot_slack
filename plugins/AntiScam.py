@@ -284,16 +284,16 @@ class Moderation(Plugin):
                 contactChan = self.scBot.api_call('im.open', user = modID)['channel']['id']
 
                 #Contacting new moderator
-                msg = ['Hello,\n\n You just gained new powers ... as a moderator! Your role will'        + 
-                       ' consists of flagging scammers as soon as possible. *We DO NOT want the'         +
-                       ' scammers to know who the moderators are, so please only use the commands'       +
-                       ' here, in this private chat*. \n\n Here is a list of commands available to you:' + 
-                       '\n>     *$flag add USERNAME*        : Will flag USERNAME for scamming'           +
-                       '\n>     *$flag remove USERNAME* : Will remove USERNAME for flag list'            +
-                       '\n>     *$flag list*    : Will show the current list of flagged users'           +
-                       '\n>     *$flag help* : Will list the flag commands\n\n'                          +
-                       'Flagging a user (if concensus is achieved) will result in certain actions such ' +
-                       'as immediate public message and eventual ban of the flagged user.\n\n'           + 
+                msg = ['Hello,\n\n You just gained new powers ... as a moderator! Your role will'         + 
+                       ' consists of flagging scammers/spammers as soon as possible. *We DO NOT want the' +
+                       ' scammers to know who the moderators are, so please only use the commands'        +
+                       ' here, in this private chat*. \n\n Here is a list of commands available to you:'  + 
+                       '\n>     *$flag USERNAME*     : Will flag USERNAME for scamming'                   +
+                       '\n>     *$unflag USERNAME* : Will remove USERNAME from flagged list'              +
+                       '\n>     *$flag list*    : Will show the current list of flagged users'            +
+                       '\n>     *$flag help* : Will list the flag commands\n\n'                           +
+                       'Flagging an user (if concensus is achieved) will result in certain actions such ' +
+                       'as immediate public message and eventual ban of the flagged user.\n\n'            + 
                        'Thank you for your help!']
 
                 self.postMessage(data, msg[0], chan = contactChan)
@@ -403,12 +403,12 @@ class Moderation(Plugin):
                     '$reported' not in self.Flagged[flaggedID] ):
 
                     #Reporting scammer
-                    msg  = ['<!channel>,\n\n*<@{}>* has been reported by multiple Moderators'.format(flaggedID)  +
-                            ' and Admins as being a scammer. *Please ignore every message from this user and their' +
-                            ' intentions are nefarious.* The user will be banned as soon as possible.']
+                    msg  = ['<!channel>,\n\n*<@{}>* has been reported by multiple Moderators'.format(flaggedID)   +
+                            ' and Admins as being a scammer/spammer. *Please ignore every message from this user' +
+                            ' and their intentions are nefarious.* The user will be banned as soon as possible.']
 
                     #Channel where to report scammer
-                    chan = '#test'
+                    chan = '#scam-alert'
 
                     #Posting warning
                     self.postMessage(data, msg[0], chan)
