@@ -23,10 +23,10 @@ if __name__ == '__main__':
                #Reminder to run source .bashrc
                print(['Admin Token added to environment as SLACK_ADMIN_TOKEN.'   + 
                       '\n\nPLEASE RUN \"source ~/.bashrc\" in the current shell' +
-                      ' terminal to update your local environment.\n'][0])               
-               
-               #Quitting to make sure source .bashrc is ran              
-               quit()
+                      ' terminal to update your local environment.\n'][0])            
+
+               #Quit trigger
+               needToSource = True   
 
             if not 'SLACK_BOT_TOKEN' in os.environ:
 
@@ -49,13 +49,33 @@ if __name__ == '__main__':
                  outfile.writelines(conf)                 
 
                #Reminder to run source .bashrc
-               print(['Admin Token added to environment as SLACK_ADMIN_TOKEN.'   + 
+               print(['Bot Token added to environment as SLACK_BOT_TOKEN.'   + 
                       '\n\nPLEASE RUN \"source ~/.bashrc\" in the current shell' +
                       ' terminal to update your local environment.\n'][0])               
                
-               #Quitting to make sure source .bashrc is ran              
-               quit()
+               #Quit trigger
+               needToSource = True   
+               
+            if not 'SLACK_BOT_EMOJI' in os.environ:
+
+               #Adding slack Admin bot if not existent
+               SLACK_BOT_EMOJI = input("Specify bot emoji avatar ( e.g. :joy: ): ")
+                             
+               #Adding SLACK_BOT_TOKEN in ~/.bashrc
+               with open(os.path.expanduser('~') + "/.bashrc", "a") as outfile:
+                 outfile.write("\nexport SLACK_BOT_EMOJI=\"{}\"".format(SLACK_BOT_EMOJI))              
+
+               #Reminder to run source .bashrc
+               print(['Bot Emoji added to environment as SLACK_BOT_EMOJI.'   + 
+                      '\n\nPLEASE RUN \"source ~/.bashrc\" in the current shell' +
+                      ' terminal to update your local environment.\n'][0]) 
+
+               #Quit trigger
+               needToSource = True 
             
+            if needToSource :
+              quit()
+
             #Printing token used                
             print('Bot token   : {}'.format(os.environ['SLACK_BOT_TOKEN']))
             print('Admin token : {}'.format(os.environ['SLACK_ADMIN_TOKEN']))
