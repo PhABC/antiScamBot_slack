@@ -163,6 +163,8 @@ class Moderation(Plugin):
         '$flag helo'              : Will list flag commands
 
     '''
+    #Number of required mod concensus to report scammer (No concensus needed for admins)
+    flagConcensus = 2
 
     #Admin token ( OAuth Access Token )
     adminToken = os.environ['SLACK_ADMIN_TOKEN']
@@ -245,7 +247,7 @@ class Moderation(Plugin):
             if modName in self.Moderators:        
                 del self.Moderators[self.Moderators.index(modName)]
                 #Log message
-                self.postMessage(data, 'Removed *{}* as a moderator'.format(modName))
+                self.postMessage(data, 'Removed *<@{}>* as a moderator'.format(modID))
 
                 #Channel with new moderator
                 contactChan = self.scBot.api_call('im.open', user = modID)['channel']['id']
@@ -254,7 +256,7 @@ class Moderation(Plugin):
                 self.postMessage(data, 'You have lost your moderator powers. Sorry!', chan = contactChan)
 
             else:
-                self.postMessage(data, '*{}* is not a moderator'.format(modName))
+                self.postMessage(data, '*<@{}>* is not a moderator'.format(modID))
 
         elif '$mods add ' in text:
 
@@ -267,7 +269,7 @@ class Moderation(Plugin):
                 self.Moderators.append(modName)
 
                 #Log message
-                self.postMessage(data, 'Added *{}* as a moderator'.format(modName))
+                self.postMessage(data, 'Added *<@{}>* as a moderator'.format(modID))
 
                 #Channel with new moderator
                 contactChan = self.scBot.api_call('im.open', user = modID)['channel']['id']
@@ -277,19 +279,19 @@ class Moderation(Plugin):
                        ' consists of flagging scammers as soon as possible. *We DO NOT want the'         +
                        ' scammers to know who the moderators are, so please only use the commands'       +
                        ' here, in this private chat*. \n\n Here is a list of commands available to you:' + 
-                       '\n     *$flag add USERNAME*        : Will flag USERNAME for scamming'            +
-                       '\n     *$flag remove USERNAME* : Will remove USERNAME for flag list'             +
-                       '\n     *$flag list*    : Will show the current list of flagged users'            +
-                       '\n     *$flag help* : Will list the flag commands\n\n'                           +
-                       'Flagging a user (if concensus is achieved) will result in certain actions such as ' +
-                       'immediate public message and eventual ban of the flagged user.\n\n'              + 
+                       '\n>     *$flag add USERNAME*        : Will flag USERNAME for scamming'           +
+                       '\n>     *$flag remove USERNAME* : Will remove USERNAME for flag list'            +
+                       '\n>     *$flag list*    : Will show the current list of flagged users'           +
+                       '\n>     *$flag help* : Will list the flag commands\n\n'                          +
+                       'Flagging a user (if concensus is achieved) will result in certain actions such ' +
+                       'as immediate public message and eventual ban of the flagged user.\n\n'           + 
                        'Thank you for your help!']
 
                 self.postMessage(data, msg[0], chan = contactChan)
 
 
             else:
-                self.postMessage(data, '*{}* is already a moderator'.format(modName))
+                self.postMessage(data, '*<@{}>* is already a moderator'.format(modID))
 
 
         elif '$mods list' in text:
@@ -306,6 +308,7 @@ class Moderation(Plugin):
         with open('Moderators.txt', 'w') as f:
             for item in self.Moderators:
                 f.write("%s," % item)
+
 
     def FlagControl(self, data):
         '''
@@ -355,15 +358,33 @@ class Moderation(Plugin):
                     return
 
                 self.Flagged[flaggedName] = [modName]
-                self.postMessage(data, 'Flagged *{}* '.format(flaggedName))
+                self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
             #If already reported by current mod/admin
             elif not modName in self.Flagged[flaggedName]:
                 self.Flagged[flaggedName].append(modName)
-                self.postMessage(data, 'Flagged *{}* '.format(flaggedName))
+                self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
+
+                #Concensus check for reporting
+                if (len(self.Flagged[flaggedName]) >= self.flagConcensus and 
+                    '$reported' not in self.Flagged[flaggedName]):
+
+                    #Reporting scammer
+                    msg  = ['<!channel>,\n\n<@{}> has been reported by multiple Moderators'.format(flaggedID)  +
+                            ' and Admins as being a scammer. Please ignore every message from him and their' +
+                            ' intentions are nefarious. The user will be banned as soon as possible.']
+
+                    #Channel where to report scammer
+                    chan = '#test'
+
+                    #Posting warning
+                    self.postMessage(data, msg[0], chan)
+
+                    #Reported
+                    self.Flagged[flaggedName].append('$reported')
 
             else:
-                self.postMessage(data, 'You already flagged *{}* '.format(flaggedName))
+                self.postMessage(data, 'You already flagged *<@{}>* '.format(flaggedID))
 
         elif '$flag remove ' in text:
 
@@ -373,12 +394,15 @@ class Moderation(Plugin):
             #Removing moderator
             if not flaggedName in self.Flagged:
 
-                self.postMessage(data, '*{}* is not flagged.'.format(flaggedName))
+                self.postMessage(data, '*<@{}>* is not flagged.'.format(flaggedID))
 
             else:
 
                 del self.Flagged[flaggedName]
-                self.postMessage(data, '*{}* has been unflagged.'.format(flaggedName))
+                self.postMessage(data, '*<@{}>* has been unflagged.'.format(flaggedID))
+
+
+
 
         #Writing self.Flagged list to Flagged.txt
         with open('Flagged.txt', 'wb') as f:
