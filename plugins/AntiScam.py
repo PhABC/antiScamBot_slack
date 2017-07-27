@@ -208,7 +208,7 @@ class Moderation(Plugin):
         if not chan:
             chan = data['channel']
         
-        self.scBot.api_call('chat.postMessage', channel= chan, 
+        self.scBot.api_call('chat.postMessage', channel = chan, 
                               text = msg, icon_emoji = self.botAvatar,
                               username = 'Moderator Bot')   
 
@@ -327,7 +327,7 @@ class Moderation(Plugin):
 
         #Name of the user
         modinfo = self.slack_client.api_call('users.info', user=data['user'])
-        modName  = modinfo['user']['name']
+        modName = modinfo['user']['name']
 
         #Text contained in data
         text = data['text']
@@ -341,11 +341,9 @@ class Moderation(Plugin):
             FlaggedList = [[k + ': ' + str(len(self.Flagged[k]))] for k in self.Flagged.keys()]
             FlaggedList = [i[0] for i in FlaggedList]
 
-            #Forming list
-
+            #Forming list of flagged users
             msg = 'Flagged users list (name : unique flags):\n>>>'
             for i in self.Flagged.keys():
-                print(len(self.Flagged[i]))
                 msg += ['*<@' + i + '>* : ' + str(len(self.Flagged[i])) + '\n'][0]
 
             #Printing list of flagged users
@@ -377,8 +375,6 @@ class Moderation(Plugin):
             flaggedName = splitText[splitText.index('$flag')+1]
             flaggedID   = self.UserNameID_mapping[flaggedName]
 
-            print(flaggedName)
-
             #Information of flagged user
             flaggedInfo = self.scBot.api_call('users.info', user=flaggedID)
 
@@ -390,32 +386,27 @@ class Moderation(Plugin):
                     self.postMessage(data, 'Admins cannot be flagged :)')
                     return
 
+                #If mod is admin, report right away
+                if self.isAdmin(modinfo):
+
+                    #Reporting without concensus
+                    self.reportFlagged(data, flaggedID)
+
                 self.Flagged[flaggedID] = [modName]
                 self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
             #If already reported by current mod/admin
             elif not modName in self.Flagged[flaggedID]:
+
                 self.Flagged[flaggedID].append(modName)
                 self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
                 #Report if concensus is reached (or automatic if Admin)
-                if ( (len(self.Flagged[flaggedID]) >= self.flagConcensus or  self.isAdmin(modinfo))  and 
+                if ( (len(self.Flagged[flaggedID]) >= self.flagConcensus or self.isAdmin(modinfo))  and 
                     '$reported' not in self.Flagged[flaggedID] ):
 
-                    #Reporting scammer
-                    msg  = ['<!channel>,\n\n*<@{}>* has been reported by multiple Moderators'.format(flaggedID)   +
-                            ' and Admins as being a scammer/spammer. *Please ignore every message from this user' +
-                            ' and their intentions are nefarious.* The user will be banned as soon as possible.']
-
-                    #Channel where to report scammer
-                    chan = '#scam-alert'
-
-                    #Posting warning
-                    self.postMessage(data, msg[0], chan)
-
-                    #Reported
-                    self.Flagged[flaggedID].append('$reported')
-
+                    #Reporting
+                    self.reportFlagged(data, flaggedID)
             else:
 
                 self.postMessage(data, 'You already flagged *<@{}>* '.format(flaggedID))
@@ -432,6 +423,24 @@ class Moderation(Plugin):
             return True
         else:
             return False
+
+    def reportFlagged(self, data, flaggedID):
+        'Will report the flagged user to scam-alert channel'
+
+        #Reporting scammer
+        msg  = ['<!channel>,\n\n*<@{}>* has been reported by multiple Moderators'.format(flaggedID)   +
+                ' and Admins as being a scammer/spammer. *Please ignore every message from this user' +
+                ' and their intentions are nefarious.* The user will be banned as soon as possible.']
+
+        #Channel where to report scammer
+        scamAlertChan = '#scam-alert'
+
+        #Posting warning
+        self.postMessage(data, msg[0], scamAlertChan)
+
+        #Reported
+        self.Flagged[flaggedID].append('$reported')
+
 
 
 class Channels(Plugin):
