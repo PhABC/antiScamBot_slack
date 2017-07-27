@@ -61,6 +61,7 @@ if __name__ == '__main__':
 
             else:
                #Still overwrite rtmbot incase of git pull 
+               SLACK_BOT_TOKEN = os.environ['SLACK_BOT_TOKEN']
 
                #Reading lines of rtmbot.conf              
                with open('rtmbot.conf',"r") as outfile:
