@@ -389,11 +389,16 @@ class Moderation(Plugin):
                 #If mod is admin, report right away
                 if self.isAdmin(modinfo):
 
+                    #Flagging
+                    self.Flagged[flaggedID] = [modName]
+                    self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
+
                     #Reporting without concensus
                     self.reportFlagged(data, flaggedID)
-
-                self.Flagged[flaggedID] = [modName]
-                self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
+                else:
+                    #Flagging
+                    self.Flagged[flaggedID] = [modName]
+                    self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
             #If already reported by current mod/admin
             elif not modName in self.Flagged[flaggedID]:
@@ -440,7 +445,6 @@ class Moderation(Plugin):
 
         #Reported
         self.Flagged[flaggedID].append('$reported')
-
 
 
 class Channels(Plugin):
