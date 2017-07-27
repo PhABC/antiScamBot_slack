@@ -281,7 +281,7 @@ class Moderation(Plugin):
                 self.postMessage(data, 'Added *<@{}>* as a moderator'.format(modID))
 
                 #Channel with new moderator
-                contactChan = self.scBot.api_call('im.open', user = modID)['channel']['id']
+                contactChan = self.scAdmin.api_call('im.open', user = modID)['channel']['id']
 
                 #Contacting new moderator
                 msg = ['Hello,\n\n You just gained new powers ... as a moderator! Your role will'         + 
