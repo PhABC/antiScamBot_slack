@@ -182,7 +182,7 @@ class Moderation(Plugin):
     #Loading Flagged users list
     if os.path.isfile('Flagged.txt'):
         with open('Flagged.txt', 'rb') as f:
-            Flagged = pk.loads(f.read())
+            Flagged = pk.loads(f.read())-tests-tests
     else:
         Flagged = {}
 
@@ -335,7 +335,7 @@ class Moderation(Plugin):
 
         elif '$flag help' in text :
 
-            self.postMessage(data, 'List of flag commands : *$flag USER* ~|~ *$unflag USER* ~|~ *$flag list*')
+            self.postMessage(data, 'List of flag commands : *$flag add USER* ~|~ *$flag remove USER* ~|~ *$flag list*')
 
         elif '$flag add ' in text :
 
