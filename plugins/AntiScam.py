@@ -182,7 +182,7 @@ class Moderation(Plugin):
     #Loading Flagged users list
     if os.path.isfile('Flagged.txt'):
         with open('Flagged.txt', 'rb') as f:
-            Flagged = pk.loads(f.read())-tests-tests
+            Flagged = pk.loads(f.read())
     else:
         Flagged = {}
 
