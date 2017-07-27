@@ -59,7 +59,8 @@ class AntiScam(Plugin):
             chan = data['channel']
         
         self.scBot.api_call('chat.postMessage', channel= chan, 
-                              text = msg, icon_emoji = self.botAvatar)    
+                              text = msg, icon_emoji = self.botAvatar,
+                              username = 'Anti-Scam Bot')    
 
     def process_message(self, data):
         'Will process all posts on watched channels.'
@@ -208,7 +209,8 @@ class Moderation(Plugin):
             chan = data['channel']
         
         self.scBot.api_call('chat.postMessage', channel= chan, 
-                              text = msg, icon_emoji = self.botAvatar)   
+                              text = msg, icon_emoji = self.botAvatar,
+                              username = 'Moderator Bot')   
 
 
     def process_message(self, data):
