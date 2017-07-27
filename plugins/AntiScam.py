@@ -208,7 +208,7 @@ class Moderation(Plugin):
         if not chan:
             chan = data['channel']
         
-        self.scBot.api_call('chat.postMessage', channel = chan, 
+        self.scAdmin.api_call('chat.postMessage', channel = chan, 
                               text = msg, icon_emoji = self.botAvatar,
                               username = 'Moderator Bot')   
 
