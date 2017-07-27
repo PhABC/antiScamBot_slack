@@ -38,8 +38,8 @@ if __name__ == '__main__':
                              
                #Adding SLACK_BOT_TOKEN in ~/.bashrc
                with open(os.path.expanduser('~') + "/.bashrc", "a") as outfile:
-                 outfile.write("\nexport SLACK_BOT_TOKEN=\"{}\"".format(SLACK_BOT_TOKEN))
-               
+                 outfile.write("\nexport SLACK_BOT_TOKEN=\"{}\"".format(SLACK_BOT_TOKEN)) 
+
                #Reading lines of rtmbot.conf              
                with open('rtmbot.conf',"r") as outfile:
                  conf = outfile.readlines()            
@@ -49,7 +49,7 @@ if __name__ == '__main__':
                
                #Editing rtmbot.conf with SLACK_BOT_TOKEN as SLACK_TOKEN   
                with open('rtmbot.conf',"w") as outfile:
-                 outfile.writelines(conf)                 
+                 outfile.writelines(conf)                
 
                #Reminder to run source .bashrc
                print(['Bot Token added to environment as SLACK_BOT_TOKEN.'   + 
@@ -57,7 +57,21 @@ if __name__ == '__main__':
                       ' terminal to update your local environment.\n'][0])               
                
                #Quit trigger
-               needToSource = True   
+               needToSource = True
+
+            else:
+               #Still overwrite rtmbot incase of git pull 
+
+               #Reading lines of rtmbot.conf              
+               with open('rtmbot.conf',"r") as outfile:
+                 conf = outfile.readlines()            
+     
+               #Chaging 3rd line to add current token 
+               conf[2] = " SLACK_TOKEN: \"{}\"\n".format(SLACK_BOT_TOKEN)
+               
+               #Editing rtmbot.conf with SLACK_BOT_TOKEN as SLACK_TOKEN   
+               with open('rtmbot.conf',"w") as outfile:
+                 outfile.writelines(conf)
                
             if not 'SLACK_BOT_EMOJI' in os.environ:
 
