@@ -15,6 +15,9 @@ class AntiScam(Plugin):
     #Bot token and client
     botToken = os.environ['SLACK_BOT_TOKEN']
     scBot    = SlackClient(botToken)
+
+    #Bot avatar emoji
+    botAvatar = os.environ['SLACK_BOT_EMOJI']
     
     #Whitelist
     whitelist_chan = [] # List of channels to be whitelisted
@@ -56,7 +59,7 @@ class AntiScam(Plugin):
             chan = data['channel']
         
         self.scBot.api_call('chat.postMessage', channel= chan, 
-                              text = msg, icon_emoji=":exclamation:")    
+                              text = msg, icon_emoji = self.botAvatar)    
 
     def process_message(self, data):
         'Will process all posts on watched channels.'
@@ -174,6 +177,9 @@ class Moderation(Plugin):
     botToken = os.environ['SLACK_BOT_TOKEN']
     scBot    = SlackClient(botToken)
 
+    #Bot avatar emoji
+    botAvatar = os.environ['SLACK_BOT_EMOJI']
+
     #Loading Moderators list
     if os.path.isfile('Moderators.txt'):
         with open('Moderators.txt', 'r') as f:
@@ -202,7 +208,7 @@ class Moderation(Plugin):
             chan = data['channel']
         
         self.scBot.api_call('chat.postMessage', channel= chan, 
-                              text = msg, icon_emoji=":exclamation:")  
+                              text = msg, icon_emoji = self.botAvatar)   
 
 
     def process_message(self, data):
@@ -217,7 +223,7 @@ class Moderation(Plugin):
             self.ModeratorControl(data)
 
         #Flag scam commands
-        if '$flag ' in data['text'] and (self.isAdmin(userinfo) or userID in self.Moderators):
+        if 'flag ' in data['text'] and (self.isAdmin(userinfo) or userID in self.Moderators):
             self.FlagControl(data)
 
 
@@ -333,24 +339,48 @@ class Moderation(Plugin):
             FlaggedList = [[k + ': ' + str(len(self.Flagged[k]))] for k in self.Flagged.keys()]
             FlaggedList = [i[0] for i in FlaggedList]
 
-            #Printing list of moderators
-            self.postMessage(data, ['Flagged users list (name : unique flags):\n' + 
-                                    '     *<@' + '*>\n     <@*'.join(FlaggedList) + '>*'][0])
+            #Forming list
+
+            msg = 'Flagged users list (name : unique flags):\n>>>'
+            for i in self.Flagged.keys():
+                print(len(self.Flagged[i]))
+                msg += ['*<@' + i + '>* : ' + str(len(self.Flagged[i])) + '\n'][0]
+
+            #Printing list of flagged users
+            self.postMessage(data, msg)
 
         elif '$flag help' in text :
 
-            self.postMessage(data, 'List of flag commands : *$flag add USER* ~|~ *$flag remove USER* ~|~ *$flag list*')
+            self.postMessage(data, 'List of flag commands : *$flag USER* ~|~ *$unflag USER* ~|~ *$flag list*')
 
-        elif '$flag add ' in text :
+        elif '$unflag ' in text:
+
+            #Name of specified flagged user
+            flaggedName = splitText[splitText.index('$unflag')+1]
+            flaggedID   = self.UserNameID_mapping[flaggedName]
+
+            #Removing flagged user
+            if not flaggedID in self.Flagged:
+
+                self.postMessage(data, '*<@{}>* is not flagged.'.format(flaggedID))
+
+            else:
+
+                del self.Flagged[flaggedID]
+                self.postMessage(data, '*<@{}>* has been unflagged.'.format(flaggedID))
+
+        elif '$flag ' in text :
 
             #Name of flagged user
-            flaggedName = splitText[splitText.index('add')+1]
+            flaggedName = splitText[splitText.index('$flag')+1]
             flaggedID   = self.UserNameID_mapping[flaggedName]
+
+            print(flaggedName)
 
             #Information of flagged user
             flaggedInfo = self.scBot.api_call('users.info', user=flaggedID)
 
-            #Removing moderator
+            #Removing flagged user
             if not flaggedID in self.Flagged:
 
                 if flaggedInfo['user']['is_admin']:
@@ -388,22 +418,6 @@ class Moderation(Plugin):
 
                 self.postMessage(data, 'You already flagged *<@{}>* '.format(flaggedID))
 
-        elif '$flag remove ' in text:
-
-            #Name of specified moderator
-            flaggedName = splitText[splitText.index('remove')+1]
-            flaggedID   = self.UserNameID_mapping[flaggedName]
-
-            #Removing moderator
-            if not flaggedID in self.Flagged:
-
-                self.postMessage(data, '*<@{}>* is not flagged.'.format(flaggedID))
-
-            else:
-
-                del self.Flagged[flaggedID]
-                self.postMessage(data, '*<@{}>* has been unflagged.'.format(flaggedID))
-
         #Writing self.Flagged list to Flagged.txt
         with open('Flagged.txt', 'wb') as f:
             pk.dump(self.Flagged, f)
@@ -433,6 +447,9 @@ class Channels(Plugin):
     botToken = os.environ['SLACK_BOT_TOKEN']
     scBot    = SlackClient(botToken)
 
+    #Bot avatar emoji
+    botAvatar = os.environ['SLACK_BOT_EMOJI']
+
     #List of users with information
     UserList = scBot.api_call("users.list")
 
@@ -461,7 +478,7 @@ class Channels(Plugin):
             chan = data['channel']
         
         self.scBot.api_call('chat.postMessage', channel= chan, 
-                              text = msg, icon_emoji=":0x:", 
+                              text = msg, icon_emoji = self.botAvatar, 
                               username = 'Harpocrates')  
 
     def delete(self, data):
