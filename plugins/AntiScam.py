@@ -574,16 +574,27 @@ class Channels(Plugin):
         chanName = splitText[splitText.index('$inviteAll')+1]
         chanID   = self.ChanNameID_mapping[chanName]
 
+        #Log message
+        self.postMessage(data, ['Inviting all users to *<#{}>*. *NOTE : the '.format(chanID)  + 
+                                'bot will be unable to do anything else in the meantime.*'][0])
+
+        #Users in channel
+        inChannel = self.scAdmin.api_call('channels.info', channel = chanID)['channel']['members']
+
+        #Looping over all users
         for user in self.UserNameID_mapping:
 
             #ID of current user
             userID = self.UserNameID_mapping[user]
 
-            #Inviting user to channel
-            self.scAdmin.api_call('channels.invite', user = userID, channel = chanID)
+            #Checking if user in channel
+            if not userID in inChannel: 
 
-            #Sleep to prevent triggering 1 sec stupid API
-            time.sleep(.8)
+                #Inviting user to channel
+                self.scAdmin.api_call('channels.invite', user = userID, channel = chanID)
+
+                #Sleep to prevent triggering 1 sec stupid API
+                time.sleep(.8)
 
         #Log message
         self.postMessage(data, 'Invited all users to *<#{}>*.'.format(chanID))
