@@ -52,15 +52,19 @@ class AntiScam(Plugin):
 
         return
 
-    def postMessage(self, data, msg, chan = ''):
+    def postMessage(self, data, msg, chan = '', SC = ''):
         'Will post a message in the current channel'
 
         if not chan:
             chan = data['channel']
+
+        #Slack client control
+        if not SC:
+            SC = self.scBot
         
-        self.scBot.api_call('chat.postMessage', channel= chan, 
-                              text = msg, icon_emoji = self.botAvatar,
-                              username = 'Anti-Scam Bot')    
+        SC.api_call('chat.postMessage', channel= chan, 
+                     text = msg, icon_emoji = self.botAvatar,
+                     username = 'Anti-Scam Bot')    
 
     def process_message(self, data):
         'Will process all posts on watched channels.'
@@ -202,15 +206,19 @@ class Moderation(Plugin):
     UserNameID_mapping = { i['name']:i['id'] for i in UserList['members']}
 
 
-    def postMessage(self, data, msg, chan = ''):
+    def postMessage(self, data, msg, chan = '', SC = ''):
         'Will post a message in the current channel'
 
         if not chan:
             chan = data['channel']
+
+        #Slack client control
+        if not SC:
+            SC = self.scBot
         
-        self.scAdmin.api_call('chat.postMessage', channel = chan, 
-                              text = msg, icon_emoji = self.botAvatar,
-                              username = 'Moderator Bot')   
+        SC.api_call('chat.postMessage', channel = chan, 
+                     text = msg, icon_emoji = self.botAvatar,
+                     username = 'Moderator Bot')   
 
 
     def process_message(self, data):
@@ -441,7 +449,7 @@ class Moderation(Plugin):
         scamAlertChan = '#scam-alert'
 
         #Posting warning
-        self.postMessage(data, msg[0], scamAlertChan)
+        self.postMessage(data, msg[0], scamAlertChan, SC = self.scAdmin)
 
         #Reported
         self.Flagged[flaggedID].append('$reported')
@@ -486,15 +494,19 @@ class Channels(Plugin):
         MutedChannels = []
 
 
-    def postMessage(self, data, msg, chan = ''):
+    def postMessage(self, data, msg, chan = '', SC = ''):
         'Will post a message in the current channel'
 
         if not chan:
             chan = data['channel']
+
+        #Slack client control
+        if not SC:
+            SC = self.scBot
         
-        self.scBot.api_call('chat.postMessage', channel= chan, 
-                              text = msg, icon_emoji = self.botAvatar, 
-                              username = 'Harpocrates')  
+        SC.api_call('chat.postMessage', channel= chan, 
+                    text = msg, icon_emoji = self.botAvatar, 
+                    username = 'Harpocrates')  
 
     def delete(self, data):
         '''
