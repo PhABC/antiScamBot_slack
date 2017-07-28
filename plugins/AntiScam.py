@@ -352,7 +352,7 @@ class Moderation(Plugin):
             #Forming list of flagged users
             msg = 'Flagged users list (name : unique flags):\n>>>'
             for i in self.Flagged.keys():
-                msg += ['*<@' + i + '>* : ' + str(len(self.Flagged[i])) + '\n'][0]
+                msg += ['*<@' + i + '>* : *' + str(len(self.Flagged[i])) + '*\n'][0]
 
             #Printing list of flagged users
             self.postMessage(data, msg)
@@ -443,7 +443,7 @@ class Moderation(Plugin):
         #Reporting scammer
         msg  = ['<!channel>,\n\n*<@{}>* has been reported by multiple Moderators'.format(flaggedID)   +
                 ' and Admins as being a scammer/spammer. *Please ignore every message from this user' +
-                ' and their intentions are nefarious.* The user will be banned as soon as possible.']
+                ' as their intentions are bad.* The user will be banned as soon as possible.']
 
         #Channel where to report scammer
         scamAlertChan = '#scam-alert'
