@@ -207,18 +207,25 @@ class Moderation(Plugin):
 
 
     def postMessage(self, data, msg, chan = '', SC = ''):
-        'Will post a message in the current channel'
+        'Will post a message in the channel chan (current channel is default)'
 
         if not chan:
             chan = data['channel']
+
+        #Botname for scam-alert posting
+        if chan == '#scam-alert':
+            botName = 'Anti-Scam Bot'
+        else:
+            botName = 'Moderator Bot'
 
         #Slack client control
         if not SC:
             SC = self.scBot
         
+        #Posting message
         SC.api_call('chat.postMessage', channel = chan, 
                      text = msg, icon_emoji = self.botAvatar,
-                     username = 'Moderator Bot')   
+                     username = botName)   
 
 
     def process_message(self, data):
