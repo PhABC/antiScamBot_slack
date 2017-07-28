@@ -6,7 +6,7 @@ from rtmbot.core import Plugin
 from slackclient import SlackClient
 
 
-class AntiScam(Plugin):
+class AddrDetection(Plugin):
 
     #Admin token ( OAuth Access Token ) and client
     adminToken = os.environ['SLACK_ADMIN_TOKEN']
