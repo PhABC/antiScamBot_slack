@@ -1,5 +1,5 @@
 #Imports
-import re, os
+import re, os, time
 import pickle as pk
 
 from rtmbot.core import Plugin
@@ -468,6 +468,16 @@ class Channels(Plugin):
     Will allow admins to "censore" (or mute or freeze) certain channels, where only
     admins will be able to post. Will also allow automatic history 
     deletion.
+
+    COMMANDS:
+
+    $mute CHANNEL
+    $unmute CHANNEL
+    $mute lsit
+    $mute help
+
+    $inviteAll CHANNEL
+
     '''
 
     #Admin token ( OAuth Access Token )
@@ -534,24 +544,50 @@ class Channels(Plugin):
         userinfo = self.scBot.api_call('users.info', user=data['user'])
         username = userinfo['user']['name']
         userID   = self.UserNameID_mapping[username]
-    
-        if data['channel'] in self.IDChanName_mapping:      
-            chanName = self.IDChanName_mapping[data['channel']]
-        else:
-            chanName = 'PRIVATE'
 
-        #Ignore admins
+        #Allow admins
         if self.isAdmin(userinfo):
 
             #Check if admins is using $mute commands
             if 'mute' in data['text']:
                 self.MuteControl(data)
 
+            elif "$inviteAll" in data['text']:
+                self.InviteAll(data)
+
             return
 
         #Delete everything else
         if data['channel'] in self.MutedChannels:
             self.delete(data)
+
+    def InviteAll(self, data):
+        'Will invite all users on a given channel'
+
+        #Text contained in data
+        text = data['text']
+
+        #Splitting text
+        splitText = text.split()
+
+        #Name of specified channel
+        chanName = splitText[splitText.index('$inviteAll')+1]
+        chanID   = self.ChanNameID_mapping[chanName]
+
+        for user in self.UserNameID_mapping:
+
+            #ID of current user
+            userID = self.UserNameID_mapping[user]
+
+            #Inviting user to channel
+            self.scAdmin.api_call('channels.invite', user = userID, channel = chanID)
+
+            #Sleep to prevent triggering 1 sec stupid API
+            time.sleep(.8)
+
+        #Log message
+        self.postMessage(data, 'Invited all users to *<#{}>*.'.format(chanID))
+
 
     def MuteControl(self, data):
         'Will control which channel is muted or not'
