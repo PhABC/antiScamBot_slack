@@ -113,7 +113,7 @@ class AddrDetection(Plugin):
         btc_result = self.btc_prog.search(data['text'])
 
         #Allow if etherscan address
-        if 'etherscan.io/' in data['text']:1
+        if 'etherscan.io/' in data['text']:
             print('Etherscan address')
             return 
 
