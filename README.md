@@ -126,8 +126,8 @@ The flagging commands are :
 ```
 $flag USERNAME   : Will flag USERNAME for scamming
 $unflag USERNAME : Will remove the flag on a user
-$flag list        : Will show the current list of flagged users
-$flag help        : Will list flag commands
+$flag list       : Will show the current list of flagged users
+$flag help       : Will list flag commands
 ```
 
 For now, you need to ban manually the members mentioned in **#scam-alert** as soon as possible, so please put slack on your phone with notifications. For some weird reasons, I never found how to ban members via a cellphone.
