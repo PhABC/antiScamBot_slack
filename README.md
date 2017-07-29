@@ -7,9 +7,9 @@ Please read carefully the [What Can The Bot Do & How To Use It](#what-can-the-bo
 
 # Table of Content
 - [How To Setup The Bot](#how-to-setup-the-bot)
-  * [1. Setting Up an Independent Nachine (Optional)](#1-setting-up-an-independent-nachine--optional-)
+  * [1. Setting Up an Independent Machine (Optional)](#1-setting-up-an-independent-nachine--optional-)
     + [1.1 Creating a Droplet](#11-creating-a-droplet)
-    + [1.2 Connecting To Droplet](#12-connecting-to-droplet)
+    + [1.2 Connecting to The Droplet](#12-connecting-to-the-droplet)
     + [1.3 Installing Dependencies](#13-installing-dependencies)
   * [2. Creating The Bot/Application](#2-creating-the-bot-application)
   * [3. Launching The Bot](#3-launching-the-bot)
@@ -31,7 +31,7 @@ The bot was written in **python 3.6** and has been written for **Ubuntu 16**. Co
 + rtmbot
 + slack_client
 
-## 1. Setting Up an Independent Nachine (Optional)
+## 1. Setting Up an Independent Machine (Optional)
  I would recommend setting up a machine using [Google cloud](https://cloud.google.com/), [Digital Ocean](https://m.do.co/c/4555fc0a5367), or another cloud computing platform. Both Google Cloud and Digital Ocean offer about 300$ when newly registered (which would last for a bit more than a year). By using a cloud computing platform, the bot would always be up and running without you having to worry about your computer shutting off (and it would allow you to have an Ubuntu 16 machine if you currently do not process one). For the price (free at first and then between 5$ to 20$ a month), this is really a must in my opinion. Here, I will give instructions on how to install this on Digital Ocean (simplest platform I found). 
 
 
@@ -50,7 +50,7 @@ After creating an account and logging in, click on the **Create** button in gree
 
 Then click **Create**.
 
-### 1.2 Connecting To Droplet 
+### 1.2 Connecting to The Droplet 
 You will need to install a few things on your remote machine before being able to run the bot. First, you need to connect to it, either via SSH or by clicking on **More** and selecting **Access console**. If you use your own terminal, just type `ssh root@your.node.IP` To login, type **root** as your login username and typing the password sent by email when you created the Droplet (Can’t copy paste with the Digital Ocean terminal!!!). You will then be asked to repeat the password (sorry for those who don’t use SSH) and choose a new password. **Please**, choose a secure password. The last thing you want is someone hacking your bot, although this is unlikely. 
 
 ### 1.3 Installing Dependencies
