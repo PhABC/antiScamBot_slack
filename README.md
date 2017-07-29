@@ -124,8 +124,8 @@ For the flagging warning system to be useful, **you need** to have a channel cal
 
 The flagging commands are :
 ```
-$flag  USERNAME   : Will flag USERNAME for scamming
-$unflag  USERNAME : Will remove the flag on a user
+$flag USERNAME   : Will flag USERNAME for scamming
+$unflag USERNAME : Will remove the flag on a user
 $flag list        : Will show the current list of flagged users
 $flag help        : Will list flag commands
 ```
