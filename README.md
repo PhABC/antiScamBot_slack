@@ -171,6 +171,11 @@ All the flagged members, moderators and mute channels are stored in txt files. P
 
 You should always run the commands in a private channel (where the bot is) or by directly messaging them to the **antiscam** bot.
 
+Have fun and please don't forget to leave feedback and suggestions in the github **Issues** page. 
+
+---
+
+**Donations are welcome at the following ETH address :) : 0x00F3569B285421b6Aa5290132D1E5f2cdDe615d0**
 
 
 
