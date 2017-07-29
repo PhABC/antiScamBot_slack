@@ -111,7 +111,7 @@ This will initiate the bot, but we need to add some information:
 source ~/.bashrc
 python run.py
 ```
-Et voilà! The bot is now up and running. You can see that he is online on your slack team under **Apps**. You should invite the bot in the channels you want him to monitor.
+Et voilà! The bot is now up and running. You can see that he is online on your slack team under **Apps**. You should invite the bot in the channels you want him to monitor. Make sure you create a channel named **-scam-alert-**; the bot will need it.
 
 # What Can The Bot Do & How To Use It
 The bot is primarily for Admins, but as we will see, you can add moderators that have access to certain commands as well. 
@@ -137,9 +137,9 @@ $inviteAll CHANNEL
 ```
 
 ## Flagging Scammers/Spammers
-Because slack free API doesn’t allow banning members with a bot, we need to resort to something a bit softer. Admins and Moderators (described below) can flag users if they behave like scammers / spammers. The consequences of flagging are mild, but should be sufficient to limit the damage, that is, the scammer/spammer messages will automatically be deleted and the bot will post a warning message in #scam-alert.  
+Because slack free API doesn’t allow banning members with a bot, we need to resort to something a bit softer. Admins and Moderators (described below) can flag users if they behave like scammers / spammers. The consequences of flagging are mild, but should be sufficient to limit the damage, that is, the scammer/spammer messages will automatically be deleted and the bot will post a warning message in **#-scam-alert-** (make sure this channel exist, spelled exactly as written here).
 
-For the flagging warning system to be useful, **you need** to have a channel called **scam-alert**, invite all members to **scam-alert** (with `$inviteAll scam-alert` and by making it a default channel in your settings for new members) and prevent random members from posting in **scam-alert** (with `$mute scam-alert`). 
+For the flagging warning system to be useful, **you need** to have a channel called **scam-alert**, invite all members to **-scam-alert-** (with `$inviteAll -scam-alert-` and by making it a default channel in your settings for new members) and prevent random members from posting in **-scam-alert-** (with `$mute -scam-alert-`). 
 
 The flagging commands are (*Admins and Moderators only*) :
 ```
@@ -149,10 +149,10 @@ $flag list       : Will show the current list of flagged users
 $flag help       : Will list flag commands
 ```
 
-For now, you need to ban manually the members mentioned in **#scam-alert** as soon as possible, so please put slack on your phone with notifications. For some weird reasons, I never found how to ban members via a cellphone.
+For now, you need to ban manually the members mentioned in **#-scam-alert-** as soon as possible, so please put slack on your phone with notifications. For some weird reasons, I never found how to ban members via a cellphone.
 
 ## Moderators
-Admins can add moderators to their slack channel. The only thing moderators can do for now is use the flag commands. However, whereas the bot automatically post in **scam-alert** when a member is flagged by an Admin, a consensus of moderators is required for the bot to report the scammer. This is to avoid moderators from being malicious, which might happen if a member gain the trust of admins and they make them a moderator. 
+Admins can add moderators to their slack channel. The only thing moderators can do for now is use the flag commands. However, whereas the bot automatically post in **-scam-alert-** when a member is flagged by an Admin, a consensus of moderators is required for the bot to report the scammer. This is to avoid moderators from being malicious, which might happen if a member gain the trust of admins and they make them a moderator. 
 
 **IT IS CRITICAL** that moderators are not publicly announced. Scammers send private messages to members and exclude admins from their spam attack. If the scammers know who the moderators are, then they could easily exclude them from their script so that they are not contacted during their phising attack. You should therefore **ALWAYS** use the bot commands in a private channel or by directly messaging the **antiscam** bot. Moderators should also never use the flag commands in public channels, as scammers could automatically detect this and blacklist the moderators.
 
