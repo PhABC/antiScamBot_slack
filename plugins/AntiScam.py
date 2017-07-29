@@ -75,6 +75,7 @@ class AddrDetection(Plugin):
         #Name of the user
         userinfo = self.slack_client.api_call('users.info', user=data['user'])
         username = userinfo['user']['name']
+        userID   = self.UserNameID_mapping[username]
 
         #Returning if whitelisted user
         if self.isAdmin(userinfo):
@@ -89,8 +90,8 @@ class AddrDetection(Plugin):
         #Deleting if message contains a call to all
         if '@channel' in data['text'] or '@here' in data['text']:
 
-            msg = ''' @{0}, please refrain from using @ channel or @ here tags, 
-                      as they are reserved for the team.'''.format(username) 
+            msg = ''' *<@{}>*, please refrain from using @ channel or @ here tags, 
+                      as they are reserved for the team.'''.format(userID) 
 
             self.delete(data, msg)
             return
@@ -105,13 +106,14 @@ class AddrDetection(Plugin):
         #Name of user
         userinfo = self.slack_client.api_call('users.info', user=data['user'])
         username = userinfo['user']['name']
+        userID   = self.UserNameID_mapping[username]
 
         #Delete anything that remotely looks like an eth or btc address, except etherscan.
         eth_result = self.eth_prog.search(data['text'])
         btc_result = self.btc_prog.search(data['text'])
 
         #Allow if etherscan address
-        if 'etherscan.io/' in data['text']:
+        if 'etherscan.io/' in data['text']:1
             print('Etherscan address')
             return 
 
@@ -120,8 +122,8 @@ class AddrDetection(Plugin):
             print('ETH address detected.')
 
             #Message to post in channel
-            msg  = [' @{0} posted an ETH address and'.format(username) + 
-                    ' the message was deleted. *Do NOT trust any '     +
+            msg  = [' *<@{}>* posted an ETH address and'.format(userID) + 
+                    ' the message was deleted. *Do NOT trust any '      +
                     ' address posted on slack*.']
 
             #Deleting message
@@ -133,8 +135,8 @@ class AddrDetection(Plugin):
             print('BTC address detected.')
 
             #Message to post in channel
-            msg  = [' @{0} posted an BTC address and'.format(username) + 
-                    ' the message was deleted. *Do NOT trust any '     +
+            msg  = [' *<@{}>* posted an ETH address and'.format(userID) + 
+                    ' the message was deleted. *Do NOT trust any '      +
                     ' address posted on slack.']
 
             #Deleting message
@@ -165,10 +167,10 @@ class Moderation(Plugin):
     
     LIST OF $flag COMMANDS:
 
-        '$flag add USERNAME'      : Will flag USERNAME for scamming
-        '$unflag remove USERNAME' : Will remove the flag on a user
-        '$flag list'              : Will show the current list of flagged users
-        '$flag helo'              : Will list flag commands
+        '$flag  USERNAME'   : Will flag USERNAME for scamming
+        '$unflag  USERNAME' : Will remove the flag on a user
+        '$flag list'        : Will show the current list of flagged users
+        '$flag help'        : Will list flag commands
 
     '''
     #Number of required mod concensus to report scammer (No concensus needed for admins)
@@ -471,10 +473,10 @@ class Channels(Plugin):
 
     COMMANDS:
 
-    $mute CHANNEL
-    $unmute CHANNEL
-    $mute lsit
-    $mute help
+        $mute CHANNEL   : Will prevent non-admin, non-bot from posting in CHANNEL 
+        $unmute CHANNEL : Will unmute a muted channel
+        $mute lsit      : Will show which channels are muted
+        $mute help      : Will show the list of mute commands
 
     $inviteAll CHANNEL
 
