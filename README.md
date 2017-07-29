@@ -1,9 +1,9 @@
-#antiScamBot_slack
+# antiScamBot_slack
 antiScam-bot is a slack bot allowing admins to better control what is going in their slack channels and reduce potential scams, bad behaviours. The bot comes with a range of functions that admins can use to interact with the bot. The free slack API does not allow things like banning users and such, so more soft methods have been implemented for now. This bot is a work in progress and it is my hope that feedback and contributions will improve its reach. 
 
 ***Note:** Slack is not the best platform when it comes to security and I would advise using a platform like [Rocket Chat](https://rocket.chat/) (an opensource clone of slack), which has to be hosted locally, but allows you to fully define how the app behaves. It is my hope that we could build a rocket chat version that would be very secure against potential scams and other forms of attacks.*
 
-# Setup
+# How To Setup The Bot
 
 The bot was written in **python 3.6** and has been written for **Ubuntu 16**. Contributions to make it platform independent are welcomed. 
 
@@ -31,10 +31,10 @@ After creating an account and logging in, click on the **Create** button in gree
 
 Then click **Create**.
 
-###1.2 Connecting to Droplet
+### 1.2 Connecting to Droplet
 You will need to install a few things on your remote machine before being able to run the bot. First, you need to connect to it, either via SSH or by clicking on **More** and selecting **Access console**. If you use your own terminal, just type `ssh root@your.node.IP` To login, type **root** as your login username and typing the password sent by email when you created the Droplet (Can’t copy paste with the Digital Ocean terminal!!!). You will then be asked to repeat the password (sorry for those who don’t use SSH) and choose a new password. **Please**, choose a secure password. The last thing you want is someone hacking your bot, although this is unlikely. 
 
-###1.3 Installing dependencies
+### 1.3 Installing dependencies
 
 First, let’s clone this repository. To do so, run the following command in the console :
 ``` git clone https://github.com/PhABC/antiScamBot_slack.git``` 
@@ -43,8 +43,8 @@ This will download the repository on your remote machine.
 
 Second, let’s install Anaconda, an awesome Python library manager. Go on [Anaconda download page](https://www.continuum.io/downloads#linux), right click on the Python 3.X version and select **copy link address**. It should look like `https://repo.continuum.io/archive/Anaconda3-4.4.0-Linux-x86_64.sh`. In your terminal, run the following commands:
 ``` bash
-wget PYTHON_DOWNLOAD_LINK_ADDRESS #like https://repo.continuum.io/archive/Anaconda3...
-bash NAME_OF_FILE_DOWNLOADED #(can be seen if you type ls) Looks like Anaconda3-4....
+wget PYTHON_DOWNLOAD_LINK_ADDRESS # Looks like ;  https://repo.continuum.io/archive/Anaconda3...
+bash NAME_OF_FILE_DOWNLOADED #Looks like ; Anaconda3-4.... (Can be seen if you type ls) 
 #press ENTER, type yes, press ENTER, press yes
 source .bashrc
 ```
@@ -76,7 +76,7 @@ Good job! The bot is now added to your slack. You should now see the **Oauth Acc
 
 *Note: You can also customize your bot in the **Basic Information** menu, in the **Display Information** section.*
 
-## 3.Launching the Bot
+## 3. Launching The Bot
 Now that everything is in order, we can finally launch our bot. To do so, run the following command in the terminal : 
 ``` bash
 cd antiScamBot_slack/
@@ -94,15 +94,42 @@ python run.py
 ```
 Et voilà! The bot is now up and running. You can see that he is online on your slack team under **Apps**. You should invite the bot in the channels you want him to monitor.
 
+# What Can The Bot Do & How To Use It
+The bot is primarily for Admins, but as we will see, you can add moderators that have access to certain commands as well. 
 
+## Preventing ETH and BTC addresses
+This part does not involve any commands. The bot will simply delete any message containing an ETH or BTC address and will post a warning message (except if user is an admin). Etherscan.io links will be ignored.
 
+## Muting Channels
+Unfortunately, Slack only allows a single channel to be *Admin and Owners Only*, which is not very convenient. Fortunately for us, this bot can do something close to restricting a channel by deleting every message posted by a non-admin & non-bot users.
 
+The muting commands are : 
+```
+$mute CHANNEL     : Will prevent non-admin, non-bot from posting in CHANNEL 
+$unmute CHANNEL : Will unmute a muted channel
+$mute list                   : Will show which channels are muted
+$mute help                 : Will show the list of mute commands
+```
 
+## Inviting All Members
+The bot also allows you to invite all your slack members to a given channel, by running the following command ; 
+```
+$inviteAll CHANNEL
+```
 
- 
+## Flagging Scammers/Spammers
+Because slack free API doesn’t allow banning members with a bot, we need to resort to something a bit softer. Admins and Moderators (described below) can flag users if they behave like scammers / spammers. The consequences of flagging are mild, but should be sufficient to limit the damage, that is, the scammer/spammer messages will automatically be deleted and the bot will post a warning message in #scam-alert.  
 
+For the flagging warning system to be useful, **you need** to have a channel called **scam-alert**, invite all members to **scam-alert** (with `$inviteAll scam-alert` and by making it a default channel in your settings for new members) and prevent random members from posting in **scam-alert** (with `$mute scam-alert`). 
 
+The flagging commands are :
+```
+$flag  USERNAME     : Will flag USERNAME for scamming
+$unflag  USERNAME : Will remove the flag on a user
+$flag list                       : Will show the current list of flagged users
+$flag help                     : Will list flag commands
+```
 
+For now, you need to ban manually the members mentioned in **#scam-alert** as soon as possible, so please put slack on your phone with notifications. For some weird reasons, I never found how to ban members via a cellphone.
 
-
-  
+## Moderators
