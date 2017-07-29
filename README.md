@@ -1,9 +1,26 @@
 # antiScamBot_slack
 antiScam-bot is a slack bot allowing admins to better control what is going in their slack channels and reduce potential scams. The bot comes with a range of functions that admins can use such as restricting channels to admins only, inviting all team members to a channel, reporting and flagging scammers and nominating moderators to help protecting the channels. The free slack API does not allow things like banning users and such, so more soft methods have been implemented for now. This bot is a work in progress and it is my hope that feedback and contributions will improve its reach.  
 
-Please read carefully the [What Can The Bot Do & How To Use It](#what-can-the-bot-do-how-to-Use-it)
+Please read carefully the [What Can The Bot Do & How To Use It](#what-can-the-bot-do---how-to-use-it), but you probably won't. If you had to only read one section of it, please, **pretty please**, read the [Moderators](#moderators) section.
 
 ***Note:** Slack is not the best platform when it comes to security and I would advise using a platform like [Rocket Chat](https://rocket.chat/) (an opensource clone of slack), which has to be hosted locally, but allows you to fully define how the app behaves. It is my hope that we could build a rocket chat version that would be very secure against potential scams and other forms of attacks.*
+
+# Table of Content
+
+- [How To Setup The Bot](#how-to-setup-the-bot)
+  * [1. Setting up an independent machine (Optional)](#1-setting-up-an-independent-machine--optional-)
+    + [1.1 Creating a Droplet](#11-creating-a-droplet)
+    + [1.2 Connecting to Droplet](#12-connecting-to-droplet)
+    + [1.3 Installing dependencies](#13-installing-dependencies)
+  * [2. Creating the bot/application](#2-creating-the-bot-application)
+  * [3. Launching The Bot](#3-launching-the-bot)
+- [What Can The Bot Do & How To Use It](#what-can-the-bot-do---how-to-use-it)
+  * [Preventing ETH and BTC addresses](#preventing-eth-and-btc-addresses)
+  * [Muting Channels](#muting-channels)
+  * [Inviting All Members](#inviting-all-members)
+  * [Flagging Scammers/Spammers](#flagging-scammers-spammers)
+  * [Moderators](#moderators)
+  * [Additional Notes](#additional-notes)
 
 # How To Setup The Bot
 
@@ -14,7 +31,7 @@ The bot was written in **python 3.6** and has been written for **Ubuntu 16**. Co
 + rtmbot
 + slack_client
 
-## 1. Setting up an independent machine (Optional)
+## 1. Setting Up an Independent Nachine (Optional)
  I would recommend setting up a machine using [Google cloud](https://cloud.google.com/), [Digital Ocean](https://m.do.co/c/4555fc0a5367), or another cloud computing platform. Both Google Cloud and Digital Ocean offer about 300$ when newly registered (which would last for a bit more than a year). By using a cloud computing platform, the bot would always be up and running without you having to worry about your computer shutting off (and it would allow you to have an Ubuntu 16 machine if you currently do not process one). For the price (free at first and then between 5$ to 20$ a month), this is really a must in my opinion. Here, I will give instructions on how to install this on Digital Ocean (simplest platform I found). 
 
 
@@ -33,10 +50,10 @@ After creating an account and logging in, click on the **Create** button in gree
 
 Then click **Create**.
 
-### 1.2 Connecting to Droplet
+### 1.2 Connecting To Droplet 
 You will need to install a few things on your remote machine before being able to run the bot. First, you need to connect to it, either via SSH or by clicking on **More** and selecting **Access console**. If you use your own terminal, just type `ssh root@your.node.IP` To login, type **root** as your login username and typing the password sent by email when you created the Droplet (Can’t copy paste with the Digital Ocean terminal!!!). You will then be asked to repeat the password (sorry for those who don’t use SSH) and choose a new password. **Please**, choose a secure password. The last thing you want is someone hacking your bot, although this is unlikely. 
 
-### 1.3 Installing dependencies
+### 1.3 Installing Dependencies
 
 First, let’s clone this repository. To do so, run the following command in the console :
 ``` git clone https://github.com/PhABC/antiScamBot_slack.git``` 
@@ -57,7 +74,7 @@ pip install slack_client
 ```
 And now you are all set on this machine to be able to launch the bot! Before that, however, we need to add the bot to your slack team.
 
-## 2. Creating the bot/application
+## 2. Creating The Bot/Application
 Before launching the bot, you need to let Slack know of its existence, so that it can create it on their app (might need to be Admin, and Admins should be the only one to create app, so please check your settings if that’s not the case). 
 
 1. Go [here](https://api.slack.com/apps?new_app=1) and select **Create New App**. You can name it as **antiscam** and make sure you select the right team.
@@ -99,7 +116,7 @@ Et voilà! The bot is now up and running. You can see that he is online on your 
 # What Can The Bot Do & How To Use It
 The bot is primarily for Admins, but as we will see, you can add moderators that have access to certain commands as well. 
 
-## Preventing ETH and BTC addresses
+## Preventing ETH and BTC Addresses
 This part does not involve any commands. The bot will simply delete any message containing an ETH or BTC address and will post a warning message (except if user is an admin). Etherscan.io links will be ignored.
 
 ## Muting Channels
