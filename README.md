@@ -138,10 +138,12 @@ Admins can add moderators to their slack channel. The only thing moderators can 
 **IT IS CRITICAL** that moderators are not publicly announced. Scammers send private messages to members and exclude admins from their spam attack. If the scammers know who the moderators are, then they could easily exclude them from their script so that they are not contacted during their phising attack. You should therefore **ALWAYS** use the bot commands in a private channel or by directly messaging the **antiscam** bot. Moderators should also never use the flag commands in public channels, as scammers could automatically detect this and blacklist the moderators.
 
 The moderator commands are (*Admins only*):
+```
 $mods add USERNAME    : Will add USERNAME to the list of moderators
 $mods remove USERNAME : Will remove USERNAME from the list of moderators
 $mods list            : Will show the current list of moderators
 $mods help            : Will list the possible $mods commands
+```
 
 Note that adding a moderator will send them a private message explaining briefly their responsibilities and the commands they can use. I recommend adding admins as moderators as well so they can receive this information. 
 
