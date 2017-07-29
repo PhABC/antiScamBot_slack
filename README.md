@@ -105,10 +105,10 @@ Unfortunately, Slack only allows a single channel to be *Admin and Owners Only*,
 
 The muting commands are : 
 ```
-$mute CHANNEL     : Will prevent non-admin, non-bot from posting in CHANNEL 
+$mute CHANNEL   : Will prevent non-admin, non-bot from posting in CHANNEL 
 $unmute CHANNEL : Will unmute a muted channel
-$mute list                   : Will show which channels are muted
-$mute help                 : Will show the list of mute commands
+$mute list      : Will show which channels are muted
+$mute help      : Will show the list of mute commands
 ```
 
 ## Inviting All Members
@@ -124,10 +124,10 @@ For the flagging warning system to be useful, **you need** to have a channel cal
 
 The flagging commands are :
 ```
-$flag  USERNAME     : Will flag USERNAME for scamming
+$flag  USERNAME   : Will flag USERNAME for scamming
 $unflag  USERNAME : Will remove the flag on a user
-$flag list                       : Will show the current list of flagged users
-$flag help                     : Will list flag commands
+$flag list        : Will show the current list of flagged users
+$flag help        : Will list flag commands
 ```
 
 For now, you need to ban manually the members mentioned in **#scam-alert** as soon as possible, so please put slack on your phone with notifications. For some weird reasons, I never found how to ban members via a cellphone.
