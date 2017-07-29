@@ -1,7 +1,7 @@
 # antiScamBot_slack
 antiScam-bot is a slack bot allowing admins to better control what is going in their slack channels and reduce potential scams. The bot comes with a range of functions that admins can use such as restricting channels to admins only, inviting all team members to a channel, reporting and flagging scammers and nominating moderators to help protecting the channels. The free slack API does not allow things like banning users and such, so more soft methods have been implemented for now. This bot is a work in progress and it is my hope that feedback and contributions will improve its reach.  
 
-Please read carefully the (What Can The Bot Do & How To Use It)[what-can-the-bot-do-how-to-Use-it]
+Please read carefully the [What Can The Bot Do & How To Use It](#what-can-the-bot-do-how-to-Use-it)
 
 ***Note:** Slack is not the best platform when it comes to security and I would advise using a platform like [Rocket Chat](https://rocket.chat/) (an opensource clone of slack), which has to be hosted locally, but allows you to fully define how the app behaves. It is my hope that we could build a rocket chat version that would be very secure against potential scams and other forms of attacks.*
 
