@@ -6,21 +6,21 @@ Please read carefully the [What Can The Bot Do & How To Use It](#what-can-the-bo
 ***Note:** Slack is not the best platform when it comes to security and I would advise using a platform like [Rocket Chat](https://rocket.chat/) (an opensource clone of slack), which has to be hosted locally, but allows you to fully define how the app behaves. It is my hope that we could build a rocket chat version that would be very secure against potential scams and other forms of attacks.*
 
 # Table of Content
-
 - [How To Setup The Bot](#how-to-setup-the-bot)
-  * [1. Setting up an independent machine (Optional)](#1-setting-up-an-independent-machine--optional-)
+  * [1. Setting Up an Independent Nachine (Optional)](#1-setting-up-an-independent-nachine--optional-)
     + [1.1 Creating a Droplet](#11-creating-a-droplet)
-    + [1.2 Connecting to Droplet](#12-connecting-to-droplet)
-    + [1.3 Installing dependencies](#13-installing-dependencies)
-  * [2. Creating the bot/application](#2-creating-the-bot-application)
+    + [1.2 Connecting To Droplet](#12-connecting-to-droplet)
+    + [1.3 Installing Dependencies](#13-installing-dependencies)
+  * [2. Creating The Bot/Application](#2-creating-the-bot-application)
   * [3. Launching The Bot](#3-launching-the-bot)
 - [What Can The Bot Do & How To Use It](#what-can-the-bot-do---how-to-use-it)
-  * [Preventing ETH and BTC addresses](#preventing-eth-and-btc-addresses)
+  * [Preventing ETH and BTC Addresses](#preventing-eth-and-btc-addresses)
   * [Muting Channels](#muting-channels)
   * [Inviting All Members](#inviting-all-members)
   * [Flagging Scammers/Spammers](#flagging-scammers-spammers)
   * [Moderators](#moderators)
   * [Additional Notes](#additional-notes)
+
 
 # How To Setup The Bot
 
