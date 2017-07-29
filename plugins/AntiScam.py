@@ -20,7 +20,7 @@ class AddrDetection(Plugin):
     botAvatar = os.environ['SLACK_BOT_EMOJI']
     
     #Whitelist
-    whitelist_chan = [] # List of channels to be whitelisted
+    whitelistUsers = ['USLACKBOT']
 
     #Regular Expressions for ETH and BTC addresses
     eth_prog = re.compile(r'((0x)?[0-9a-fA-F]{40})')
@@ -83,8 +83,8 @@ class AddrDetection(Plugin):
             return     
 
         #Returning if whitelisted channel
-        if data['channel'] in self.whitelist_chan:
-            print('Whitelisted channel')
+        if data['user'] in self.whitelistUsers:
+            print('Whitelisted user')
             return
 
         #Deleting if message contains a call to all
