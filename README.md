@@ -175,7 +175,7 @@ Have fun and please don't forget to leave feedback and suggestions in the github
 
 ---
 
-**Donations are welcome at the following ETH address :) : 0x00F3569B285421b6Aa5290132D1E5f2cdDe615d0**
+**Donations are welcomed at the following ETH address :) : 0x00F3569B285421b6Aa5290132D1E5f2cdDe615d0**
 
 
 
