@@ -31,7 +31,6 @@ After creating an account and logging in, click on the **Create** button in gree
 
 Then click **Create**.
 
-
 **1.2 Connecting to Droplet**
 You will need to install a few things on your remote machine before being able to run the bot. First, you need to connect to it, either via SSH or by clicking on **More** and selecting **Access console**. If you use your own terminal, just type `ssh root@your.node.IP` To login, type **root** as your login username and typing the password sent by email when you created the Droplet (Can’t copy paste with the Digital Ocean terminal!!!). You will then be asked to repeat the password (sorry for those who don’t use SSH) and choose a new password. **Please**, choose a secure password. The last thing you want is someone hacking your bot, although this is unlikely. 
 
@@ -39,16 +38,41 @@ You will need to install a few things on your remote machine before being able t
 
 First, let’s install Anaconda, an awesome Python library manager. Go on [Anaconda download page](https://www.continuum.io/downloads#linux), right click on the Python 3.X version and select **copy link address**. It should look like `https://repo.continuum.io/archive/Anaconda3-4.4.0-Linux-x86_64.sh`. In your terminal, run the following commands:
 ``` bash
-wget PYTHON_DOWNLOAD_LINK_ADDRESS 
-bash NAME_OF_FILE_DOWNLOADED #(can be seen if you type ls)
-#press ENTER, type yes, press ENTER
+wget PYTHON_DOWNLOAD_LINK_ADDRESS #like https://repo.continuum.io/archive/Anaconda3...
+bash NAME_OF_FILE_DOWNLOADED #(can be seen if you type ls) Looks like Anaconda3-4....
+#press ENTER, type yes, press ENTER, press yes
+source .bashrc
 ```
 Now that anaconda is installed, we can install our python dependencies. Run the following commands:
 ``` bash
 pip install rtmbot
 pip install slack_client
 ```
+And now you are all set on this machine to be able to launch the bot! Before that, however, we need to add the bot to your slack team.
+
+## Creating the bot/application
+Before launching the bot, you need to let Slack know of its existence, so that it can create it on their app (might need to be Admin, and Admins should be the only one to create app, so please check your settings if that’s not the case). 
+
+1. Go [here](https://api.slack.com/apps?new_app=1) and select **Create New App**. You can name it as **antiscam** and make sure you select the right team.
+2. Go on the **Basic Information** page in the left menu
+3. Click on **Add features and functionality** and click on **Bots**
+4. Click **Add a Bot User** and turn on the **Always Show My Bot as Online**. The later step makes sure that scammers don’t wait for the bot to be offline to post stuff.
+5. Go back on **Basic Information**
+6. Click on **Add features and functionality** and click on **Permissions**
+7. Go to Permission Scopes and add the following permissions :
+```
+admin, bot, channels:history,  channels:read,  channels:write, chat:write:bot, chat:write:user, im:history, im:read, im:write
+```
+8. Save changes
+9. Same page at the top, click on **Install App to Team** under **Oauth Tokens & Redirect URLs**.
+10. Authorize
+
+Good job! The bot is now added to your slack. You should now see the **Oauth Access Token** and **Bot User Oauth Access Token**. These are absolutely critical, so please do not share them, as they give access to the control of your bot. They will also be required soon, so keep this webpage open.
+
+ 
+
+
+
+
 
   
-
-
