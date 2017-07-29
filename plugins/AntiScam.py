@@ -215,7 +215,7 @@ class Moderation(Plugin):
             chan = data['channel']
 
         #Botname for scam-alert posting
-        if chan == '#scam-alert':
+        if chan == '#-scam-alert-':
             botName = 'Anti-Scam Bot'
         else:
             botName = 'Moderator Bot'
@@ -448,7 +448,7 @@ class Moderation(Plugin):
             return False
 
     def reportFlagged(self, data, flaggedID):
-        'Will report the flagged user to scam-alert channel'
+        'Will report the flagged user to #-scam-alert- channel'
 
         #Reporting scammer
         msg  = ['<!channel>,\n\n*<@{}>* has been reported by multiple Moderators'.format(flaggedID)   +
@@ -456,7 +456,7 @@ class Moderation(Plugin):
                 ' as their intentions are bad.* The user will be banned as soon as possible.']
 
         #Channel where to report scammer
-        scamAlertChan = '#scam-alert'
+        scamAlertChan = '#-scam-alert-'
 
         #Posting warning
         self.postMessage(data, msg[0], scamAlertChan, SC = self.scAdmin)
