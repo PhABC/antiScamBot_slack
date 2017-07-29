@@ -103,18 +103,18 @@ This part does not involve any commands. The bot will simply delete any message 
 ## Muting Channels
 Unfortunately, Slack only allows a single channel to be *Admin and Owners Only*, which is not very convenient. Fortunately for us, this bot can do something close to restricting a channel by deleting every message posted by a non-admin & non-bot users.
 
-The muting commands are : 
+The muting commands are (*Admins only*) : 
 ```
-$mute CHANNEL   : Will prevent non-admin, non-bot from posting in CHANNEL 
+$mute CHANNEL     : Will prevent non-admin, non-bot from posting in CHANNEL 
 $unmute CHANNEL : Will unmute a muted channel
-$mute list      : Will show which channels are muted
-$mute help      : Will show the list of mute commands
+$mute list                   : Will show which channels are muted
+$mute help                 : Will show the list of mute commands
 ```
 
 ## Inviting All Members
-The bot also allows you to invite all your slack members to a given channel, by running the following command ; 
+The bot also allows you to invite all your slack members to a given channel, by running the following command (*Admins only*) ; 
 ```
-$inviteAll CHANNEL
+$inviteAll CHANNEL 
 ```
 
 ## Flagging Scammers/Spammers
@@ -122,14 +122,36 @@ Because slack free API doesn’t allow banning members with a bot, we need to re
 
 For the flagging warning system to be useful, **you need** to have a channel called **scam-alert**, invite all members to **scam-alert** (with `$inviteAll scam-alert` and by making it a default channel in your settings for new members) and prevent random members from posting in **scam-alert** (with `$mute scam-alert`). 
 
-The flagging commands are :
+The flagging commands are (*Admins and Moderators only*) :
 ```
-$flag USERNAME   : Will flag USERNAME for scamming
-$unflag USERNAME : Will remove the flag on a user
-$flag list       : Will show the current list of flagged users
-$flag help       : Will list flag commands
+$flag  USERNAME     : Will flag USERNAME for scamming
+$unflag  USERNAME : Will remove the flag on a user
+$flag list                       : Will show the current list of flagged users
+$flag help                     : Will list flag commands
 ```
 
 For now, you need to ban manually the members mentioned in **#scam-alert** as soon as possible, so please put slack on your phone with notifications. For some weird reasons, I never found how to ban members via a cellphone.
 
 ## Moderators
+Admins can add moderators to their slack channel. The only thing moderators can do for now is use the flag commands. However, whereas the bot automatically post in **scam-alert** when a member is flagged by an Admin, a consensus of moderators is required for the bot to report the scammer. This is to avoid moderators from being malicious, which might happen if a member gain the trust of admins and they make them a moderator. 
+
+**IT IS CRITICAL** that moderators are not publicly announced. Scammers send private messages to members and exclude admins from their spam attack. If the scammers know who the moderators are, then they could easily exclude them from their script so that they are not contacted during their phising attack. You should therefore **ALWAYS** use the bot commands in a private channel or by directly messaging the **antiscam** bot. Moderators should also never use the flag commands in public channels, as scammers could automatically detect this and blacklist the moderators.
+
+The moderator commands are (*Admins only*):
+$mods add USERNAME    : Will add USERNAME to the list of moderators
+$mods remove USERNAME : Will remove USERNAME from the list of moderators
+$mods list            : Will show the current list of moderators
+$mods help            : Will list the possible $mods commands
+
+Note that adding a moderator will send them a private message explaining briefly their responsibilities and the commands they can use. I recommend adding admins as moderators as well so they can receive this information. 
+
+## Additional Notes
+All the flagged members, moderators and mute channels are stored in txt files. Please do not delete these as you would need to readd/reflag/remute everything.
+
+You should always run the commands in a private channel (where the bot is) or by directly messaging them to the **antiscam** bot.
+
+
+
+
+
+  
