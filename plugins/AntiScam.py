@@ -513,6 +513,17 @@ class Channels(Plugin):
     else:
         MutedChannels = []
 
+    #Loading channels topics list
+    if os.path.isfile('ChannelsTopics.txt'):
+        with open('ChannelsTopics.txt', 'rb') as f:
+            ChannelsTopics = pk.loads(f.read())
+    else:
+        #Taking the current topics as default
+        ChannelsTopics = { c['id'] : c['topic']['value'] for c in ChanList['channels']}
+
+        #Storing existing topics in txt file
+        with open('ChannelsTopics.txt', 'wb') as f:
+            pk.dump(ChannelsTopics, f)
 
     def postMessage(self, data, msg, chan = '', SC = ''):
         'Will post a message in the current channel'
@@ -554,10 +565,20 @@ class Channels(Plugin):
             if 'mute' in data['text']:
                 self.MuteControl(data)
 
+            #Check if admins is using $inviteAll command
             elif "$inviteAll" in data['text']:
                 self.InviteAll(data)
 
+            #Check if admin is changing topic
+            elif 'topic' in data:
+                self.TopicMonitor(data, isAdmin = True)
+
+            #Ignore everything else the adming is doing
             return
+
+        #Preventing topic change
+        if 'topic' in data:
+            self.TopicMonitor(data, isAdmin = False)
 
         #Delete everything else
         if data['channel'] in self.MutedChannels:
@@ -600,6 +621,47 @@ class Channels(Plugin):
 
         #Log message
         self.postMessage(data, 'Invited all users to *<#{}>*.'.format(chanID))
+
+    def TopicMonitor(self, data, isAdmin = False):
+        'Will prevent channel topic changes by non-admin users.'
+
+        #Channel ID
+        chanID   = data['channel']
+        chanInfo = self.scAdmin.api_call('channels.info', channel = chanID)
+        topic    = chanInfo['channel']['topic']['value']
+        
+        #If admin, update topic
+        if isAdmin:
+            print(1)
+            if not topic == self.ChannelsTopics[chanID]:
+
+                print(2)
+
+                #Editing default topic
+                self.ChannelsTopics[chanID] = topic
+
+                #Updating  ChannelsTopics file
+                with open('ChannelsTopics.txt', 'wb') as f:
+                    pk.dump(self.ChannelsTopics, f)
+
+                print(3)
+
+                return
+
+            else:
+                #To delete message after overwrite by bot
+                self.delete(data)
+
+        #If not admin, overwrite change
+        else:
+
+
+            #Overwrite topic with default
+            self.scAdmin.api_call('channels.setTopic', topic = self.ChannelsTopics[chanID],
+                                   channel = chanID)
+
+            #Delete notificaiton of topic change by unauthorized user
+            self.delete(data)
 
 
     def MuteControl(self, data):
