@@ -127,11 +127,13 @@ Unfortunately, Slack only allows a single channel to be *Admin and Owners Only*,
 
 The muting commands are (*Admins only*) : 
 ```
-$mute CHANNEL   : Will prevent non-admin, non-bot from posting in CHANNEL 
-$unmute CHANNEL : Will unmute a muted channel
-$mute list      : Will show which channels are muted
-$mute help      : Will show the list of mute commands
+$mute (#)CHANNEL   : Will prevent non-admin, non-bot from posting in CHANNEL 
+$unmute (#)CHANNEL : Will unmute a muted channel
+$mute list         : Will show which channels are muted
+$mute help         : Will show the list of mute commands
 ```
+
+Where you can ether refer to channel with or without **#**.
 
 ## Inviting All Members
 The bot also allows you to invite all your slack members to a given channel, by running the following command (*Admins only*) ; 
@@ -151,6 +153,7 @@ $unflag USERNAME : Will remove the flag on a user
 $flag list       : Will show the current list of flagged users
 $flag help       : Will list flag commands
 ```
+Where you can ether refer to users with or without **@**.
 
 For now, you need to ban manually the members mentioned in **#-scam-alert-** as soon as possible, so please put slack on your phone with notifications. For some weird reasons, I never found how to ban members via a cellphone.
 
@@ -166,6 +169,8 @@ $mods remove USERNAME : Will remove USERNAME from the list of moderators
 $mods list            : Will show the current list of moderators
 $mods help            : Will list the possible $mods commands
 ```
+
+Where you can ether refer to users with or without **@**.
 
 Note that adding a moderator will send them a private message explaining briefly their responsibilities and the commands they can use. I recommend adding admins as moderators as well so they can receive this information. 
 
