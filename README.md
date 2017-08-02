@@ -3,7 +3,7 @@ antiScam-bot is a slack bot allowing admins to better control what is going in t
 
 Please read carefully the [What Can The Bot Do & How To Use It](#what-can-the-bot-do---how-to-use-it), but you probably won't. If you had to only read one section of it, please, **pretty please**, read the [Moderators](#moderators) section.
 
-***Note:** Slack is not the best platform when it comes to security and I would advise using a platform like [Rocket Chat](https://rocket.chat/) (an opensource clone of slack), which has to be hosted locally, but allows you to fully define how the app behaves. It is my hope that we could build a rocket chat version that would be very secure against potential scams and other forms of attacks.*
+***Note:** Slack is most likely not the best platform when it comes to security and I would advise using a platform like [Rocket Chat](https://rocket.chat/) (an opensource clone of slack), which has to be hosted locally, but allows you to fully define how the app behaves. It is my hope that we could build a rocket chat (or similar platform) version with strong security layers, protecting users against potential scams, frauds, hacks and other forms of attacks.*
 
 # Table of Content
 - [How To Setup The Bot](#how-to-setup-the-bot)
