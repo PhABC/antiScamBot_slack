@@ -160,17 +160,17 @@ class Moderation(Plugin):
 
     LIST OF $mods COMMANDS:
 
-        '$mods add USERNAME'    : Will add USERNAME to the list of moderators
-        '$mods remove USERNAME' : Will remove USERNAME from the list of moderators
-        '$mods list'            : Will show the current list of moderators
-        '$mods help'            : Will list the possible $mods commands
+        '$mods add (@)USERNAME'    : Will add USERNAME to the list of moderators ( @ is optional )
+        '$mods remove (@)USERNAME' : Will remove USERNAME from the list of moderators 
+        '$mods list'               : Will show the current list of moderators
+        '$mods help'               : Will list the possible $mods commands
     
     LIST OF $flag COMMANDS:
 
-        '$flag  USERNAME'   : Will flag USERNAME for scamming
-        '$unflag  USERNAME' : Will remove the flag on a user
-        '$flag list'        : Will show the current list of flagged users
-        '$flag help'        : Will list flag commands
+        '$flag (@)USERNAME'   : Will flag USERNAME for scamming 
+        '$unflag (@)USERNAME' : Will remove the flag on a user 
+        '$flag list'          : Will show the current list of flagged users
+        '$flag help'          : Will list flag commands
 
     '''
     #Number of required mod concensus to report scammer (No concensus needed for admins)
@@ -246,6 +246,34 @@ class Moderation(Plugin):
             self.FlagControl(data)
 
 
+    ### --------------------------- MODIFIERS -------------------------- ###
+
+    def isAdmin(self, userinfo):
+        'Will return True if user is admin'
+
+        if userinfo['user']['is_admin']:
+            return True
+        else:
+            return False
+
+    def isTag(self, user):
+        ''' 
+            Will verify if the provided user information is the name of 
+            the user or whether it is their ID. Will return the ID if tag
+            (e.g. <@USERID> ) or false if name (e.g. USERNAME).
+        '''
+
+        if '<@' in user:
+
+            ID = user[2:-1] #ID of user, removing '<@ >'
+            return ID 
+
+        else:
+            return False
+
+
+    ### ----------------------- COMMANDS CONTROL ----------------------- ###
+
     def ModeratorControl(self, data):
         '''
         Will control the moderator list and commands.
@@ -268,7 +296,11 @@ class Moderation(Plugin):
 
             #Name of specified moderator
             modName = splitText[splitText.index('remove')+1]
-            modID   = self.UserNameID_mapping[modName]
+            modID   = self.isTag(modName) #Will check is user was tagged or not
+
+            #If user was not tagged
+            if not modID:
+                modID = self.UserNameID_mapping[modName]
 
             #Removing moderator
             if modID in self.Moderators:        
@@ -289,7 +321,11 @@ class Moderation(Plugin):
 
             #Name of specified moderator
             modName = splitText[splitText.index('add')+1]
-            modID   = self.UserNameID_mapping[modName]
+            modID   = self.isTag(modName) #Will check is user was tagged or not
+
+            #If user was not tagged
+            if not modID:
+                modID = self.UserNameID_mapping[modName]
 
             #Adding new moderator
             if not modID in self.Moderators:
@@ -375,7 +411,11 @@ class Moderation(Plugin):
 
             #Name of specified flagged user
             flaggedName = splitText[splitText.index('$unflag')+1]
-            flaggedID   = self.UserNameID_mapping[flaggedName]
+            flaggedID   = self.isTag(flaggedName) #Will check is user was tagged or not
+
+            #If user was not tagged
+            if not flaggedID:
+                flaggedID = self.UserNameID_mapping[flaggedName]
 
             #Removing flagged user
             if not flaggedID in self.Flagged:
@@ -391,7 +431,11 @@ class Moderation(Plugin):
 
             #Name of flagged user
             flaggedName = splitText[splitText.index('$flag')+1]
-            flaggedID   = self.UserNameID_mapping[flaggedName]
+            flaggedID   = self.isTag(flaggedName) #Will check is user was tagged or not
+
+            #If user was not tagged
+            if not flaggedID:
+                flaggedID = self.UserNameID_mapping[flaggedName]
 
             #Information of flagged user
             flaggedInfo = self.scBot.api_call('users.info', user=flaggedID)
@@ -439,13 +483,8 @@ class Moderation(Plugin):
             pk.dump(self.Flagged, f)
 
 
-    def isAdmin(self, userinfo):
-        'Verify if user if admin'
 
-        if userinfo['user']['is_admin']:
-            return True
-        else:
-            return False
+    ### ----------------------- EXTRA FUNCTIONS ----------------------- ###
 
     def reportFlagged(self, data, flaggedID):
         'Will report the flagged user to #-scam-alert- channel'
@@ -465,6 +504,7 @@ class Moderation(Plugin):
         self.Flagged[flaggedID].append('$reported')
 
 
+
 class Channels(Plugin):
     '''
     Will allow admins to "censore" (or mute or freeze) certain channels, where only
@@ -473,10 +513,10 @@ class Channels(Plugin):
 
     COMMANDS:
 
-        $mute CHANNEL   : Will prevent non-admin, non-bot from posting in CHANNEL 
-        $unmute CHANNEL : Will unmute a muted channel
-        $mute lsit      : Will show which channels are muted
-        $mute help      : Will show the list of mute commands
+        $mute (#)CHANNEL   : Will prevent non-admin, non-bot from posting in CHANNEL 
+        $unmute (#)CHANNEL : Will unmute a muted channel
+        $mute list         : Will show which channels are muted
+        $mute help         : Will show the list of mute commands
 
     $inviteAll CHANNEL
 
@@ -584,6 +624,109 @@ class Channels(Plugin):
         if data['channel'] in self.MutedChannels:
             self.delete(data)
 
+    ### --------------------------- MODIFIERS -------------------------- ###
+
+    def isAdmin(self, userinfo):
+        'Will return True if user is admin'
+
+        if userinfo['user']['is_admin']:
+            return True
+        else:
+            return False
+
+    def tag2name(self, chan):
+        ''' 
+            Will verify if the provided user information is the name of 
+            the channel or whether it is their ID. Will return the name
+            in both cases.
+        '''
+
+        if '<#' in chan:
+
+            name = chan[12:-1] #Name of channel, removing '<#CHANID| >'
+            return name 
+
+        else:
+            return chan
+
+    ### ----------------------- COMMANDS CONTROL ----------------------- ###
+
+    def MuteControl(self, data):
+        'Will control which channel is muted or not'
+
+        #Text contained in data
+        text = data['text']
+
+        #Splitting text
+        splitText = text.split()
+
+        if '$unmute ' in text:
+
+            #Name of specified moderator
+            chanName = self.tag2name( splitText[splitText.index('$unmute')+1] )
+            chanID   = self.ChanNameID_mapping[chanName]
+
+            #Removing channel from MutedChannels list
+            if chanID in self.MutedChannels:        
+                del self.MutedChannels[self.MutedChannels.index(chanID)]
+
+                #Message
+                msg = 'This channel has been un-silenced. Everyone is welcomed to post!'
+
+                #Channel message
+                self.postMessage(data, msg, chan = chanID)
+
+                #Log message
+                self.postMessage(data, '*<#{}>* has been unmuted.'.format(chanID))
+
+            else:
+                self.postMessage(data, 'Channel *<#{}>* is not muted.'.format(chanID))
+
+        elif '$mute list' in text:
+
+            #Printing list of moderators
+            self.postMessage(data, 'Silenced channels list: ' + '*<#' + '>*, *<#'.join(self.MutedChannels) + '>*')
+
+        elif '$mute help' in text :
+
+            self.postMessage(data, 'List of mods commands : `$mute CHANNEL` ~|~ `$unmute CHANNEL` ~|~ `$mute list`')
+
+        elif '$mute ' in text:
+
+            #Name & ID of specified channel
+            chanName = self.tag2name( splitText[splitText.index('$mute')+1] )
+            chanID   = self.ChanNameID_mapping[chanName]
+
+            #Muting new channel
+            if not chanID in self.MutedChannels:
+
+                #Adding to MutedChannels list    
+                self.MutedChannels.append(chanID)
+
+                #Message
+                msg = 'This channel has been silenced. Only Admins and bots have permission to post here.'
+
+                #Emoji wrapper
+                msg = ':no_pedestrians: ' + msg + ' :no_pedestrians:'
+
+                #Channel message
+                self.postMessage(data, msg, chan = chanID)
+
+                #Log message
+                self.postMessage(data, '*<#{}>* has been muted.'.format(chanID))
+
+            else:
+
+                self.postMessage(data, 'Channel *<#{}>* is already muted.'.format(chanID))
+
+
+        #Writing self.Moderator list to Moderators.txt
+        with open('MutedChannels.txt', 'w') as f:
+            for item in self.MutedChannels:
+                f.write("%s," % item)
+
+    ### ----------------------- EXTRA FUNCTIONS ----------------------- ###
+
     def InviteAll(self, data):
         'Will invite all users on a given channel'
 
@@ -663,80 +806,6 @@ class Channels(Plugin):
             #Delete notificaiton of topic change by unauthorized user
             self.delete(data)
 
-
-    def MuteControl(self, data):
-        'Will control which channel is muted or not'
-
-        #Text contained in data
-        text = data['text']
-
-        #Splitting text
-        splitText = text.split()
-
-        if '$unmute ' in text:
-
-            #Name of specified moderator
-            chanName = splitText[splitText.index('$unmute')+1]
-            chanID   = self.ChanNameID_mapping[chanName]
-
-            #Removing channel from MutedChannels list
-            if chanID in self.MutedChannels:        
-                del self.MutedChannels[self.MutedChannels.index(chanID)]
-
-                #Message
-                msg = 'This channel has been un-silenced. Everyone is welcomed to post!'
-
-                #Channel message
-                self.postMessage(data, msg, chan = chanID)
-
-                #Log message
-                self.postMessage(data, '*<#{}>* has been unmuted.'.format(chanID))
-
-            else:
-                self.postMessage(data, 'Channel *<#{}>* is not muted.'.format(chanID))
-
-        elif '$mute list' in text:
-
-            #Printing list of moderators
-            self.postMessage(data, 'Silenced channels list: ' + '*<#' + '>*, *<#'.join(self.MutedChannels) + '>*')
-
-        elif '$mute help' in text :
-
-            self.postMessage(data, 'List of mods commands : `$mute CHANNEL` ~|~ `$unmute CHANNEL` ~|~ `$mute list`')
-
-        elif '$mute ' in text:
-
-            #Name of specified channel
-            chanName = splitText[splitText.index('$mute')+1]
-            chanID   = self.ChanNameID_mapping[chanName]
-
-            #Muting new channel
-            if not chanID in self.MutedChannels:
-
-                #Adding to MutedChannels list    
-                self.MutedChannels.append(chanID)
-
-                #Message
-                msg = 'This channel has been silenced. Only Admins and bots have my permission to post here.'
-
-                #Emoji wrapper
-                msg = ':no_pedestrians: ' + msg + ' :no_pedestrians:'
-
-                #Channel message
-                self.postMessage(data, msg, chan = chanID)
-
-                #Log message
-                self.postMessage(data, '*<#{}>* has been muted.'.format(chanID))
-
-            else:
-
-                self.postMessage(data, 'Channel *<#{}>* is already muted.'.format(chanID))
-
-
-        #Writing self.Moderator list to Moderators.txt
-        with open('MutedChannels.txt', 'w') as f:
-            for item in self.MutedChannels:
-                f.write("%s," % item)
 
 
     def isAdmin(self, userinfo):
