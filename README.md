@@ -119,6 +119,9 @@ The bot is primarily for Admins, but as we will see, you can add moderators that
 ## Preventing ETH and BTC Addresses
 This part does not involve any commands. The bot will simply delete any message containing an ETH or BTC address and will post a warning message (except if user is an admin). Etherscan.io links will be ignored.
 
+## Preventing Channels' Topic Changes
+Slack doesn't not have settings to prevent channel topic changes, which which can be dangerous if a malicious change of topic is not reverted. The present bot automatically overwrites changes of a topic made by non-Admin users, making topic changes `admin-only`. 
+
 ## Muting Channels
 Unfortunately, Slack only allows a single channel to be *Admin and Owners Only*, which is not very convenient. Fortunately for us, this bot can do something close to restricting a channel by deleting every message posted by a non-admin & non-bot users.
 
