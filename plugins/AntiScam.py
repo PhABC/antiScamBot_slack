@@ -737,7 +737,7 @@ class Channels(Plugin):
         splitText = text.split()
 
         #Name of specified channel
-        chanName = splitText[splitText.index('$inviteAll')+1]
+        chanName = self.tag2name( splitText[splitText.index('$inviteAll')+1] )
         chanID   = self.ChanNameID_mapping[chanName]
 
         #Log message
