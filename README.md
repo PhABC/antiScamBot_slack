@@ -175,9 +175,9 @@ Where you can ether refer to users with or without **@**.
 Note that adding a moderator will send them a private message explaining briefly their responsibilities and the commands they can use. I recommend adding admins as moderators as well so they can receive this information. 
 
 ## Additional Notes
-All the flagged members, moderators and mute channels are stored in txt files. Please do not delete these as you would need to readd/reflag/remute everything.
+All the flagged members, moderators and mute channels are stored in txt files. Please do not delete these as you would need to readd/reflag/remute everything. Make sure you save these files externally if you ever intend to migrate to another machine.
 
-You should always run the commands in a private channel (where the bot is) or by directly messaging them to the **antiscam** bot.
+You should always run antiscam_bot commands in a private channel (where the bot is) or by directly messaging the **antiscam** bot. The goal is to prevent scammers from blacklisting moderators and it would be easy for them to do it automatically if a mod posted in a public channel.
 
 Have fun and please don't forget to leave feedback and suggestions in the github **Issues** page. 
 
