@@ -65,7 +65,7 @@ Second, let’s install Anaconda, an awesome Python library manager. Go on [Anac
 wget PYTHON_DOWNLOAD_LINK_ADDRESS # Looks like ;  https://repo.continuum.io/archive/Anaconda3...
 bash NAME_OF_FILE_DOWNLOADED #Looks like ; Anaconda3-4.... (Can be seen if you type ls) 
 #press ENTER, type yes, press ENTER, press yes
-source .bashrc
+source ~/.bashrc
 ```
 Third, now that anaconda is installed, we can install our python dependencies. Run the following commands:
 ``` bash
