@@ -40,7 +40,7 @@ The bot was written in **python 3.6** and has been written for **Ubuntu 16**. Co
 After creating an account and logging in, click on the **Create** button in green and select Droplets, with the following options :
 
 + **Distribution** : Ubuntu 16.04 x64
-+ **Size**: > 20$/mo (this might be an overkill and you might want to try with the 5$ or 10$ option at first, especially for small chat teams)
++ **Size**: > 10-20$/month (this might be an overkill and you might want to try with the 5$ option at first, especially for small chat teams). From my experience, the bot doesn't use much ressources, but you never know.
 + No need for block storage
 + **Datacenter region** Toronto or in the US might be better, since Slack HQ is based in Vancouver, CA.
 + No need for additional options
