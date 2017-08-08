@@ -72,6 +72,12 @@ Third, now that anaconda is installed, we can install our python dependencies. R
 pip install rtmbot
 pip install slack_client
 ```
+A last thing to install is *Tmux* which allows your console to stay open when you leave your ssh session. Otherwise the bot will stop the moment you disconnect. It's usually installed by default, but depending on what you use you might need to install it.
+
+``` bash
+sudo apt-get update
+sudo apt-get install tmux
+```
 And now you are all set on this machine to be able to launch the bot! Before that, however, we need to add the bot to your slack team.
 
 ## 2. Creating The Bot/Application
@@ -99,6 +105,7 @@ Good job! The bot is now added to your slack. You should now see the **Oauth Acc
 Now that everything is in order, we can finally launch our bot. To do so, run the following command in the terminal : 
 ``` bash
 cd antiScamBot_slack/
+tmux
 python run.py
 ```
 This will initiate the bot, but we need to add some information: 
