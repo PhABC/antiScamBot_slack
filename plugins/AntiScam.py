@@ -1,4 +1,4 @@
-#Imports
+ #Imports
 import re, os, time
 import pickle as pk
 
@@ -338,16 +338,16 @@ class Moderation(Plugin):
                 contactChan = self.scBot.api_call('im.open', user = modID)['channel']['id']
 
                 #Contacting new moderator
-                msg = ['Hello,\n\n You were just promoted as a moderator, a gift from *<@{}>*!'.format(userID) + 
-                       ' Your role will consists of flagging scammers/spammers as soon as possible. *We DO '   +
-                       ' NOT want the scammers to know who the moderators are, so please only '                +
-                       ' use the commands here, in this private chat*. \n\n Here is a list of commands '  + 
+                msg = ['Hello,\n\n You were just promoted as a moderator, a gift from *<@{}>*! '.format(userID) +
+                       'Your role will consist of flagging scammers/spammers as soon as possible. *We DO '   +
+                       'NOT want the scammers to know who the moderators are, so please only '                +
+                       'use the commands here, in this private chat*. \n\n Here is a list of commands '   +
                        'available to you:\n>     *$flag USERNAME*     : Will flag USERNAME for scamming'  +
                        '\n>     *$unflag USERNAME* : Will remove USERNAME from flagged list'              +
                        '\n>     *$flag list*    : Will show the current list of flagged users'            +
                        '\n>     *$flag help* : Will list the flag commands\n\n'                           +
-                       'Flagging an user (if concensus is achieved) will result in certain actions such ' +
-                       'as immediate public message and eventual ban of the flagged user.\n\n'            + 
+                       'Flagging a user (if consensus is achieved) will result in certain actions such '  +
+                       'as immediate public message and eventual ban of the flagged user.\n\n'            +
                        'Thank you for your help!']
 
                 self.postMessage(data, msg[0], chan = contactChan)
