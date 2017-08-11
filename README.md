@@ -118,7 +118,7 @@ This will initiate the bot, but we need to add some information:
 source ~/.bashrc
 python run.py
 ```
-Et voilà! The bot is now up and running. You can see that he is online on your slack team under **Apps**. You should invite the bot in the channels you want him to monitor. Make sure you create a channel named **-scam-alert-**; the bot will need it.
+Et voilà! The bot is now up and running. You can see that he is online on your slack team under *Apps*. **You should invite the bot in the channels you want him to monitor. Make sure you create a channel named *-scam-alert-*; the bot will need it.**
 
 # What Can The Bot Do & How To Use It
 The bot is primarily for Admins, but as we will see, you can add moderators that have access to certain commands as well. 
