@@ -36,6 +36,9 @@ class AddrDetection(Plugin):
     #Mapping between names and user IDs
     UserNameID_mapping = { i['name']:i['id'] for i in UserList['members']}
 
+    #Hack to reload mods after they are modified in other plugin
+    reloadMods = False
+
     #Loading URL_WhiteList.txt
     if os.path.isfile('URL_WhiteList.txt'):
         with open('URL_WhiteList.txt', 'r') as f:
@@ -91,12 +94,36 @@ class AddrDetection(Plugin):
         print(data)
 
         #Name of the user
-        userinfo = self.slack_client.api_call('users.info', user=data['user'])
+        userinfo = self.scBot.api_call('users.info', user=data['user'])
         username = userinfo['user']['name']
         userID   = self.UserNameID_mapping[username]
 
+        #Will reload mods if was changed last message
+        if self.reloadMods:
+            #Loading new moderator list
+            with open('Moderators.txt', 'r') as f:
+                self.Moderators = f.read().split(',')[:-1]
+
+            self.reloadMods = False
+
+        #Check if current user is and admin or mod
+        isAdminOrMod = (self.isAdmin(userinfo) or userID in self.Moderators)
+
+        #Reloading moderators if change
+        if self.isAdmin(userinfo) and '$mods' in data['text']:
+
+            #Will reload next messgae
+            self.reloadMods = True
+
+        #URL control
+        if '$url ' in data['text']:
+            if isAdminOrMod:
+                self.URLControl(data, admin = True)
+            else: 
+                self.URLControl(data, admin = False)
+
         #Returning if admin or moderator
-        if (self.isAdmin(userinfo) or userID in self.Moderators):
+        if isAdminOrMod:
             print('User is Admin/Mod')
             return    
 
@@ -108,10 +135,90 @@ class AddrDetection(Plugin):
         if self.isBadURL(data):
             return
 
+        return
+
+
+    def URLControl(self, data, admin = False):
+        '''
+        Will control url commands
+        '''
+
+        #Name of user
+        userinfo = self.scBot.api_call('users.info', user=data['user'])
+        username = userinfo['user']['name']
+        userID   = self.UserNameID_mapping[username]
+
+        #Text contained in data
+        text = data['text']
+
+        if '$url list' in text:
+
+            #Printing list of whitelisted domains
+            self.postMessage(data, 'Whitelisted URLs : ' + '\n*' + '* \n*'.join(self.URL_WhiteList) + '*')
+
+        #Commands accessible only to admins
+        if admin:
+
+            #Regular expression for URLs
+            urls = re.findall([ 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|' + 
+                                 '[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+' ][0], text)
+            if urls:
+                #Domain name
+                domain = urlparse(urls[0]).netloc
+
+            #Whitelisting new url
+            if '$url add' in text:
+
+
+                #Adding new url to whitelist
+                if not domain in self.URL_WhiteList:
+
+                    self.URL_WhiteList.append(domain)
+
+                    #Notification message
+                    self.postMessage(data, 'Whitelisted *{}*'.format(domain))
+
+                else:
+
+                    #Notification message
+                    self.postMessage(data, '*{}* is already whitelisted.'.format(domain))
+
+            #Removing url from whitelist
+            elif '$url remove' in text :
+
+                if domain in self.URL_WhiteList:
+
+                    #Deleting
+                    del self.URL_WhiteList[self.URL_WhiteList.index(domain)]
+
+                    #Log message
+                    self.postMessage(data, 'Removed *{}* from URL whitelist.'.format(domain))
+
+                else:
+                    self.postMessage(data, '*{}* is not whitelisted.'.format(domain))
+
+
+            #Printing url commands
+            elif '$url help' in text :
+
+                self.postMessage(data, 'List of url commands : *$url add DOMAIN* ~|~ *$url remove DOMAIN* ~|~ *$url list*')
+
+
+            #Writing self.URL_WhiteList list to URL_WhiteList.txt
+            with open('URL_WhiteList.txt', 'w') as f:
+                for item in self.URL_WhiteList:
+                    f.write("%s," % item)
+
+            return
+
+        else:
+            return
+
+
     def isBadURL(self, data):
 
         #Name of user
-        userinfo = self.slack_client.api_call('users.info', user=data['user'])
+        userinfo = self.scBot.api_call('users.info', user=data['user'])
         username = userinfo['user']['name']
         userID   = self.UserNameID_mapping[username]
 
@@ -134,13 +241,11 @@ class AddrDetection(Plugin):
                 #Channel with new moderator
                 contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
 
-                print(contactChan)
-
                 #Message to user
                 msg = [ 'Hello,\n\n You posted a message containing a non-approved domain ' +
                         '({}). Please contact an admin or moderator to add '.format(domain) +
                         'this domain to the URL whitelist if you consider it to be safe.\n' +
-                        '\nYou can see the whitelisted domains by typing `$whitelist url`.' ]
+                        '\nYou can see the whitelisted domains by typing `$url list`.' ]
 
                 #Sending warning message to user
                 self.postMessage(data, msg[0], chan = contactChan)
@@ -158,7 +263,7 @@ class AddrDetection(Plugin):
         'Will verify and delete messages that contain ETH/BTC addresses'
 
         #Name of user
-        userinfo = self.slack_client.api_call('users.info', user=data['user'])
+        userinfo = self.scBot.api_call('users.info', user=data['user'])
         username = userinfo['user']['name']
         userID   = self.UserNameID_mapping[username]
 
@@ -832,10 +937,7 @@ class Channels(Plugin):
         
         #If admin, update topic
         if isAdmin:
-            print(1)
             if not topic == self.ChannelsTopics[chanID]:
-
-                print(2)
 
                 #Editing default topic
                 self.ChannelsTopics[chanID] = topic
@@ -843,8 +945,6 @@ class Channels(Plugin):
                 #Updating  ChannelsTopics file
                 with open('ChannelsTopics.txt', 'wb') as f:
                     pk.dump(self.ChannelsTopics, f)
-
-                print(3)
 
                 return
 
