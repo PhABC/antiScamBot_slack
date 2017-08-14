@@ -503,15 +503,20 @@ class Moderation(Plugin):
 
                 #Contacting new moderator
                 msg = ['Hello,\n\n You were just promoted as a moderator, a gift from *<@{}>*! '.format(userID) +
-                       'Your role will consist of flagging scammers/spammers as soon as possible. *We DO '   +
-                       'NOT want the scammers to know who the moderators are, so please only '                +
-                       'use the commands here, in this private chat*. \n\n Here is a list of commands '   +
-                       'available to you:\n>     *$flag USERNAME*     : Will flag USERNAME for scamming'  +
-                       '\n>     *$unflag USERNAME* : Will remove USERNAME from flagged list'              +
-                       '\n>     *$flag list*    : Will show the current list of flagged users'            +
-                       '\n>     *$flag help* : Will list the flag commands\n\n'                           +
-                       'Flagging a user (if consensus is achieved) will result in certain actions such '  +
-                       'as immediate public message and eventual ban of the flagged user.\n\n'            +
+                       'Your role will consist of flagging scammers/spammers as soon as possible. *We DO '      +
+                       'NOT want the scammers to know who the moderators are, so please only '                  +
+                       'use the commands here, in this private chat*. \n\n Here is a list of commands '         +
+                       'available to you:\n>     `$flag USERNAME`       : Will flag USERNAME for scamming'      +
+                       '\n>     `$unflag USERNAME`   : Will remove USERNAME from flagged list'                  +
+                       '\n>     `$flag list`             : Will show the current list of flagged users'         +
+                       '\n>     `$flag help`             : Will list the flag commands'                         +
+                       '\n>     `$url add DOMAIN`      : Will whitelist DOMAIN'                                 +
+                       '\n>     `$url remove DOMAIN` : Will remove DOMAIN from whitelist'                       +
+                       '\n>     `$url list`               : Will list the whitelisted domains'                  +
+                       '\n>     `$url help`               : Will list the url commands\n\n'                     +
+                       'Flagging a user (if consensus is achieved) will result in certain actions such '        +
+                       'as immediate public message and eventual ban of the flagged user.'                      +
+                       'You can also allow or disallow certain website domains using the `url` commands.\n\n'   +
                        'Thank you for your help!']
 
                 self.postMessage(data, msg[0], chan = contactChan)
