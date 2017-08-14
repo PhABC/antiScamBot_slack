@@ -5,6 +5,10 @@ import pickle as pk
 from rtmbot.core import Plugin
 from slackclient import SlackClient
 
+try:
+    from urlparse     import urlparse
+except:
+    from urllib.parse import urlparse
 
 class AddrDetection(Plugin):
 
@@ -32,6 +36,20 @@ class AddrDetection(Plugin):
     #Mapping between names and user IDs
     UserNameID_mapping = { i['name']:i['id'] for i in UserList['members']}
 
+    #Loading URL_WhiteList.txt
+    if os.path.isfile('URL_WhiteList.txt'):
+        with open('URL_WhiteList.txt', 'r') as f:
+            URL_WhiteList = f.read().split(',')[:-1]
+    else:
+        URL_WhiteList = []
+
+    #Loading Moderators list
+    if os.path.isfile('Moderators.txt'):
+        with open('Moderators.txt', 'r') as f:
+            Moderators = f.read().split(',')[:-1]
+    else:
+        Moderators = []
+
 
     def delete(self, data, msg, warning = False):
         '''
@@ -47,9 +65,9 @@ class AddrDetection(Plugin):
             warningWrap = ':exclamation::warning::exclamation:'
             msg = warningWrap + msg + warningWrap
 
-        #Posting warning
-        Z = self.postMessage(data, msg)        
-
+            #Posting warning
+            Z = self.postMessage(data, msg)    
+    
         return
 
     def postMessage(self, data, msg, chan = '', SC = ''):
@@ -77,27 +95,63 @@ class AddrDetection(Plugin):
         username = userinfo['user']['name']
         userID   = self.UserNameID_mapping[username]
 
-        #Returning if whitelisted user
-        if self.isAdmin(userinfo):
-            print('User is Admin')
-            return     
-
-        #Returning if whitelisted channel
-        if data['user'] in self.whitelistUsers:
-            print('Whitelisted user')
-            return
-
-        #Deleting if message contains a call to all
-        if '@channel' in data['text'] or '@here' in data['text']:
-
-            msg = ''' *<@{}>*, please refrain from using @ channel or @ here tags, 
-                      as they are reserved for the team.'''.format(userID) 
-
-            self.delete(data, msg)
-            return
+        #Returning if admin or moderator
+        if (self.isAdmin(userinfo) or userID in self.Moderators):
+            print('User is Admin/Mod')
+            return    
 
         #Deleting if containg ETH or BTC address
-        self.isETH_BTC(data)
+        if self.isETH_BTC(data):
+            return
+
+        #Deleting if contains non-allowed URL
+        if self.isBadURL(data):
+            return
+
+    def isBadURL(self, data):
+
+        #Name of user
+        userinfo = self.slack_client.api_call('users.info', user=data['user'])
+        username = userinfo['user']['name']
+        userID   = self.UserNameID_mapping[username]
+
+        #Regular expression for URLs
+        urls = re.findall([ 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|' + 
+                            '[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+' ][0], data['text'])
+
+        #If URL is found
+        if urls:
+
+            #Domain of URL
+            domain = urlparse(urls[0]).netloc
+
+            #URL log
+            print('URL dectected')
+
+            #If domain is not in whitelist
+            if not domain in self.URL_WhiteList:
+
+                #Channel with new moderator
+                contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
+
+                print(contactChan)
+
+                #Message to user
+                msg = [ 'Hello,\n\n You posted a message containing a non-approved domain ' +
+                        '({}). Please contact an admin or moderator to add '.format(domain) +
+                        'this domain to the URL whitelist if you consider it to be safe.\n' +
+                        '\nYou can see the whitelisted domains by typing `$whitelist url`.' ]
+
+                #Sending warning message to user
+                self.postMessage(data, msg[0], chan = contactChan)
+                
+                #Deleting message
+                self.delete(data, msg[0])
+
+                return True
+
+
+        return False
 
 
     def isETH_BTC(self, data):
@@ -115,7 +169,7 @@ class AddrDetection(Plugin):
         #Allow if etherscan address
         if 'etherscan.io/' in data['text']:
             print('Etherscan address')
-            return 
+            return False
 
         #ETH address detection
         if eth_result and eth_result.group(1):
@@ -128,7 +182,7 @@ class AddrDetection(Plugin):
 
             #Deleting message
             self.delete(data, msg[0], warning = True)
-            return
+            return True
 
         #BTC address detection
         if btc_result and btc_result.group(1):
@@ -137,11 +191,14 @@ class AddrDetection(Plugin):
             #Message to post in channel
             msg  = [' *<@{}>* posted an ETH address and'.format(userID) + 
                     ' the message was deleted. *Do NOT trust any '      +
-                    ' address posted on slack.']
+                    ' address posted on slac*.']
 
             #Deleting message
             self.delete(data, msg[0], warning = True)
-            return
+            return True
+
+        return False
+
 
     def isAdmin(self, userinfo):
         'Verify if user if admin'
