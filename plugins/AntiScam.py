@@ -546,7 +546,16 @@ class Moderation(Plugin):
 
             #Formatting message to send to mods
             msgSplit = splitText[splitText.index('msg')+1:]
-            msg      = " ".join(msgSplit)
+
+            #Replacing double slash to allow multiple lines
+            msg = " ".join(msgSplit)
+
+            #Replacing bad characters
+            msg = msg.replace('\\n', '\n')
+            #msg = msg.replace('&gt;', '> ')
+
+            print(msgSplit)
+            print(msg)
 
             for modID in self.Moderators:
 
