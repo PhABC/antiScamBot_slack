@@ -178,7 +178,7 @@ class AddrDetection(Plugin):
                 domain = urlparse(urls[0]).netloc
                 
                 #Removing www.
-                domain = domain.replace('www.', ''))
+                domain = domain.replace('www.', '')
 
             #Whitelisting new url
             if '$url add' in text:
@@ -246,7 +246,7 @@ class AddrDetection(Plugin):
             domain = urlparse(urls[0]).netloc
 
             #Removing www.
-            domain = domain.replace('www.', ''))
+            domain = domain.replace('www.', '')
 
             #URL log
             print('URL detected at {}'.format(domain))
