@@ -1,1 +1,1 @@
-www.github.com,www.reddit.com,www.etherscan.io,www.myetherwallet.com,www.0xproject.com,numer.ai,mysterium.network,www.twitter.com, www.medium.com
+www.github.com,www.reddit.com,www.etherscan.io,www.myetherwallet.com,www.0xproject.com,numer.ai,mysterium.network,www.twitter.com, www.medium.com, ethplorer.io, metamask.io
