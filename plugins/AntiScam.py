@@ -325,6 +325,7 @@ class Moderation(Plugin):
         '$mods add (@)USERNAME'    : Will add USERNAME to the list of moderators ( @ is optional )
         '$mods remove (@)USERNAME' : Will remove USERNAME from the list of moderators 
         '$mods list'               : Will show the current list of moderators
+        '$mods msg MESSAGE'        : Will send a message to all mods
         '$mods help'               : Will list the possible $mods commands
     
     LIST OF $flag COMMANDS:
@@ -479,6 +480,7 @@ class Moderation(Plugin):
             else:
                 self.postMessage(data, '*<@{}>* is not a moderator'.format(modID))
 
+
         elif '$mods add ' in text:
 
             #Name of specified moderator
@@ -524,10 +526,26 @@ class Moderation(Plugin):
             #Printing list of moderators
             self.postMessage(data, 'Moderators list : ' + '*<@' + '>*, *<@'.join(self.Moderators) + '>*')
 
+
+        elif 'mods msg' in text:
+
+            #Formatting message to send to mods
+            msgSplit = splitText[splitText.index('msg')+1:]
+            msg      = " ".join(msgSplit)
+
+            for modID in self.Moderators:
+
+                #Channel with current moderator
+                contactChan = self.scBot.api_call('im.open', user = modID)['channel']['id']
+
+                #Contacting current mod
+                self.postMessage(data, msg, chan = contactChan)
+
+
         elif '$mods help' in text :
 
-            self.postMessage(data, 'List of mods commands : *$mods add USER* ~|~ *$mods remove USER* ~|~ *$mods list*')
-
+            self.postMessage(data, ['List of mods commands : *$mods add USER* ~|~ *$mods remove USER* ' + 
+                                    '~|~ *$mods list* ~|~ *$mods msg MESSAGE*'])
 
         #Writing self.Moderator list to Moderators.txt
         with open('Moderators.txt', 'w') as f:
