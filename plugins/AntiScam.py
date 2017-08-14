@@ -11,6 +11,17 @@ except:
     from urllib.parse import urlparse
 
 class AddrDetection(Plugin):
+    '''
+    Will filter ETH/BTC adddresses and URL domains.
+
+    LIST OF $url COMMANDS:
+
+        '$url add DOMAIN'     : Will whitelist DOMAIN
+        '$url remove DOMAIN ' : Will remove DOMAIN from whitelist
+        '$url list'           : Will show the current list of whitelisted domains
+        '$url help'           : Will list the possible $url commands
+    
+    '''
 
     #Admin token ( OAuth Access Token ) and client
     adminToken = os.environ['SLACK_ADMIN_TOKEN']
