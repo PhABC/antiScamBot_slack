@@ -16,7 +16,7 @@ Please read carefully the [What Can The Bot Do & How To Use It](#what-can-the-bo
     + [1.3 Installing Dependencies](#13-installing-dependencies)
   * [2. Creating The Bot/Application](#2-creating-the-bot-application)
   * [3. Launching The Bot](#3-launching-the-bot)
-- [What Can The Bot Do & How To Use It](#what-can-the-bot-do-how-to-use-it)
+- [What Can The Bot Do & How To Use It](#what-can-the-bot-do--how-to-use-it)
   * [Preventing ETH and BTC Addresses](#preventing-eth-and-btc-addresses)
   * [Preventing non-whitelisted URL domains](#preventing-non-whitelisted-url-domains)
   * [Preventing Channels' Topic Changes](#preventing-channels-topic-changes)
