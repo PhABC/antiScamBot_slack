@@ -552,18 +552,18 @@ class Moderation(Plugin):
 
             #Replacing bad characters
             msg = msg.replace('\\n', '\n')
-            #msg = msg.replace('&gt;', '> ')
-
-            print(msgSplit)
-            print(msg)
 
             for modID in self.Moderators:
 
-                #Channel with current moderator
-                contactChan = self.scBot.api_call('im.open', user = modID)['channel']['id']
+                try:
+                    #Channel with current moderator
+                    contactChan = self.scBot.api_call('im.open', user = modID)['channel']['id']
 
-                #Contacting current mod
-                self.postMessage(data, msg, chan = contactChan)
+                    #Contacting current mod
+                    self.postMessage(data, msg, chan = contactChan)
+
+                except ValueError:
+                    print("Error with moderator {}".format(modID))
 
 
         elif '$mods help' in text :
