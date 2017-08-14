@@ -165,7 +165,7 @@ class AddrDetection(Plugin):
         if '$url list' in text:
 
             #Printing list of whitelisted domains
-            self.postMessage(data, 'Whitelisted URLs : ' + '\n*' + '* \n*'.join(self.URL_WhiteList) + '*')
+            self.postMessage(data, '*Whitelisted URL Domains* : ' + '\n\n>>>' + '\n'.join(self.URL_WhiteList))
 
         #Commands accessible only to admins
         if admin:
