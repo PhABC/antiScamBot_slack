@@ -197,7 +197,6 @@ class AddrDetection(Plugin):
                 else:
                     self.postMessage(data, '*{}* is not whitelisted.'.format(domain))
 
-
             #Printing url commands
             elif '$url help' in text :
 
