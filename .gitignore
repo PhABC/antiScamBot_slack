@@ -1,4 +1,5 @@
 *.log
 *.json
 *.txt
+*.conf
 .DS_Store
