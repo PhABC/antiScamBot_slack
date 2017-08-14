@@ -10,7 +10,7 @@ Please read carefully the [What Can The Bot Do & How To Use It](#what-can-the-bo
 
 # Table of Content
 - [How To Setup The Bot](#how-to-setup-the-bot)
-  * [1. Setting Up an Independent Machine (Optional)](#1-setting-up-an-independent-nachine--optional-)
+  * [1. Setting Up an Independent Machine (Optional)](#1-setting-up-an-independent-machine--optional-)
     + [1.1 Creating a Droplet](#11-creating-a-droplet)
     + [1.2 Connecting to The Droplet](#12-connecting-to-the-droplet)
     + [1.3 Installing Dependencies](#13-installing-dependencies)
@@ -18,6 +18,8 @@ Please read carefully the [What Can The Bot Do & How To Use It](#what-can-the-bo
   * [3. Launching The Bot](#3-launching-the-bot)
 - [What Can The Bot Do & How To Use It](#what-can-the-bot-do--how-to-use-it)
   * [Preventing ETH and BTC Addresses](#preventing-eth-and-btc-addresses)
+  * [Preventing non-whitelisted URL domains](#preventing-non-whitelisted-url-domains)
+  * [Preventing Channels' Topic Changes](#preventing-channels-topic-changes)
   * [Muting Channels](#muting-channels)
   * [Inviting All Members](#inviting-all-members)
   * [Flagging Scammers/Spammers](#flagging-scammers-spammers)
@@ -127,7 +129,19 @@ Et voilà! The bot is now up and running. You can see that he is online on your 
 The bot is primarily for Admins, but as we will see, you can add moderators that have access to certain commands as well. 
 
 ## Preventing ETH and BTC Addresses
-This part does not involve any commands. The bot will simply delete any message containing an ETH or BTC address and will post a warning message (except if user is an admin). Etherscan.io links will be ignored.
+This part does not involve any commands. The bot will simply delete any message containing an ETH or BTC address and will post a warning message (except if user is an admin or moderator).
+
+## Preventing non-whitelisted URL domains
+Will delete any URL coming from non-whitelisted dimains (except for moderators and admins). Moderators and admin can control which domain is whitelisted using the `$url` commands.
+
+These url commands are (*Admins and Moderators only*) : 
+```
+ $url add DOMAIN     : Will whitelist DOMAIN
+ $url remove DOMAIN  : Will remove DOMAIN from whitelist
+ $url help           : Will list the possible $url commands
+```
+
+The `$url list` command is available to all and will show which url domains are whitelisted.
 
 ## Preventing Channels' Topic Changes
 Slack doesn't not have settings to prevent channel topic changes, which which can be dangerous if a malicious change of topic is not reverted. The present bot automatically overwrites changes of a topic made by non-Admin users, making topic changes `admin-only`. 
@@ -177,6 +191,7 @@ The moderator commands are (*Admins only*):
 $mods add USERNAME    : Will add USERNAME to the list of moderators
 $mods remove USERNAME : Will remove USERNAME from the list of moderators
 $mods list            : Will show the current list of moderators
+$mods msg MESSAGE     : Will send a message to all moderators
 $mods help            : Will list the possible $mods commands
 ```
 
