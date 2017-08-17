@@ -96,7 +96,17 @@ class AddrDetection(Plugin):
         
         SC.api_call('chat.postMessage', channel= chan, 
                      text = msg, icon_emoji = self.botAvatar,
-                     username = 'Anti-Scam Bot')    
+                     username = 'Anti-Scam Bot')   
+
+
+    def catch_all(self, data):
+        'Catching all events (like joined team)'
+
+        if data['type'] == 'team_join':
+            self.UserList['members'].append(data['user']['id'])
+            self.UserNameID_mapping[data['user']['name']] = data['user']['id']
+            print('Userlist updated') 
+
 
     def process_message(self, data):
         'Will process all posts on watched channels.'
@@ -407,6 +417,14 @@ class Moderation(Plugin):
         SC.api_call('chat.postMessage', channel = chan, 
                      text = msg, icon_emoji = self.botAvatar,
                      username = botName)   
+
+    def catch_all(self, data):
+        'Catching all events (like joined team)'
+
+        if data['type'] == 'team_join':
+            self.UserList['members'].append(data['user']['id'])
+            self.UserNameID_mapping[data['user']['name']] = data['user']['id']
+            print('Userlist updated')
 
 
     def process_message(self, data):
@@ -798,6 +816,16 @@ class Channels(Plugin):
         self.scAdmin.api_call("chat.delete", channel = data['channel'],
                                ts=data['ts'], as_user = True)
         return
+
+
+    def catch_all(self, data):
+        'Catching all events (like joined team)'
+
+        if data['type'] == 'team_join':
+            self.UserList['members'].append(data['user']['id'])
+            self.UserNameID_mapping[data['user']['name']] = data['user']['id']
+            print('Userlist updated')
+
 
 
     def process_message(self, data):
