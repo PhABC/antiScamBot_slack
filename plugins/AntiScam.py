@@ -97,7 +97,7 @@ class AddrDetection(Plugin):
         SC.api_call('chat.postMessage', channel= chan, 
                      text = msg, icon_emoji = self.botAvatar,
                      username = 'Anti-Scam Bot')   
-
+   
 
     def catch_all(self, data):
         'Catching all events (like joined team)'
@@ -105,7 +105,6 @@ class AddrDetection(Plugin):
         if data['type'] == 'team_join':
             self.UserList['members'].append(data['user']['id'])
             self.UserNameID_mapping[data['user']['name']] = data['user']['id']
-            print('Userlist updated') 
 
 
     def process_message(self, data):
@@ -421,10 +420,13 @@ class Moderation(Plugin):
     def catch_all(self, data):
         'Catching all events (like joined team)'
 
+        #Adding new users to the userlist
         if data['type'] == 'team_join':
             self.UserList['members'].append(data['user']['id'])
             self.UserNameID_mapping[data['user']['name']] = data['user']['id']
-            print('Userlist updated')
+
+            #Send welcoming message
+
 
 
     def process_message(self, data):
@@ -824,8 +826,6 @@ class Channels(Plugin):
         if data['type'] == 'team_join':
             self.UserList['members'].append(data['user']['id'])
             self.UserNameID_mapping[data['user']['name']] = data['user']['id']
-            print('Userlist updated')
-
 
 
     def process_message(self, data):
