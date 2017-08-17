@@ -422,12 +422,31 @@ class Moderation(Plugin):
 
         #Adding new users to the userlist
         if data['type'] == 'team_join':
-            self.UserList['members'].append(data['user']['id'])
-            self.UserNameID_mapping[data['user']['name']] = data['user']['id']
+
+            #User ID
+            userID = data['user']['id']
+            
+            #Updating list
+            self.UserList['members'].append(userID)
+            self.UserNameID_mapping[data['user']['name']] = userID
 
             #Send welcoming message
+            contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
 
+            #Message to user
+            msg = [ 'Hello,\n\n Welcome to our slack! Please be aware that *many users* will pretend '    +
+                    'to be part of the team and *will try to steal from you*. Do *NOT* trust anyone, '    +
+                    '*especially @slackbot*. Slackbot is being used by scammers sending you "reminders" ' +
+                    'that look very convicing, so please, never trust anything coming from @slackbot. '   +
+                    'Look at #announcements and #-scam-alert- in doubts or ask other team members or '    +
+                    'admins.\n\n Again, welcome to our project and please stay paranoid.'                 ]
 
+            #Sending warning message to user
+            self.postMessage(data, msg[0], chan = contactChan)
+            
+            #Deleting message
+            self.delete(data, msg[0])
+            
 
     def process_message(self, data):
         'Will process all posts on watched channels.'
