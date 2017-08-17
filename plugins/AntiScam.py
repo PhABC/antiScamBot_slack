@@ -423,12 +423,16 @@ class Moderation(Plugin):
         #Adding new users to the userlist
         if data['type'] == 'team_join':
 
+            print(3333)
+
             #User ID
             userID = data['user']['id']
             
             #Updating list
             self.UserList['members'].append(userID)
             self.UserNameID_mapping[data['user']['name']] = userID
+
+            print(123)
 
             #Send welcoming message
             contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
@@ -443,10 +447,7 @@ class Moderation(Plugin):
 
             #Sending warning message to user
             self.postMessage(data, msg[0], chan = contactChan)
-            
-            #Deleting message
-            self.delete(data, msg[0])
-            
+
 
     def process_message(self, data):
         'Will process all posts on watched channels.'
