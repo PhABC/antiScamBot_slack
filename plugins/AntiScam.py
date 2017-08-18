@@ -456,7 +456,8 @@ class Moderation(Plugin):
             self.FlagControl(data)
 
         #Check if warning needs to be sent
-        self.WarningReminder(data)
+        if data['channel'] in self.IDChanName_mapping.keys():
+            self.WarningReminder(data)
 
 
     ### --------------------------- MODIFIERS -------------------------- ###
