@@ -579,8 +579,6 @@ class Moderation(Plugin):
             #Printing list of moderators
             self.postMessage(data, 'Moderators list : ' + '*<@' + '>*, *<@'.join(self.Settings['Moderators']) + '>*')
 
-            self.postMessage(data, self.Welcome)
-
         elif 'mods msg' in text:
 
             #Formatting message to send to mods
