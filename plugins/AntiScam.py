@@ -738,9 +738,9 @@ class Moderation(Plugin):
         #Check if explosion time is reached
         if self.chanBombTime[chanID] == 100:
 
-            msg = [ self.botAvatar + ' *Stop and think* before clicking on anything on slack, *there have '         +
-                   'been several scam attempts* already. There is *NO 0x wallet* and definitely *NO post ICO '      +
-                   'Bonus*. Please, *always double check* with peers before clicking on anything. ' + self.botAvatar ]
+            msg = [ self.botAvatar + ' *Stop and think* before clicking on anything on slack, *there have '                 +
+                   'been several scam attempts* already. *MEW did not get hacked* and definitely *NO pre/post token sale '  +
+                   'bonus*. Please, *always double check* with peers before clicking on anything. ' + self.botAvatar ]
 
             self.postMessage(data, msg[0], chanID, SC = self.scBot)
 
