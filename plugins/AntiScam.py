@@ -430,10 +430,6 @@ class Moderation(Plugin):
             self.UserList['members'].append(userID)
             self.UserNameID_mapping[data['user']['name']] = userID
 
-            #General and -scam-alert- channel ID
-            AnnID  = self.ChanNameID_mapping['announcements']
-            ScamID = self.ChanNameID_mapping['-scam-alert-']
-
             #Send welcoming message
             contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
 
