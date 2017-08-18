@@ -376,6 +376,9 @@ class Moderation(Plugin):
     ChanNameID_mapping = { i['name']:i['id'] for i in ChanList['channels']}
     IDChanName_mapping = { i['id']:i['name'] for i in ChanList['channels']}
 
+    #Reminding counter
+    chanBombTime = { i['id']: 0 for i in ChanList['channels'] }
+
     #Loading welcome message
     if os.path.isfile('Welcome.txt'):
         with open('Welcome.txt', 'r') as f:
@@ -455,6 +458,9 @@ class Moderation(Plugin):
         #Flag scam commands
         if 'flag ' in data['text'] and (self.isAdmin(userinfo) or userID in self.Settings['Moderators']):
             self.FlagControl(data)
+
+        #Check if warning needs to be sent
+        self.WarningReminder(data)
 
 
     ### --------------------------- MODIFIERS -------------------------- ###
@@ -723,6 +729,28 @@ class Moderation(Plugin):
             pk.dump(self.Settings, f)
 
     ### ----------------------- EXTRA FUNCTIONS ----------------------- ###
+
+    def WarningReminder(self, data):
+        'Will post warnings in channels'
+
+        #Channel ID
+        chanID = data['channel']
+
+        #Incrementing channel remind bomb
+        self.chanBombTime[chanID] += 1
+
+        #Check if explosion time is reached
+        if self.chanBombTime[chanID] == 200:
+
+            msg = [ self.botAvatar + ' *Stop and think* before clicking on anything on slack, *there have '         +
+                   'been several scam attempts* already. There is *NO 0x wallet* and definitely *NO post ICO '      +
+                   'Bonus*. Please, *always double check* with peers before clicking on anything. ' + self.botAvatar ]
+
+            self.postMessage(data, msg[0], chanID, SC = self.scBot)
+
+            #Reset bomb timer to 0 for this channel
+            self.chanBombTime[chanID] = 0
+
 
     def reportFlagged(self, data, flaggedID):
         'Will report the flagged user to #-scam-alert- channel'
