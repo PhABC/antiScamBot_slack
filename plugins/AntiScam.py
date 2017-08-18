@@ -23,20 +23,21 @@ class AddrDetection(Plugin):
     
     '''
 
+    #Loading settings
+    with open('Settings.txt', 'rb') as f:
+        Settings = pk.loads(f.read())
+
     #Admin token ( OAuth Access Token ) and client
-    adminToken = os.environ['SLACK_ADMIN_TOKEN']
+    adminToken = Settings['SLACK_ADMIN_TOKEN']
     scAdmin    = SlackClient(adminToken)
 
     #Bot token and client
-    botToken = os.environ['SLACK_BOT_TOKEN']
+    botToken = Settings['SLACK_BOT_TOKEN']
     scBot    = SlackClient(botToken)
 
     #Bot avatar emoji
-    botAvatar = os.environ['SLACK_BOT_EMOJI']
+    botAvatar = Settings['SLACK_BOT_EMOJI']
     
-    #Whitelist
-    whitelistUsers = ['USLACKBOT']
-
     #Regular Expressions for ETH and BTC addresses
     eth_prog = re.compile(r'((0x)?[0-9a-fA-F]{40})')
     btc_prog = re.compile(r'([13][a-km-zA-HJ-NP-Z1-9]{25,34})')
@@ -49,21 +50,6 @@ class AddrDetection(Plugin):
 
     #Hack to reload mods after they are modified in other plugin
     reloadMods = False
-
-    #Loading URL_WhiteList.txt
-    if os.path.isfile('URL_WhiteList.txt'):
-        with open('URL_WhiteList.txt', 'r') as f:
-            URL_WhiteList = f.read().split(',')[:-1]
-    else:
-        URL_WhiteList = []
-
-    #Loading Moderators list
-    if os.path.isfile('Moderators.txt'):
-        with open('Moderators.txt', 'r') as f:
-            Moderators = f.read().split(',')[:-1]
-    else:
-        Moderators = []
-
 
     def delete(self, data, msg, warning = False):
         '''
@@ -120,14 +106,15 @@ class AddrDetection(Plugin):
 
         #Will reload mods if was changed last message
         if self.reloadMods:
-            #Loading new moderator list
-            with open('Moderators.txt', 'r') as f:
-                self.Moderators = f.read().split(',')[:-1]
+
+            #Loading new moderator list if changed by other plugin
+            with open('Settings.txt', 'rb') as f:
+                Settings = pk.loads(f.read())
 
             self.reloadMods = False
 
         #Check if current user is and admin or mod
-        isAdminOrMod = (self.isAdmin(userinfo) or userID in self.Moderators)
+        isAdminOrMod = (self.isAdmin(userinfo) or userID in self.Settings['Moderators'])
 
         #Reloading moderators if change
         if self.isAdmin(userinfo) and '$mods' in data['text']:
@@ -135,12 +122,13 @@ class AddrDetection(Plugin):
             #Will reload next messgae
             self.reloadMods = True
 
-        #URL control
-        if '$url ' in data['text']:
-            if isAdminOrMod:
-                self.URLControl(data, admin = True)
-            else: 
-                self.URLControl(data, admin = False)
+        #URL control (If activated)
+        if self.Settings['URLFILTER']:
+            if '$url ' in data['text']:
+                if isAdminOrMod:
+                    self.URLControl(data, admin = True)
+                else: 
+                    self.URLControl(data, admin = False)
 
         #Returning if admin or moderator
         if isAdminOrMod:
@@ -151,9 +139,10 @@ class AddrDetection(Plugin):
         if self.isETH_BTC(data):
             return
 
-        #Deleting if contains non-allowed URL
-        if self.isBadURL(data):
-            return
+        #Deleting if contains non-allowed URL (if filter on)
+        if self.Settings['URLFILTER']:
+            if self.isBadURL(data):
+                return
 
         return
 
@@ -174,7 +163,7 @@ class AddrDetection(Plugin):
         if '$url list' in text:
 
             #Printing list of whitelisted domains
-            self.postMessage(data, '*Whitelisted URL Domains* : ' + '\n\n>>>' + '\n'.join(self.URL_WhiteList))
+            self.postMessage(data, '*Whitelisted URL Domains* : ' + '\n\n>>>' + '\n'.join(self.Settings['URL_WhiteList']))
 
         #Commands accessible only to admins
         if admin:
@@ -194,9 +183,9 @@ class AddrDetection(Plugin):
 
 
                 #Adding new url to whitelist
-                if not domain in self.URL_WhiteList:
+                if not domain in self.Settings['URL_WhiteList']:
 
-                    self.URL_WhiteList.append(domain)
+                    self.Settings['URL_WhiteList'].append(domain)
 
                     #Notification message
                     self.postMessage(data, 'Whitelisted *{}*'.format(domain))
@@ -209,10 +198,10 @@ class AddrDetection(Plugin):
             #Removing url from whitelist
             elif '$url remove' in text :
 
-                if domain in self.URL_WhiteList:
+                if domain in self.Settings['URL_WhiteList']:
 
                     #Deleting
-                    del self.URL_WhiteList[self.URL_WhiteList.index(domain)]
+                    del self.Settings['URL_WhiteList'][self.Settings['URL_WhiteList'].index(domain)]
 
                     #Log message
                     self.postMessage(data, 'Removed *{}* from URL whitelist.'.format(domain))
@@ -225,11 +214,9 @@ class AddrDetection(Plugin):
 
                 self.postMessage(data, 'List of url commands : *$url add DOMAIN* ~|~ *$url remove DOMAIN* ~|~ *$url list*')
 
-
-            #Writing self.URL_WhiteList list to URL_WhiteList.txt
-            with open('URL_WhiteList.txt', 'w') as f:
-                for item in self.URL_WhiteList:
-                    f.write("%s," % item)
+            # Saving SetTings to Settings.txt
+            with open('Settings.txt', 'wb') as f:
+                pk.dump(self.Settings, f)
 
             return
 
@@ -261,7 +248,7 @@ class AddrDetection(Plugin):
             print('URL detected at {}'.format(domain))
 
             #If domain is not in whitelist
-            if not domain in self.URL_WhiteList:
+            if not domain in self.Settings['URL_WhiteList']:
 
                 #Channel with new moderator
                 contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
@@ -361,33 +348,20 @@ class Moderation(Plugin):
         '$flag help'          : Will list flag commands
 
     '''
-    #Number of required mod concensus to report scammer (No concensus needed for admins)
-    flagConcensus = 2
+    #Loading settings
+    with open('Settings.txt', 'rb') as f:
+        Settings = pk.loads(f.read())
 
-    #Admin token ( OAuth Access Token )
-    adminToken = os.environ['SLACK_ADMIN_TOKEN']
+    #Admin token ( OAuth Access Token ) and client
+    adminToken = Settings['SLACK_ADMIN_TOKEN']
     scAdmin    = SlackClient(adminToken)
 
     #Bot token and client
-    botToken = os.environ['SLACK_BOT_TOKEN']
+    botToken = Settings['SLACK_BOT_TOKEN']
     scBot    = SlackClient(botToken)
 
     #Bot avatar emoji
-    botAvatar = os.environ['SLACK_BOT_EMOJI']
-
-    #Loading Moderators list
-    if os.path.isfile('Moderators.txt'):
-        with open('Moderators.txt', 'r') as f:
-            Moderators = f.read().split(',')[:-1]
-    else:
-        Moderators = []
-
-    #Loading Flagged users list
-    if os.path.isfile('Flagged.txt'):
-        with open('Flagged.txt', 'rb') as f:
-            Flagged = pk.loads(f.read())
-    else:
-        Flagged = {}
+    botAvatar = Settings['SLACK_BOT_EMOJI']
 
     #List of users with information
     UserList = scBot.api_call("users.list")
@@ -395,6 +369,29 @@ class Moderation(Plugin):
     #Mapping between names and user IDs
     UserNameID_mapping = { i['name']:i['id'] for i in UserList['members']}
 
+    #List of all the channels with information
+    ChanList = scBot.api_call("channels.list")
+
+    #Mapping between channel name and channel IDs
+    ChanNameID_mapping = { i['name']:i['id'] for i in ChanList['channels']}
+    IDChanName_mapping = { i['id']:i['name'] for i in ChanList['channels']}
+
+    #Loading welcome message
+    if os.path.isfile('Welcome.txt'):
+        with open('Welcome.txt', 'r') as f:
+            Welcome = f.read()
+
+    #Replacing bad characters
+    Welcome = Welcome.replace('\\n', '\n')
+    WelSplt = Welcome.split(' ')
+
+    #Converting #CHANNEL to <#CHANID> for proper tagging
+    for i in range(len(WelSplt)):
+        if '#' in WelSplt[i]:
+            WelSplt[i] = '<#' + ChanNameID_mapping[WelSplt[i][1:]] + '>'
+
+    #Remerging Welcome msg
+    Welcome = ' '.join(WelSplt)
 
     def postMessage(self, data, msg, chan = '', SC = ''):
         'Will post a message in the channel chan (current channel is default)'
@@ -420,10 +417,8 @@ class Moderation(Plugin):
     def catch_all(self, data):
         'Catching all events (like joined team)'
 
-        #Adding new users to the userlist
+        #New team members
         if data['type'] == 'team_join':
-
-            print(3333)
 
             #User ID
             userID = data['user']['id']
@@ -432,18 +427,15 @@ class Moderation(Plugin):
             self.UserList['members'].append(userID)
             self.UserNameID_mapping[data['user']['name']] = userID
 
-            print(123)
+            #General and -scam-alert- channel ID
+            AnnID  = self.ChanNameID_mapping['announcements']
+            ScamID = self.ChanNameID_mapping['-scam-alert-']
 
             #Send welcoming message
             contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
 
             #Message to user
-            msg = [ 'Hello,\n\n Welcome to our slack! Please be aware that *many users* will pretend '    +
-                    'to be part of the team and *will try to steal from you*. Do *NOT* trust anyone, '    +
-                    '*especially @slackbot*. Slackbot is being used by scammers sending you "reminders" ' +
-                    'that look very convicing, so please, never trust anything coming from @slackbot. '   +
-                    'Look at #announcements and #-scam-alert- in doubts or ask other team members or '    +
-                    'admins.\n\n Again, welcome to our project and please stay paranoid.'                 ]
+            msg = self.Welcome
 
             #Sending warning message to user
             self.postMessage(data, msg[0], chan = contactChan)
@@ -461,7 +453,7 @@ class Moderation(Plugin):
             self.ModeratorControl(data)
 
         #Flag scam commands
-        if 'flag ' in data['text'] and (self.isAdmin(userinfo) or userID in self.Moderators):
+        if 'flag ' in data['text'] and (self.isAdmin(userinfo) or userID in self.Settings['Moderators']):
             self.FlagControl(data)
 
 
@@ -522,8 +514,8 @@ class Moderation(Plugin):
                 modID = self.UserNameID_mapping[modName]
 
             #Removing moderator
-            if modID in self.Moderators:        
-                del self.Moderators[self.Moderators.index(modID)]
+            if modID in self.Settings['Moderators']:        
+                del self.Settings['Moderators'][self.Settings['Moderators'].index(modID)]
                 #Log message
                 self.postMessage(data, 'Removed *<@{}>* as a moderator'.format(modID))
 
@@ -548,8 +540,8 @@ class Moderation(Plugin):
                 modID = self.UserNameID_mapping[modName]
 
             #Adding new moderator
-            if not modID in self.Moderators:
-                self.Moderators.append(modID)
+            if not modID in self.Settings['Moderators']:
+                self.Settings['Moderators'].append(modID)
 
                 #Log message
                 self.postMessage(data, 'Added *<@{}>* as a moderator'.format(modID))
@@ -585,8 +577,9 @@ class Moderation(Plugin):
         elif '$mods list' in text:
 
             #Printing list of moderators
-            self.postMessage(data, 'Moderators list : ' + '*<@' + '>*, *<@'.join(self.Moderators) + '>*')
+            self.postMessage(data, 'Moderators list : ' + '*<@' + '>*, *<@'.join(self.Settings['Moderators']) + '>*')
 
+            self.postMessage(data, self.Welcome)
 
         elif 'mods msg' in text:
 
@@ -599,7 +592,7 @@ class Moderation(Plugin):
             #Replacing bad characters
             msg = msg.replace('\\n', '\n')
 
-            for modID in self.Moderators:
+            for modID in self.Settings['Moderators']:
 
                 try:
                     #Channel with current moderator
@@ -617,10 +610,9 @@ class Moderation(Plugin):
             self.postMessage(data, ['List of mods commands : *$mods add USER* ~|~ *$mods remove USER* ' + 
                                     '~|~ *$mods list* ~|~ *$mods msg MESSAGE*'])
 
-        #Writing self.Moderator list to Moderators.txt
-        with open('Moderators.txt', 'w') as f:
-            for item in self.Moderators:
-                f.write("%s," % item)
+        # Saving SetTings to Settings.txt
+        with open('Settings.txt', 'wb') as f:
+            pk.dump(self.Settings, f)
 
 
     def FlagControl(self, data):
@@ -642,13 +634,13 @@ class Moderation(Plugin):
         if '$flag list' in text:
 
             #Build list of flag users and number of flags
-            FlaggedList = [[k + ': ' + str(len(self.Flagged[k]))] for k in self.Flagged.keys()]
+            FlaggedList = [[k + ': ' + str(len(self.Settings['Flagged'][k]))] for k in self.Settings['Flagged'].keys()]
             FlaggedList = [i[0] for i in FlaggedList]
 
             #Forming list of flagged users
             msg = 'Flagged users list (name : unique flags):\n>>>'
-            for i in self.Flagged.keys():
-                msg += ['*<@' + i + '>* : *' + str(len(self.Flagged[i])) + '*\n'][0]
+            for i in self.Settings['Flagged'].keys():
+                msg += ['*<@' + i + '>* : *' + str(len(self.Settings['Flagged'][i])) + '*\n'][0]
 
             #Printing list of flagged users
             self.postMessage(data, msg)
@@ -668,13 +660,13 @@ class Moderation(Plugin):
                 flaggedID = self.UserNameID_mapping[flaggedName]
 
             #Removing flagged user
-            if not flaggedID in self.Flagged:
+            if not flaggedID in self.Settings['Flagged']:
 
                 self.postMessage(data, '*<@{}>* is not flagged.'.format(flaggedID))
 
             else:
 
-                del self.Flagged[flaggedID]
+                del self.Settings['Flagged'][flaggedID]
                 self.postMessage(data, '*<@{}>* has been unflagged.'.format(flaggedID))
 
         elif '$flag ' in text :
@@ -691,7 +683,7 @@ class Moderation(Plugin):
             flaggedInfo = self.scBot.api_call('users.info', user=flaggedID)
 
             #Removing flagged user
-            if not flaggedID in self.Flagged:
+            if not flaggedID in self.Settings['Flagged']:
 
                 if flaggedInfo['user']['is_admin']:
 
@@ -702,25 +694,25 @@ class Moderation(Plugin):
                 if self.isAdmin(modinfo):
 
                     #Flagging
-                    self.Flagged[flaggedID] = [modName]
+                    self.Settings['Flagged'][flaggedID] = [modName]
                     self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
                     #Reporting without concensus
                     self.reportFlagged(data, flaggedID)
                 else:
                     #Flagging
-                    self.Flagged[flaggedID] = [modName]
+                    self.Settings['Flagged'][flaggedID] = [modName]
                     self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
             #If already reported by current mod/admin
-            elif not modName in self.Flagged[flaggedID]:
+            elif not modName in self.Settings['Flagged'][flaggedID]:
 
-                self.Flagged[flaggedID].append(modName)
+                self.Settings['Flagged'][flaggedID].append(modName)
                 self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
                 #Report if concensus is reached (or automatic if Admin)
-                if ( (len(self.Flagged[flaggedID]) >= self.flagConcensus or self.isAdmin(modinfo))  and 
-                    '$reported' not in self.Flagged[flaggedID] ):
+                if ( (len(self.Settings['Flagged'][flaggedID]) >= self.Settings['CONSENSUS']  or self.isAdmin(modinfo))  and 
+                    '$reported' not in self.Settings['Flagged'][flaggedID] ):
 
                     #Reporting
                     self.reportFlagged(data, flaggedID)
@@ -728,11 +720,9 @@ class Moderation(Plugin):
 
                 self.postMessage(data, 'You already flagged *<@{}>* '.format(flaggedID))
 
-        #Writing self.Flagged list to Flagged.txt
-        with open('Flagged.txt', 'wb') as f:
-            pk.dump(self.Flagged, f)
-
-
+        # Saving SetTings to Settings.txt
+        with open('Settings.txt', 'wb') as f:
+            pk.dump(self.Settings, f)
 
     ### ----------------------- EXTRA FUNCTIONS ----------------------- ###
 
@@ -751,7 +741,7 @@ class Moderation(Plugin):
         self.postMessage(data, msg[0], scamAlertChan, SC = self.scAdmin)
 
         #Reported
-        self.Flagged[flaggedID].append('$reported')
+        self.Settings['Flagged'][flaggedID].append('$reported')
 
 
 
@@ -772,16 +762,20 @@ class Channels(Plugin):
 
     '''
 
-    #Admin token ( OAuth Access Token )
-    adminToken = os.environ['SLACK_ADMIN_TOKEN']
+    #Loading settings
+    with open('Settings.txt', 'rb') as f:
+        Settings = pk.loads(f.read())
+
+    #Admin token ( OAuth Access Token ) and client
+    adminToken = Settings['SLACK_ADMIN_TOKEN']
     scAdmin    = SlackClient(adminToken)
 
     #Bot token and client
-    botToken = os.environ['SLACK_BOT_TOKEN']
+    botToken = Settings['SLACK_BOT_TOKEN']
     scBot    = SlackClient(botToken)
 
     #Bot avatar emoji
-    botAvatar = os.environ['SLACK_BOT_EMOJI']
+    botAvatar = Settings['SLACK_BOT_EMOJI']
 
     #List of users with information
     UserList = scBot.api_call("users.list")
@@ -795,25 +789,10 @@ class Channels(Plugin):
     #Mapping between channel name and channel IDs
     ChanNameID_mapping = { i['name']:i['id'] for i in ChanList['channels']}
     IDChanName_mapping = { i['id']:i['name'] for i in ChanList['channels']}
+    
+    #Taking the current topics as default
+    ChannelsTopics = { c['id'] : c['topic']['value'] for c in ChanList['channels']}
 
-    #Loading censored channels list
-    if os.path.isfile('MutedChannels.txt'):
-        with open('MutedChannels.txt', 'r') as f:
-            MutedChannels = f.read().split(',')[:-1]
-    else:
-        MutedChannels = []
-
-    #Loading channels topics list
-    if os.path.isfile('ChannelsTopics.txt'):
-        with open('ChannelsTopics.txt', 'rb') as f:
-            ChannelsTopics = pk.loads(f.read())
-    else:
-        #Taking the current topics as default
-        ChannelsTopics = { c['id'] : c['topic']['value'] for c in ChanList['channels']}
-
-        #Storing existing topics in txt file
-        with open('ChannelsTopics.txt', 'wb') as f:
-            pk.dump(ChannelsTopics, f)
 
     def postMessage(self, data, msg, chan = '', SC = ''):
         'Will post a message in the current channel'
@@ -879,7 +858,7 @@ class Channels(Plugin):
             self.TopicMonitor(data, isAdmin = False)
 
         #Delete everything else
-        if data['channel'] in self.MutedChannels:
+        if data['channel'] in self.Settings['MutedChannels']:
             self.delete(data)
 
     ### --------------------------- MODIFIERS -------------------------- ###
@@ -925,8 +904,8 @@ class Channels(Plugin):
             chanID   = self.ChanNameID_mapping[chanName]
 
             #Removing channel from MutedChannels list
-            if chanID in self.MutedChannels:        
-                del self.MutedChannels[self.MutedChannels.index(chanID)]
+            if chanID in self.Settings['MutedChannels']:        
+                del self.Settings['MutedChannels'][self.Settings['MutedChannels'].index(chanID)]
 
                 #Message
                 msg = 'This channel has been un-silenced. Everyone is welcomed to post!'
@@ -943,7 +922,7 @@ class Channels(Plugin):
         elif '$mute list' in text:
 
             #Printing list of moderators
-            self.postMessage(data, 'Silenced channels list: ' + '*<#' + '>*, *<#'.join(self.MutedChannels) + '>*')
+            self.postMessage(data, 'Silenced channels list: ' + '*<#' + '>*, *<#'.join(self.Settings['MutedChannels']) + '>*')
 
         elif '$mute help' in text :
 
@@ -956,10 +935,10 @@ class Channels(Plugin):
             chanID   = self.ChanNameID_mapping[chanName]
 
             #Muting new channel
-            if not chanID in self.MutedChannels:
+            if not chanID in self.Settings['MutedChannels']:
 
                 #Adding to MutedChannels list    
-                self.MutedChannels.append(chanID)
+                self.Settings['MutedChannels'].append(chanID)
 
                 #Message
                 msg = 'This channel has been silenced. Only Admins and bots have permission to post here.'
@@ -977,11 +956,10 @@ class Channels(Plugin):
 
                 self.postMessage(data, 'Channel *<#{}>* is already muted.'.format(chanID))
 
+        # Saving SetTings to Settings.txt
+        with open('Settings.txt', 'wb') as f:
+            pk.dump(self.Settings, f)
 
-        #Writing self.Moderator list to Moderators.txt
-        with open('MutedChannels.txt', 'w') as f:
-            for item in self.MutedChannels:
-                f.write("%s," % item)
 
     ### ----------------------- EXTRA FUNCTIONS ----------------------- ###
 
@@ -1017,9 +995,6 @@ class Channels(Plugin):
                 #Inviting user to channel
                 self.scAdmin.api_call('channels.invite', user = userID, channel = chanID)
 
-                #Sleep to prevent triggering 1 sec stupid API
-                time.sleep(.8)
-
         #Log message
         self.postMessage(data, 'Invited all users to *<#{}>*.'.format(chanID))
 
@@ -1037,10 +1012,6 @@ class Channels(Plugin):
 
                 #Editing default topic
                 self.ChannelsTopics[chanID] = topic
-
-                #Updating  ChannelsTopics file
-                with open('ChannelsTopics.txt', 'wb') as f:
-                    pk.dump(self.ChannelsTopics, f)
 
                 return
 
