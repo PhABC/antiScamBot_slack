@@ -736,7 +736,7 @@ class Moderation(Plugin):
         self.chanBombTime[chanID] += 1
 
         #Check if explosion time is reached
-        if self.chanBombTime[chanID] == 200:
+        if self.chanBombTime[chanID] == 100:
 
             msg = [ self.botAvatar + ' *Stop and think* before clicking on anything on slack, *there have '         +
                    'been several scam attempts* already. There is *NO 0x wallet* and definitely *NO post ICO '      +
