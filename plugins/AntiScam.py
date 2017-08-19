@@ -99,6 +99,10 @@ class AddrDetection(Plugin):
         #Printing message to console
         print(data)
 
+        #In case bot message
+        if not 'user' in data.keys():
+            return
+
         #Name of the user
         userinfo = self.scBot.api_call('users.info', user=data['user'])
         username = userinfo['user']['name']
@@ -442,6 +446,10 @@ class Moderation(Plugin):
 
     def process_message(self, data):
         'Will process all posts on watched channels.'
+
+        #In case bot message
+        if not 'user' in data.keys():
+            return
 
         userinfo = self.scBot.api_call('users.info', user=data['user'])
         username = userinfo['user']['name']
@@ -853,6 +861,10 @@ class Channels(Plugin):
     def process_message(self, data):
         'Will process all posts on watched channels.'
 
+        #In case bot message
+        if not 'user' in data.keys():
+            return
+
         #Getting user and channel information
         userinfo = self.scBot.api_call('users.info', user=data['user'])
         username = userinfo['user']['name']
@@ -893,6 +905,7 @@ class Channels(Plugin):
             return True
         else:
             return False
+
 
     def tag2name(self, chan):
         ''' 
