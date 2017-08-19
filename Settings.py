@@ -70,7 +70,8 @@ def initSettings():
 
     """
 
-    input('\nNote that you can customize your welcoming message for new users by modifying the Welcome.txt file.')
+    input(['\nNote that you can customize your welcoming message for new users ' +
+           ' by modifying the Welcome.txt file. \n~> Press ENTER to launch bot.'][0])
 
     #LOADING TXT FILES FOR BACKWARD COMPATIBILITY 
 
@@ -97,4 +98,6 @@ def initSettings():
     # Saving SetTings to Settings.txt
     with open('Settings.txt', 'wb') as f:
         pk.dump(Settings, f)
+
+    return Settings
 
