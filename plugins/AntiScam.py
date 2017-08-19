@@ -441,7 +441,7 @@ class Moderation(Plugin):
             msg = self.Welcome
 
             #Sending warning message to user
-            self.postMessage(data, msg[0], chan = contactChan)
+            self.postMessage(data, msg, chan = contactChan)
 
 
     def process_message(self, data):
