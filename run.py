@@ -62,8 +62,11 @@ if __name__ == '__main__':
               print('\nAntiscam Bot Initiation.')
               main()
 
-          except:
-              print('\nCONNECTION LOST, RESTARTING IN 5 SECONDS.\n')
+          except Exception as ex: 
+
+              #Printing error and restart message
+              print('\nError : ') ; print(ex)
+              print('\nRESTARTING IN 5 SECONDS.\n')
 
               #Restart after 5 seocnds
               time.sleep(5) 
