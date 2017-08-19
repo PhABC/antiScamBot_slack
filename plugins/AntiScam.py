@@ -40,6 +40,7 @@ class AddrDetection(Plugin):
     
     #Regular Expressions for ETH and BTC addresses
     eth_prog = re.compile(r'((0x)?[0-9a-fA-F]{40})')
+    eth_priv = re.compile(r'([0-9a-fA-F]{64})')
     btc_prog = re.compile(r'([13][a-km-zA-HJ-NP-Z1-9]{25,34})')
 
     #List of users with information
@@ -51,7 +52,7 @@ class AddrDetection(Plugin):
     #Hack to reload mods after they are modified in other plugin
     reloadMods = False
 
-    def delete(self, data, msg, warning = False):
+    def delete(self, data, msg = '', warning = False):
         '''
         Will delete a msg and post a warning message in the respective channel
         '''
@@ -287,13 +288,41 @@ class AddrDetection(Plugin):
         eth_result = self.eth_prog.search(data['text'])
         btc_result = self.btc_prog.search(data['text'])
 
+        #ETH privatekey
+        eth_result_pv = self.eth_priv.search(data['text'])
+
+        print(eth_result_pv)
+        print(eth_result)
+
         #Allow if etherscan address
         if 'etherscan.io/' in data['text']:
             print('Etherscan address')
             return False
 
         #ETH address detection
-        if eth_result and eth_result.group(1):
+        if eth_result_pv and eth_result_pv.group(1):
+            print('ETH private key detected.')
+
+            #Send welcoming message
+            contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
+
+
+            #Message to user
+            msg = [ 'Hello,\n\n You posted a message containing a private key and the '  +
+                    'message was automatically deleted for your safety. *Never share  '  +
+                    'your private key with anyone, a malicious user could steal your '   +
+                    'tokens.* No team member would ever as you this.\n\n Please be vigilant.']
+
+            #Sending warning message to user
+            self.postMessage(data, msg[0], chan = contactChan)
+            
+            #Deleting message
+            self.delete(data, )
+
+            return True
+
+        #ETH address detection
+        elif eth_result and eth_result.group(1):
             print('ETH address detected.')
 
             #Message to post in channel
