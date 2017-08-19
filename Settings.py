@@ -35,7 +35,7 @@ def initSettings():
     Settings['URLFILTER'] = input("\nDo you want the bot to filter URLs (y or n)? y is recommended: ")
 
     while not Settings['URLFILTER'] == 'y' and not Settings['URLFILTER'] == 'n':
-        Settings['URLFILTER'] = input("Please answer with y or n")
+        Settings['URLFILTER'] = input("Please answer with y or n: ")
 
     #Putting in binary
     if Settings['URLFILTER'] == 'y': 
