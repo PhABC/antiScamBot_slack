@@ -291,9 +291,6 @@ class AddrDetection(Plugin):
         #ETH privatekey
         eth_result_pv = self.eth_priv.search(data['text'])
 
-        print(eth_result_pv)
-        print(eth_result)
-
         #Allow if etherscan address
         if 'etherscan.io/' in data['text']:
             print('Etherscan address')
