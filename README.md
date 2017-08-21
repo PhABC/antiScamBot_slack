@@ -118,9 +118,10 @@ This will initiate the bot, but we need to add some information:
 1. Paste the **Oauth Access Token**, which will give admin’s right to the bot.
 2. Paste the **Bot User Oauth Access Token**
 3. Choose your emoji avatar for the bot (e.g. :0x:)
-4. Run the following commands:
+4. Choose how many moderators are required for a concensus (2-3 should be the minimum, more if you have many not super trustworthy moderators).
+5. Choose if you want the URL filtering to be on or off.
+6. Run the following command:
  ``` bash
-source ~/.bashrc
 python run.py
 ```
 Et voilà! The bot is now up and running. You can see that he is online on your slack team under *Apps*. **You should invite the bot in the channels you want him to monitor. Make sure you create a channel named *-scam-alert-*; the bot will need it.**
