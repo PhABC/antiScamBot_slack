@@ -129,8 +129,11 @@ Et voilà! The bot is now up and running. You can see that he is online on your 
 # What Can The Bot Do & How To Use It
 The bot is primarily for Admins, but as we will see, you can add moderators that have access to certain commands as well. 
 
+## Welcoming Message
+The bot will send a message to all new members. There is a default message talking about security on slack, but you can customize it by modifying the Welcome.txt message.
+
 ## Preventing ETH and BTC Addresses
-This part does not involve any commands. The bot will simply delete any message containing an ETH or BTC address and will post a warning message (except if user is an admin or moderator).
+This part does not involve any commands. The bot will simply delete any message containing an ETH or BTC address and will post a warning message (except if user is an admin or moderator). It will also delete private keys and notify the user posting the key explaining why they shouldn't do this.
 
 ## Preventing non-whitelisted URL domains
 Will delete any URL coming from non-whitelisted dimains (except for moderators and admins). Moderators and admin can control which domain is whitelisted using the `$url` commands.
@@ -199,6 +202,9 @@ $mods help            : Will list the possible $mods commands
 Where you can ether refer to users with or without **@**.
 
 Note that adding a moderator will send them a private message explaining briefly their responsibilities and the commands they can use. I recommend adding admins as moderators as well so they can receive this information. 
+
+## Dynamic Reminder Messages
+The bot will dynamically post messages to remind users to be careful. The dynamic is with respect to time, where a message will be posted every X message within a given channel. Hence, the bot will post a message more frequently (time based) in a very busy #trading channel (every 30mins-1hour) than in a dead #SEClover channel. 
 
 ## Additional Notes
 All the flagged members, moderators and mute channels are stored in txt files. Please do not delete these as you would need to readd/reflag/remute everything. Make sure you save these files externally if you ever intend to migrate to another machine.
