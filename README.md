@@ -1,5 +1,5 @@
 **Projects Using antiScamBot_slack**: 
-       [0x Protocol](https://0xproject.com/), [Mysterium](mysterium.network), [Numerai](https://numer.ai/). 
+       [0x Protocol](https://0xproject.com/), [Mysterium](mysterium.network), [Numerai](https://numer.ai/), [Monetha](https://www.monetha.io/) 
 
 # antiScamBot_slack
 antiScam-bot is a slack bot allowing admins to better control what is going in their slack channels and reduce potential scams. The bot comes with a range of functions that admins can use such as restricting channels to admins only, inviting all team members to a channel, reporting and flagging scammers and nominating moderators to help protecting the channels. The free slack API does not allow things like banning users and such, so more soft methods have been implemented for now. This bot is a work in progress and it is my hope that feedback and contributions will improve its reach.  
