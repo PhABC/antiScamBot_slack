@@ -406,6 +406,13 @@ class Moderation(Plugin):
     ChanNameID_mapping = { i['name']:i['id'] for i in ChanList['channels']}
     IDChanName_mapping = { i['id']:i['name'] for i in ChanList['channels']}
 
+    #Private channels (groups) list
+    PrivList = scBot.api_call("groups.list")
+
+    #Mapping between groups name and groups ID
+    PrivNameID_mapping = { i['name']:i['id'] for i in PrivList['groups']}
+    IDPrivName_mapping = { i['id']:i['name'] for i in PrivList['groups']}
+
     #Reminding counter
     chanBombTime = { i['id']: 0 for i in ChanList['channels'] }
 
@@ -427,7 +434,7 @@ class Moderation(Plugin):
     Welcome = ' '.join(WelSplt)
 
     #CXhannel to post name of new users
-    if 'scambot-internal' in ChanNameID_mapping.keys():
+    if 'scambot-internal' in PrivNameID_mapping.keys():
         newcomers = []
 
 
@@ -476,7 +483,7 @@ class Moderation(Plugin):
             self.postMessage(data, msg, chan = contactChan)
 
             #Post names of new comers when 25 new people join
-            if 'scambot-internal' in self.ChanNameID_mapping.keys():
+            if 'scambot-internal' in self.PrivNameID_mapping.keys():
 
                 #Adding new user to list
                 self.newcomers.append(userID)
@@ -487,8 +494,9 @@ class Moderation(Plugin):
 
                 #If treshold reached
                 else:
-                    ModChan = self.ChanNameID_mapping['scambot-internal']      
-                    msg     = 'Newcomers: ' + '*<@' + '>*, *<@'.join(self.newcomers) + '>*'
+
+                    #Bot message  
+                    msg = 'Newcomers: ' + '*<@' + '>*, *<@'.join(self.newcomers) + '>*'
 
                     #Post list of new comers
                     self.postMessage(data, msg, chan = 'scambot-internal')                    
