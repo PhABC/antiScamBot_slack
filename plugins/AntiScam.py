@@ -428,7 +428,7 @@ class Moderation(Plugin):
 
     #CXhannel to post name of new users
     if 'scambot-internal' in ChanNameID_mapping.keys():
-        newcomers = ['phabc','iamnotahuman']
+        newcomers = []
 
 
     def postMessage(self, data, msg, chan = '', SC = ''):
