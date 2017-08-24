@@ -478,9 +478,12 @@ class Moderation(Plugin):
             #Post names of new comers when 25 new people join
             if 'scambot-internal' in self.ChanNameID_mapping.keys():
 
+                #Adding new user to list
+                self.newcomers.append(userID)
+
                 #If not reached treshold of new users
-                if len(self.newcomers) < 2 :
-                    self.newcomers.append(userID)
+                if len(self.newcomers) < 25 :
+                    return
 
                 #If treshold reached
                 else:
