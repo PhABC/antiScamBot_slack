@@ -308,7 +308,7 @@ class AddrDetection(Plugin):
             msg = [ 'Hello,\n\n You posted a message containing a private key and the '  +
                     'message was automatically deleted for your safety. *Never share  '  +
                     'your private key with anyone, a malicious user could steal your '   +
-                    'tokens.* No team member would ever as you this.\n\n Please be vigilant.']
+                    'coins/tokens.* No team member would ever ass you this.\n\n Please be vigilant.']
 
             #Sending warning message to user
             self.postMessage(data, msg[0], chan = contactChan)
@@ -426,6 +426,11 @@ class Moderation(Plugin):
     #Remerging Welcome msg
     Welcome = ' '.join(WelSplt)
 
+    #CXhannel to post name of new users
+    if 'scambot-internal' in ChanNameID_mapping.keys():
+        newcomers = ['phabc','iamnotahuman']
+
+
     def postMessage(self, data, msg, chan = '', SC = ''):
         'Will post a message in the channel chan (current channel is default)'
 
@@ -446,6 +451,7 @@ class Moderation(Plugin):
         SC.api_call('chat.postMessage', channel = chan, 
                      text = msg, icon_emoji = self.botAvatar,
                      username = botName)   
+
 
     def catch_all(self, data):
         'Catching all events (like joined team)'
@@ -468,6 +474,24 @@ class Moderation(Plugin):
 
             #Sending warning message to user
             self.postMessage(data, msg, chan = contactChan)
+
+            #Post names of new comers when 25 new people join
+            if 'scambot-internal' in self.ChanNameID_mapping.keys():
+
+                #If not reached treshold of new users
+                if len(self.newcomers) < 2 :
+                    self.newcomers.append(userID)
+
+                #If treshold reached
+                else:
+                    ModChan = self.ChanNameID_mapping['scambot-internal']      
+                    msg     = 'Newcomers: ' + '*<@' + '>*, *<@'.join(self.newcomers) + '>*'
+
+                    #Post list of new comers
+                    self.postMessage(data, msg, chan = 'scambot-internal')                    
+
+                    #Reset newcomers list
+                    self.newcomers = []
 
 
     def process_message(self, data):
