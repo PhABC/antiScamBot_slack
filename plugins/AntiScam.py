@@ -48,6 +48,15 @@ class AddrDetection(Plugin):
 
     #Mapping between names and user IDs
     UserNameID_mapping = { i['name']:i['id'] for i in UserList['members']}
+    IDUsername_mapping = { i['id']:i['name'] for i in UserList['members']}
+
+    #Private channels (groups) list
+    PrivList = scBot.api_call("groups.list")
+
+    #Mapping between groups name and groups ID
+    PrivNameID_mapping = { i['name']:i['id'] for i in PrivList['groups']}
+    IDPrivName_mapping = { i['id']:i['name'] for i in PrivList['groups']}
+
 
     #Hack to reload mods after they are modified in other plugin
     reloadMods = False
@@ -67,8 +76,22 @@ class AddrDetection(Plugin):
             msg = warningWrap + msg + warningWrap
 
             #Posting warning
-            Z = self.postMessage(data, msg)    
-    
+            Z = self.postMessage(data, msg)
+
+        #Post deleted message in scambot-internal
+        if 'scambot-internal' in self.PrivNameID_mapping.keys():
+
+            #User and chan ID
+            userID = data['user']
+            chanID = data['channel']
+
+            #Message
+            msg = ['<@{}> posted the following message in <#{}> : '.format(userID, chanID) + 
+                   '\n\n>>>' + data['text'] ] 
+
+            #Post list of new comers
+            self.postMessage(data, msg[0], chan = 'scambot-internal')                    
+
         return
 
     def postMessage(self, data, msg, chan = '', SC = ''):
@@ -885,6 +908,14 @@ class Channels(Plugin):
     #Taking the current topics as default
     ChannelsTopics = { c['id'] : c['topic']['value'] for c in ChanList['channels']}
 
+    #Private channels (groups) list
+    PrivList = scBot.api_call("groups.list")
+
+    #Mapping between groups name and groups ID
+    PrivNameID_mapping = { i['name']:i['id'] for i in PrivList['groups']}
+    IDPrivName_mapping = { i['id']:i['name'] for i in PrivList['groups']}
+
+
 
     def postMessage(self, data, msg, chan = '', SC = ''):
         'Will post a message in the current channel'
@@ -908,6 +939,21 @@ class Channels(Plugin):
         #Deleting message
         self.scAdmin.api_call("chat.delete", channel = data['channel'],
                                ts=data['ts'], as_user = True)
+
+        #Post deleted message in scambot-internal
+        if 'scambot-internal' in self.PrivNameID_mapping.keys():
+
+            #User and chan ID
+            userID = data['user']
+            chanID = data['channel']
+
+            #Message
+            msg = ['<@{}> posted the following message in <#{}> : '.format(userID, chanID) + 
+                   '\n\n>>>' + data['text'] ] 
+
+            #Post list of new comers
+            self.postMessage(data, msg[0], chan = 'scambot-internal')  
+
         return
 
 
