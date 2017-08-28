@@ -67,7 +67,7 @@ This will download the repository on your remote machine.
 
 Second, let’s install Anaconda, an awesome Python library manager. Go on [Anaconda download page](https://www.continuum.io/downloads#linux), right click on the Python 3.X version and select **copy link address**. It should look like `https://repo.continuum.io/archive/Anaconda3-4.4.0-Linux-x86_64.sh`. In your terminal, run the following commands:
 ``` bash
-wget PYTHON_DOWNLOAD_LINK_ADDRESS # Looks like ;  https://repo.continuum.io/archive/Anaconda3...
+wget ANACONDA_DOWNLOAD_LINK_ADDRESS # Looks like ;  https://repo.continuum.io/archive/Anaconda3...
 bash NAME_OF_FILE_DOWNLOADED #Looks like ; Anaconda3-4.... (Can be seen if you type ls) 
 #press ENTER, type yes, press ENTER, press yes
 source ~/.bashrc
