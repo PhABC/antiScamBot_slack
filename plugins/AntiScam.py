@@ -86,8 +86,8 @@ class AddrDetection(Plugin):
             chanID = data['channel']
 
             #Message
-            msg = ['<@{}> posted the following message in <#{}> : '.format(userID, chanID) + 
-                   '\n\n>>>' + data['text'] ] 
+            msg = ['<@{}> posted the following message in <#{}> and '.format(userID, chanID) + 
+                   'the message was deleted : \n\n>>>' + data['text'] ] 
 
             #Post list of new comers
             self.postMessage(data, msg[0], chan = 'scambot-internal')                    
