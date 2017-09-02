@@ -196,15 +196,14 @@ class AddrDetection(Plugin):
         #Commands accessible only to admins
         if admin:
 
+            regex = r"(?:[-a-zA-Z0-9@:%_\+~.#=]{2,256}\.)?([-a-zA-Z0-9@:%_\+~#=]*\.[a-z]{2,12})\b(?:[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)"
+
             #Regular expression for URLs
-            urls = re.findall([ 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|' + 
-                                 '[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+' ][0], text)
+            urls = re.findall(regex, data['text'])
+
             if urls:
                 #Domain name
-                domain = urlparse(urls[0]).netloc
-                
-                #Removing www.
-                domain = domain.replace('www.', '')
+                domain = urls[0]
 
             #Whitelisting new url
             if '$url add' in text:
@@ -213,7 +212,11 @@ class AddrDetection(Plugin):
                 #Adding new url to whitelist
                 if not domain in self.Settings['URL_WhiteList']:
 
+                    #Adding domain to list
                     self.Settings['URL_WhiteList'].append(domain)
+
+                    #Saving settings
+                    self.saveSettings()
 
                     #Notification message
                     self.postMessage(data, 'Whitelisted *{}*'.format(domain))
@@ -231,6 +234,9 @@ class AddrDetection(Plugin):
                     #Deleting
                     del self.Settings['URL_WhiteList'][self.Settings['URL_WhiteList'].index(domain)]
 
+                    #Saving settings
+                    self.saveSettings()
+
                     #Log message
                     self.postMessage(data, 'Removed *{}* from URL whitelist.'.format(domain))
 
@@ -241,12 +247,6 @@ class AddrDetection(Plugin):
             elif '$url help' in text :
 
                 self.postMessage(data, 'List of url commands : *$url add DOMAIN* ~|~ *$url remove DOMAIN* ~|~ *$url list*')
-
-            # Saving SetTings to Settings.txt
-            with open('Settings.txt', 'wb') as f:
-                pk.dump(self.Settings, f)
-
-            return
 
         else:
             return
@@ -259,18 +259,16 @@ class AddrDetection(Plugin):
         username = userinfo['user']['name']
         userID   = self.UserNameID_mapping[username]
 
+        regex = r"(?:[-a-zA-Z0-9@:%_\+~.#=]{2,256}\.)?([-a-zA-Z0-9@:%_\+~#=]*\.[a-z]{2,12})\b(?:[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)"
+
         #Regular expression for URLs
-        urls = re.findall([ 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|' + 
-                            '[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+' ][0], data['text'])
+        urls = re.findall(regex, data['text'])
 
         #If URL is found
         if urls:
 
             #Domain of URL
-            domain = urlparse(urls[0]).netloc
-
-            #Removing www.
-            domain = domain.replace('www.', '')
+            domain = urls[0]
 
             #URL log
             print('URL detected at {}'.format(domain))
@@ -370,6 +368,8 @@ class AddrDetection(Plugin):
         return False
 
 
+    ### ----------------------- EXTRA FUNCTIONS ----------------------- ###
+
     def isAdmin(self, userinfo):
         'Verify if user if admin'
 
@@ -378,6 +378,14 @@ class AddrDetection(Plugin):
         else:
             return False
 
+    def saveSettings(self):
+        'Will save settings'
+
+        #Saving SetTings to Settings.txt
+        with open('Settings.txt', 'wb') as f:
+            pk.dump(self.Settings, f)
+
+        print('Settings were saved.')
 
 
 class Moderation(Plugin):
@@ -609,8 +617,14 @@ class Moderation(Plugin):
                 modID = self.UserNameID_mapping[modName]
 
             #Removing moderator
-            if modID in self.Settings['Moderators']:        
+            if modID in self.Settings['Moderators']:    
+
+                #Removing mods from list    
                 del self.Settings['Moderators'][self.Settings['Moderators'].index(modID)]
+
+                #Saving settings
+                self.saveSettings()
+
                 #Log message
                 self.postMessage(data, 'Removed *<@{}>* as a moderator'.format(modID))
 
@@ -636,7 +650,12 @@ class Moderation(Plugin):
 
             #Adding new moderator
             if not modID in self.Settings['Moderators']:
+                
+                #Adding mod to list
                 self.Settings['Moderators'].append(modID)
+
+                #Saving settings
+                self.saveSettings()
 
                 #Log message
                 self.postMessage(data, 'Added *<@{}>* as a moderator'.format(modID))
@@ -703,10 +722,6 @@ class Moderation(Plugin):
             self.postMessage(data, ['List of mods commands : *$mods add USER* ~|~ *$mods remove USER* ' + 
                                     '~|~ *$mods list* ~|~ *$mods msg MESSAGE*'])
 
-        # Saving SetTings to Settings.txt
-        with open('Settings.txt', 'wb') as f:
-            pk.dump(self.Settings, f)
-
 
     def FlagControl(self, data):
         '''
@@ -759,7 +774,13 @@ class Moderation(Plugin):
 
             else:
 
+                #Removing flagged users from list
                 del self.Settings['Flagged'][flaggedID]
+
+                #Saving settings
+                self.saveSettings()
+
+                #Feedback message
                 self.postMessage(data, '*<@{}>* has been unflagged.'.format(flaggedID))
 
         elif '$flag ' in text :
@@ -788,6 +809,11 @@ class Moderation(Plugin):
 
                     #Flagging
                     self.Settings['Flagged'][flaggedID] = [modName]
+
+                    #Saving settings
+                    self.saveSettings()
+
+                    #Report message
                     self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
                     #Reporting without concensus
@@ -795,12 +821,22 @@ class Moderation(Plugin):
                 else:
                     #Flagging
                     self.Settings['Flagged'][flaggedID] = [modName]
+
+                    #Saving settings
+                    self.saveSettings()
+
+                    #Message
                     self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
             #If already reported by current mod/admin
             elif not modName in self.Settings['Flagged'][flaggedID]:
 
                 self.Settings['Flagged'][flaggedID].append(modName)
+
+                #Saving settings
+                self.saveSettings()
+
+                #Report message
                 self.postMessage(data, 'Flagged *<@{}>* '.format(flaggedID))
 
                 #Report if concensus is reached (or automatic if Admin)
@@ -813,9 +849,6 @@ class Moderation(Plugin):
 
                 self.postMessage(data, 'You already flagged *<@{}>* '.format(flaggedID))
 
-        # Saving SetTings to Settings.txt
-        with open('Settings.txt', 'wb') as f:
-            pk.dump(self.Settings, f)
 
     ### ----------------------- EXTRA FUNCTIONS ----------------------- ###
 
@@ -857,6 +890,15 @@ class Moderation(Plugin):
 
         #Reported
         self.Settings['Flagged'][flaggedID].append('$reported')
+
+    def saveSettings(self):
+        'Will save settings'
+
+        #Saving SetTings to Settings.txt
+        with open('Settings.txt', 'wb') as f:
+            pk.dump(self.Settings, f)
+
+        print('Settings were saved.')
 
 
 
@@ -1050,6 +1092,9 @@ class Channels(Plugin):
             if chanID in self.Settings['MutedChannels']:        
                 del self.Settings['MutedChannels'][self.Settings['MutedChannels'].index(chanID)]
 
+                #Saving settings
+                self.saveSettings()
+
                 #Message
                 msg = 'This channel has been un-silenced. Everyone is welcomed to post!'
 
@@ -1083,6 +1128,9 @@ class Channels(Plugin):
                 #Adding to MutedChannels list    
                 self.Settings['MutedChannels'].append(chanID)
 
+                #Saving settings
+                self.saveSettings()
+
                 #Message
                 msg = 'This channel has been silenced. Only Admins and bots have permission to post here.'
 
@@ -1098,10 +1146,6 @@ class Channels(Plugin):
             else:
 
                 self.postMessage(data, 'Channel *<#{}>* is already muted.'.format(chanID))
-
-        # Saving SetTings to Settings.txt
-        with open('Settings.txt', 'wb') as f:
-            pk.dump(self.Settings, f)
 
 
     ### ----------------------- EXTRA FUNCTIONS ----------------------- ###
@@ -1173,8 +1217,6 @@ class Channels(Plugin):
             #Delete notificaiton of topic change by unauthorized user
             self.delete(data)
 
-
-
     def isAdmin(self, userinfo):
         'Verify if user if admin'
 
@@ -1182,3 +1224,12 @@ class Channels(Plugin):
             return True
         else:
             return False
+
+    def saveSettings(self):
+        'Will save settings'
+
+        #Saving SetTings to Settings.txt
+        with open('Settings.txt', 'wb') as f:
+            pk.dump(self.Settings, f)
+
+        print('Settings were saved.')
