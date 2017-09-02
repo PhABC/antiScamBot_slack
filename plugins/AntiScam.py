@@ -135,9 +135,11 @@ class AddrDetection(Plugin):
         #Will reload mods if was changed last message
         if self.reloadMods:
 
+
+
             #Loading new moderator list if changed by other plugin
             with open('Settings.txt', 'rb') as f:
-                Settings = pk.loads(f.read())
+                self.Settings = pk.loads(f.read())
 
             self.reloadMods = False
 
@@ -146,6 +148,8 @@ class AddrDetection(Plugin):
 
         #Reloading moderators if change
         if self.isAdmin(userinfo) and '$mods' in data['text']:
+
+            print('WILL RELOAD')
 
             #Will reload next messgae
             self.reloadMods = True
