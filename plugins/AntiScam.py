@@ -61,7 +61,7 @@ class AddrDetection(Plugin):
     #Hack to reload mods after they are modified in other plugin
     reloadMods = False
 
-    def delete(self, data, msg = '', warning = False):
+    def delete(self, data):
         '''
         Will delete a msg and post a warning message in the respective channel
         '''
@@ -69,14 +69,6 @@ class AddrDetection(Plugin):
         #Deleting message
         self.scAdmin.api_call("chat.delete", channel = data['channel'],
                                ts=data['ts'], as_user = True)
-
-        #Adding warning wrapper if true
-        if warning:
-            warningWrap = ':exclamation::warning::exclamation:'
-            msg = warningWrap + msg + warningWrap
-
-            #Posting warning
-            Z = self.postMessage(data, msg)
 
         #Post deleted message in scambot-internal
         if 'scambot-internal' in self.PrivNameID_mapping.keys():
@@ -293,7 +285,7 @@ class AddrDetection(Plugin):
                 self.postMessage(data, msg[0], chan = contactChan)
                 
                 #Deleting message
-                self.delete(data, msg[0])
+                self.delete(data)
 
                 return True
 
@@ -328,7 +320,6 @@ class AddrDetection(Plugin):
             #Send welcoming message
             contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
 
-
             #Message to user
             msg = [ 'Hello,\n\n You posted a message containing a private key and the '  +
                     'message was automatically deleted for your safety. *Never share  '  +
@@ -339,7 +330,7 @@ class AddrDetection(Plugin):
             self.postMessage(data, msg[0], chan = contactChan)
             
             #Deleting message
-            self.delete(data, )
+            self.delete(data)
 
             return True
 
@@ -347,26 +338,40 @@ class AddrDetection(Plugin):
         elif eth_result and eth_result.group(1):
             print('ETH address detected.')
 
+            #Send welcoming message
+            contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
+
             #Message to post in channel
-            msg  = [' *<@{}>* posted an ETH address and'.format(userID) + 
-                    ' the message was deleted. *Do NOT trust any '      +
-                    ' address posted on slack*.']
+            msg  = ['You posted an ETH address and ' + 
+                    'the message was deleted. We do this to ensure ' +
+                    'users security. Multiple offenses could lead  ' +
+                    'to account deactivation if deemed malicious.  ' ]
+
+            #Sending warning message to user
+            self.postMessage(data, msg[0], chan = contactChan)
 
             #Deleting message
-            self.delete(data, msg[0], warning = True)
+            self.delete(data)
             return True
 
         #BTC address detection
         if btc_result and btc_result.group(1):
             print('BTC address detected.')
 
+            #Send welcoming message
+            contactChan = self.scBot.api_call('im.open', user = userID)['channel']['id']
+
             #Message to post in channel
-            msg  = [' *<@{}>* posted an ETH address and'.format(userID) + 
-                    ' the message was deleted. *Do NOT trust any '      +
-                    ' address posted on slac*.']
+            msg  = ['You posted a BTC address and ' + 
+                    'the message was deleted. We do this to ensure ' +
+                    'users security. Multiple offenses could lead  ' +
+                    'to account deactivation if deemed malicious.  ' ]
+
+            #Sending warning message to user
+            self.postMessage(data, msg[0], chan = contactChan)   
 
             #Deleting message
-            self.delete(data, msg[0], warning = True)
+            self.delete(data)
             return True
 
         return False
