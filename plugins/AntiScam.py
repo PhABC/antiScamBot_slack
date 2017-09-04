@@ -199,6 +199,7 @@ class AddrDetection(Plugin):
         #Commands accessible only to admins
         if admin:
 
+            #REGEX expression
             regex = r"(?:[-a-zA-Z0-9@:%_\+~.#=]{2,256}\.)?([-a-zA-Z0-9@:%_\+~#=]*\.[a-z]{2,12})\b(?:[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)"
 
             #Regular expression for URLs
@@ -262,6 +263,8 @@ class AddrDetection(Plugin):
         username = userinfo['user']['name']
         userID   = self.UserNameID_mapping[username]
 
+
+        #REGEX expression
         regex = r"(?:[-a-zA-Z0-9@:%_\+~.#=]{2,256}\.)?([-a-zA-Z0-9@:%_\+~#=]*\.[a-z]{2,12})\b(?:[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)"
 
         #Regular expression for URLs
@@ -286,7 +289,8 @@ class AddrDetection(Plugin):
                 msg = [ 'Hello,\n\n You posted a message containing a non-approved domain ' +
                         '({}). Please contact an admin or moderator to add '.format(domain) +
                         'this domain to the URL whitelist if you consider it to be safe.\n' +
-                        '\nYou can see the whitelisted domains by typing `$url list`.' ]
+                        '\nYou can see the whitelisted domains by typing `$url list`.\n\n'  +
+                        'The deleted message was the following : \n\n>>>{}'.format(data['text']) ]
 
                 #Sending warning message to user
                 self.postMessage(data, msg[0], chan = contactChan)
@@ -331,7 +335,8 @@ class AddrDetection(Plugin):
             msg = [ 'Hello,\n\n You posted a message containing a private key and the '  +
                     'message was automatically deleted for your safety. *Never share  '  +
                     'your private key with anyone, a malicious user could steal your '   +
-                    'coins/tokens.* No team member would ever ass you this.\n\n Please be vigilant.']
+                    'coins/tokens.* No team member would ever ass you this.\n\n Please be vigilant.'+
+                    '\n\n The deleted message was the following : \n\n>>>{}'.format(data['text'])]
 
             #Sending warning message to user
             self.postMessage(data, msg[0], chan = contactChan)
@@ -350,9 +355,10 @@ class AddrDetection(Plugin):
 
             #Message to post in channel
             msg  = ['You posted an ETH address and ' + 
-                    'the message was deleted. We do this to ensure ' +
-                    'users security. Multiple offenses could lead  ' +
-                    'to account deactivation if deemed malicious.  ' ]
+                    'the message was deleted. We do this to ensure '   +
+                    'users security. Multiple offenses could lead  '   +
+                    'to account deactivation if deemed malicious.\n\n' +
+                     'The deleted message was the following : \n\n>>>{}'.format(data['text']) ]
 
             #Sending warning message to user
             self.postMessage(data, msg[0], chan = contactChan)
@@ -372,7 +378,8 @@ class AddrDetection(Plugin):
             msg  = ['You posted a BTC address and ' + 
                     'the message was deleted. We do this to ensure ' +
                     'users security. Multiple offenses could lead  ' +
-                    'to account deactivation if deemed malicious.  ' ]
+                    'to account deactivation if deemed malicious.\n\n' +
+                     'The deleted message was the following : \n\n>>>{}'.format(data['text']) ]
 
             #Sending warning message to user
             self.postMessage(data, msg[0], chan = contactChan)   
