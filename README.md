@@ -1,5 +1,5 @@
 **Projects Using antiScamBot_slack**: 
-       [0x Protocol](https://0xproject.com/), [Mysterium](mysterium.network), [Numerai](https://numer.ai/), [Monetha](https://www.monetha.io/) 
+       [0x Protocol](https://0xproject.com/),[Numerai](https://numer.ai/), [Aragon](https://aragon.one/), [Status](https://status.im/), [Privatix](https://privatix.io/),  [Mysterium](mysterium.network), [Monetha](https://www.monetha.io/). 
 
 # antiScamBot_slack
 antiScam-bot is a slack bot allowing admins to better control what is going in their slack channels and reduce potential scams. The bot comes with a range of functions that admins can use such as restricting channels to admins only, inviting all team members to a channel, reporting and flagging scammers and nominating moderators to help protecting the channels. The free slack API does not allow things like banning users and such, so more soft methods have been implemented for now. This bot is a work in progress and it is my hope that feedback and contributions will improve its reach.  
@@ -124,7 +124,13 @@ This will initiate the bot, but we need to add some information:
  ``` bash
 python run.py
 ```
-Et voilà! The bot is now up and running. You can see that he is online on your slack team under *Apps*. **You should invite the bot in the channels you want him to monitor. Make sure you create a channel named *-scam-alert-*; the bot will need it.**
+Et voilà! The bot is now up and running. You can see that he is online on your slack team under *Apps*.
+
+## 4. Getting Your Slack Ready
+The bot is only going to monitor channels in which it is invited. Inviting it in all public channels is reccommended. In addition, you will need to create some channels for certain functionallities. 
+
++ Create a **public channel** called **#-scam-alert** (bot will report flagged user in this channel). Make sure you invite all users in this channel with the `$inviteAll #-scam-alert` command (will take sometime because of Slack API limit).
++ Create a **private channel** called **#scambot-internal** (bot will post deleted messages and other warnings in this channels so admins can see what's going on). Note that you should not invite all moderators there, only the very most trusted ones (i.e. only admins). If a scammer is invited in this channel, they will know who the moderators are and will purposely not send messages to them. 
 
 # What Can The Bot Do & How To Use It
 The bot is primarily for Admins, but as we will see, you can add moderators that have access to certain commands as well. 
