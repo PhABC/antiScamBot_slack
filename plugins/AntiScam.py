@@ -112,6 +112,13 @@ class AddrDetection(Plugin):
     def process_message(self, data):
         'Will process all posts on watched channels.'
 
+        #Checking if message was edited
+        if 'subtype' in data and data['subtype'] == 'message_changed':
+            data['text'] = data['message']['text']
+            data['user'] = data['message']['edited']['user']
+            data['ts'] = data['message']['ts']
+
+
         #Printing message to console
         print(data)
 
