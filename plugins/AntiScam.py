@@ -562,6 +562,14 @@ class Moderation(Plugin):
     def process_message(self, data):
         'Will process all posts on watched channels.'
 
+
+        #Checking if message was edited
+        if 'subtype' in data and data['subtype'] == 'message_changed':
+            data['text'] = data['message']['text']
+            data['user'] = data['message']['edited']['user']
+            data['ts'] = data['message']['ts']
+
+
         #In case bot message
         if not 'user' in data.keys():
             return
@@ -1036,6 +1044,12 @@ class Channels(Plugin):
         #In case bot message
         if not 'user' in data.keys():
             return
+
+        #Checking if message was edited
+        if 'subtype' in data and data['subtype'] == 'message_changed':
+            data['text'] = data['message']['text']
+            data['user'] = data['message']['edited']['user']
+            data['ts'] = data['message']['ts']
 
         #Getting user and channel information
         userinfo = self.scBot.api_call('users.info', user=data['user'])
