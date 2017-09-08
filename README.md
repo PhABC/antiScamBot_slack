@@ -222,6 +222,7 @@ Have fun and please don't forget to leave feedback and suggestions in the github
 ---
 
 **I am currently maintaining this bot on my spare time and donations are always appreciated!**
+
 *ETH Address* ; 0xDaD3E5a63eb437F9C7A4Db9B52Ba1771FE535E51
 
 
