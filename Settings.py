@@ -13,11 +13,11 @@ def initSettings():
 
     #Defaults URL
     Settings['URL_WhiteList'] = ['github.com','reddit.com','etherscan.io','myetherwallet.com',
-                                 '0xproject.com','numer.ai','mysterium.network','twitter.com', 
+                                 '0xproject.com','numer.ai','twitter.com','slack.com',
                                  'medium.com', 'ethplorer.io', 'metamask.io', 'steemit.com', 
                                  'youtube.com','hackingdistributed.com','ens.domains','bittrex.com',
-                                 'media.consensys.net','forbes.com','coinmarketcap.com','liqui.io',
-                                 'hitbtc.com','bitcointalk.org']
+                                 'consensys.net','forbes.com','coinmarketcap.com','liqui.io',
+                                 'hitbtc.com']
 
     #Registering Parameters
     Settings['SLACK_ADMIN_TOKEN'] = input("Specify admin (OAuth) access token: ")       # SLACK_ADMIN_TOKEN
