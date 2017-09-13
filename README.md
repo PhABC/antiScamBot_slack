@@ -1,5 +1,5 @@
 **Projects Using antiScamBot_slack**: 
-       [0x Protocol](https://0xproject.com/), [Numerai](https://numer.ai/), [Aragon](https://aragon.one/), [Status](https://status.im/), [Privatix](https://privatix.io/), [Mysterium](mysterium.network), [Monetha](https://www.monetha.io/),  [Soma](http://soma.co/), [Request Network](https://request.network/), [District0x](https://district0x.io/).
+       [0x Protocol](https://0xproject.com/), [Substratum](substratum.net), [Numerai](https://numer.ai/), [Aragon](https://aragon.one/), [Status](https://status.im/), [Privatix](https://privatix.io/), [Mysterium](mysterium.network), [Monetha](https://www.monetha.io/),  [Soma](http://soma.co/), [Request Network](https://request.network/), [District0x](https://district0x.io/).
 
 Demo on how to use the bot can be seen [here](https://www.youtube.com/watch?v=pFKFSlfdWeM&lc=z23xh1v4jpeqhznyn04t1aokges3xzwuh5yq53cusyx4rk0h00410). 
 
