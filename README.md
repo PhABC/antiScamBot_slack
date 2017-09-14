@@ -227,5 +227,5 @@ Have fun and please don't forget to leave feedback and suggestions in the github
 
 *ETH Address* ; 0xDaD3E5a63eb437F9C7A4Db9B52Ba1771FE535E51
 
-
+Big thank you to [Substratum](substratum.net) for their donation. 
   
